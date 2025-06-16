@@ -1,22 +1,22 @@
 package com.abel.control_horas_app.control_horas_app.entities;
 
-import java.time.LocalDate;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name="jornadas")
-public class Jornada {
+public class Rol {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy= GenerationType.IDENTITY ) 
 	private int id;
-	private LocalDate fecha;
-	// Many to One
-	private Usuario usuario;
+	
+	@Column
+	private String Admin;
+	
+	@Column
+	private Usuario User;
 
 }
