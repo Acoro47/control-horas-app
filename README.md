@@ -56,3 +56,32 @@ control-horas-app/
 ├── README.md             → Documentación del proyecto
 
 ```
+
+---
+
+## 🛡️ Licencia
+
+Este proyecto se distribuye bajo la licencia **MIT**.  
+Puedes usarlo, modificarlo y compartirlo libremente.
+
+---
+
+## 🤝 Contribuciones
+
+¿Tienes ideas para mejorar esta app o quieres participar?  
+Las pull requests son bienvenidas, y también puedes abrir un *issue* para reportar errores o proponer nuevas funcionalidades.
+
+---
+
+## 📫 Contacto
+
+Desarrollado por **Abel Coro**  
+🔗 GitHub: [@Acoro47](https://github.com/Acoro47)
+
+---
+
+## ✨ Gracias
+
+Gracias por visitar este repositorio.  
+Espero que te sea útil o inspirador para tus propios proyectos.  
+Si te ha gustado, deja una estrella ⭐ en GitHub. ¡Nos vemos en el código!
