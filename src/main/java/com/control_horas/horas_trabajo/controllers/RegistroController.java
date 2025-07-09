@@ -3,6 +3,7 @@ package com.control_horas.horas_trabajo.controllers;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -61,7 +62,7 @@ public class RegistroController {
 	public String registrarEntrada(Authentication auth) {
 		Usuario u = userRepo.findByUsername(auth.getName()).orElseThrow();
 		Registro r = new Registro();
-		r.setHoraEntrada(LocalDateTime.now());
+		r.setHoraEntrada(LocalDateTime.now(ZoneId.of("Europe/Madrid")));
 		r.setUsuario(u);
 		registroRepo.save(r);
 		
@@ -75,7 +76,7 @@ public class RegistroController {
 		Usuario u = userRepo.findByUsername(auth.getName()).orElseThrow();
 		Registro r = registroRepo.findFirstByUsuarioAndHoraSalidaIsNullOrderByHoraEntrada(u)
 				.orElseThrow();
-		r.setHoraSalida(LocalDateTime.now());
+		r.setHoraSalida(LocalDateTime.now(ZoneId.of("Europe/Madrid")));
 		registroRepo.save(r);
 		
 		return "redirect:/panel";

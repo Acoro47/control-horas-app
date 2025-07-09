@@ -45,6 +45,18 @@ table th, table td {
 	background-color: #33ff42 !important;
 }
 
+.dark-mode {
+  background-color: #121212 !important;
+  color: #f0f0f0 !important;
+}
+.dark-mode .card {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+.dark-mode input, .dark-mode button {
+  background-color: #2a2a2a;
+  color: #ffffff;
+}
 
 
 
