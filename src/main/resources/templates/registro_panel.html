@@ -26,7 +26,7 @@
 			<td>
 				<span th:if="${r.horaSalida != null}"
 					th:text="${T(java.time.Duration).between(r.horaEntrada, r.horaSalida).toMinutes() / 60} + ' h ' +
-							${T(java.time.Duration).between(r.horaEntrada, r.horaSalida).toMinutes() % 60}">---</span>
+							${T(java.time.Duration).between(r.horaEntrada, r.horaSalida).toMinutes() % 60} + ' min'">---</span>
 				<span th:if="${r.horaSalida == null}">---</span>
 			</td>
 		</tr>
