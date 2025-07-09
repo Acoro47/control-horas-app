@@ -1,0 +1,4 @@
+providers = ["java"]
+
+[start]
+cmd = "java -jar target/horas_trabajo-0.0.1-SNAPSHOT.jar"
