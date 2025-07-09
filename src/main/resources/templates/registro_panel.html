@@ -25,7 +25,8 @@
 			<td th:text="${r.horaSalida != null ? #temporals.format(r.horaSalida, 'HH:mm') : 'En curso'}">---</td>
 			<td>
 				<span th:if="${r.horaSalida != null}"
-					th:text="${T(java.time.Duration).between(r.horaEntrada, r.horaSalida).toMinutes() / 60} + ' h'">---</span>
+					th:text="${T(java.time.Duration).between(r.horaEntrada, r.horaSalida).toMinutes() / 60} + ' h ' +
+							${T(java.time.Duration).between(r.horaEntrada, r.horaSalida).toMinutes() % 60}">---</span>
 				<span th:if="${r.horaSalida == null}">---</span>
 			</td>
 		</tr>
