@@ -23,12 +23,12 @@ public class AdminController {
 	@Autowired
 	public UsuarioDetailsService userService;
 	
-	@GetMapping("/admin")
+	@GetMapping("/")
 	public String adminPanel() {
-		return "admin";
+		return "admin/panel";
 	}
 	
-	@GetMapping("/admin/usuarios")
+	@GetMapping("/usuarios")
 	public String verTodos(Model model){
 		List<Usuario> usuarios = userService.obtenerTodosUsuarios();
 		model.addAttribute("usuarios",usuarios);
