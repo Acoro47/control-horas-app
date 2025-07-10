@@ -26,7 +26,7 @@
             <td>
             	<form th:action="@{'/admin/toogle-enabled/' + ${usuario.id}" method="post">
             		<button type="submit">
-            			<span th:text="${usuario.enabled ? 'Desactivar' : 'Activar'"></span>
+            			<span th:text="${usuario.enabled ? 'Desactivar' : 'Activar'}"></span>
             		</button>
             	</form>
             </td>
