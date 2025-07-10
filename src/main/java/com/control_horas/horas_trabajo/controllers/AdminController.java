@@ -30,8 +30,15 @@ public class AdminController {
 	
 	@GetMapping("/usuarios")
 	public String verTodos(Model model){
-		List<Usuario> usuarios = userService.obtenerTodosUsuarios();
-		model.addAttribute("usuarios",usuarios);
+		try {
+			List<Usuario> usuarios = userService.obtenerTodosUsuarios();
+			model.addAttribute("usuarios",usuarios);
+		}
+		catch (Exception e) {
+			
+			return "redirect:/error";
+		}
+		
 		return "admin/usuarios";
 	}
 
