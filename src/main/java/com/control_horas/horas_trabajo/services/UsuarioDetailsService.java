@@ -1,11 +1,7 @@
 package com.control_horas.horas_trabajo.services;
 
-import java.security.SecureRandom;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,12 +17,11 @@ import com.control_horas.horas_trabajo.securities.UsuarioPrincipal;
 public class UsuarioDetailsService implements UserDetailsService {
 	
 	private final UsuarioRepository repo;
-	
-	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
-	public UsuarioDetailsService(UsuarioRepository uRepo) {
+	public UsuarioDetailsService(UsuarioRepository uRepo, BCryptPasswordEncoder encoder) {
 		this.repo = uRepo;
+		this.passwordEncoder = encoder;
 	}
 	
 	

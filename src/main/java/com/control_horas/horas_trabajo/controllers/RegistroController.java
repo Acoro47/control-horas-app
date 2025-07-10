@@ -15,10 +15,6 @@ import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.repositories.RegistroRepository;
 import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
 
-
-
-
-
 @Controller
 public class RegistroController {
 	
