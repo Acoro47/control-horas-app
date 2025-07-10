@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +29,10 @@ public class UsuarioDetailsService implements UserDetailsService {
 		this.repo = uRepo;
 	}
 	
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 
 	@Override
@@ -54,18 +59,6 @@ public class UsuarioDetailsService implements UserDetailsService {
 		repo.save(user);
 	}
 	
-	public String generarClaveTemporal() {
-		int longitud = 10;
-		String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#%";
-		StringBuilder clave = new StringBuilder();
-		SecureRandom random = new SecureRandom();
-		
-		for (int i = 0; i < longitud; i ++) {
-			int index = random.nextInt(caracteres.length());
-			clave.append(caracteres.charAt(index));
-		}
-		
-		return clave.toString();
-	}
+	
 
 }
