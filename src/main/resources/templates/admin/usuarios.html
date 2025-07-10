@@ -23,7 +23,7 @@
             <td th:text="${usuario.username}">Nombre</td>
             <td th:text="${usuario.rol}">Rol</td>
             <td>
-               <a th:href="@{/admin/cambiar-password/{id}(id=${usuario.id})}" method="post"></a>
+               <a th:href="@{/admin/cambiar-password/{id}(id=${usuario.id})}">Establecer nueva contraseña</a>
             </td>
         </tr>
     </tbody>
