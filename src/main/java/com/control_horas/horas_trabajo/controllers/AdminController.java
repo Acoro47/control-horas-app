@@ -23,7 +23,7 @@ public class AdminController {
 	@Autowired
 	public UsuarioDetailsService userService;
 	
-	@GetMapping("/")
+	@GetMapping("")
 	public String adminPanel() {
 		return "admin/panel";
 	}
