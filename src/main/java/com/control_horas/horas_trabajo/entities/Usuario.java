@@ -7,8 +7,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name="usuario")
 public class Usuario {
 	
 	@Id
@@ -17,6 +19,9 @@ public class Usuario {
 	
 	@Column(nullable=false, unique=true)
 	private String username;
+	
+	@Column(nullable=false, unique=true)
+	private String mail;
 	
 	@Column(nullable=false)
 	private String password;
@@ -50,6 +55,14 @@ public class Usuario {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 
 	public String getPassword() {

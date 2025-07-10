@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.control_horas.horas_trabajo.entities.Usuario;
+import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
 import com.control_horas.horas_trabajo.services.UsuarioDetailsService;
 
 @Controller
@@ -22,7 +24,10 @@ import com.control_horas.horas_trabajo.services.UsuarioDetailsService;
 public class AdminController {
 	
 	@Autowired
-	public UsuarioDetailsService userService;
+	private UsuarioRepository userRepo;
+	
+	@Autowired
+	private BCryptPasswordEncoder encoder; 
 	
 	@GetMapping("")
 	public String adminPanel() {
@@ -32,7 +37,7 @@ public class AdminController {
 	@GetMapping("/usuarios")
 	public String verTodos(Model model){
 		try {
-			List<Usuario> usuarios = userService.obtenerTodosUsuarios();
+			List<Usuario> usuarios = userRepo.findAll();
 			model.addAttribute("usuarios",usuarios);
 		}
 		catch (Exception e) {
@@ -43,36 +48,39 @@ public class AdminController {
 		return "admin/usuarios";
 	}
 
-	@GetMapping("/cambiar-password/{id}")
-	public String resetearPassword(@PathVariable Long id, Model model){
-		Usuario user = userService.obtenerUsuario(id);
-		model.addAttribute("usuario",user);
-		
-		return "admin/cambiar-password";
-	}
 	
 	@PostMapping("/cambiar-password/{id}")
-	public String procesarCambioPassword(@PathVariable Long id, @RequestParam String nuevaPassword, RedirectAttributes redirect) {
-		userService.actualizarPassword(id, nuevaPassword);
-		redirect.addFlashAttribute("mensaje", "La contraseña fue actualizada con éxito");
-		return "redirect:/admin/usuarios";
+	public String procesarCambioPassword(@PathVariable Long id, @RequestParam String nuevaPassword) {
+		Usuario u = userRepo.findUserById(id);
+		u.setPassword(encoder.encode(nuevaPassword));
+		System.err.println("➡️ Intentando guardar usuario...");
+		Usuario saved = userRepo.save(u);
+		System.err.println("✅ Usuario guardado con ID: " + saved.getId());
 		
+		return "redirect:/admin";
 	}
+	
 	
 	@PostMapping("/toggle-enabled/{id}")
 	public String alternarUsuarioActivo(@PathVariable Long id, RedirectAttributes redirect) {
-		Usuario u = userService.obtenerUsuario(id);
+		Usuario u = userRepo.findUserById(id);
 		u.setEnabled(!u.isEnabled());
-		userService.actualizarUsuario(u);
-		redirect.addFlashAttribute("mensaje", "Estado del usuario actualizado con éxito");
+		System.err.println("➡️ Intentando guardar usuario...");
+		Usuario saved = userRepo.save(u);
+		System.err.println("✅ Usuario guardado con ID: " + saved.getId());
+		
 		return "redirect:/admin/usuarios";
 	}
 	
+	
 	@PostMapping("/toggle-lock/{id}")
 	public String alternarBloqueoUsuario(@PathVariable Long id, RedirectAttributes redirect) {
-		Usuario u = userService.obtenerUsuario(id);
+		Usuario u = userRepo.findUserById(id);
 		u.setAccountNonLocked(!u.isAccountNonLocked());
-		userService.actualizarUsuario(u);
+		System.err.println("➡️ Intentando guardar usuario...");
+		Usuario saved = userRepo.save(u);
+		System.err.println("✅ Usuario guardado con ID: " + saved.getId());
+		
 		return "redirect:/admin/usuarios";
 	}
 }

@@ -11,6 +11,7 @@ import com.control_horas.horas_trabajo.entities.Usuario;
 
 public class UsuarioPrincipal implements UserDetails{
 	
+	private static final long serialVersionUID = 1L;
 	private Usuario usuario;
 	
 	public UsuarioPrincipal(Usuario u) {

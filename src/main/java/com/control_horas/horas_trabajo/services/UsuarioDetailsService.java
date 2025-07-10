@@ -1,6 +1,7 @@
 package com.control_horas.horas_trabajo.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,20 +18,19 @@ import com.control_horas.horas_trabajo.securities.UsuarioPrincipal;
 public class UsuarioDetailsService implements UserDetailsService {
 	
 	private final UsuarioRepository repo;
-	private BCryptPasswordEncoder passwordEncoder;
 	
-	public UsuarioDetailsService(UsuarioRepository uRepo, BCryptPasswordEncoder encoder) {
+	public UsuarioDetailsService(UsuarioRepository uRepo) {
 		this.repo = uRepo;
-		this.passwordEncoder = encoder;
 	}
 	
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Usuario user = repo.findByUsername(username)
-				.orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+		Optional<Usuario> userOpt = repo.findByUsername(username);
 		
-		return new UsuarioPrincipal(user);
+		if (userOpt.isEmpty()) throw new UsernameNotFoundException("Usuario no encontrado " + username);
+		
+		return new UsuarioPrincipal(userOpt.get());
 		
 	}
 	
@@ -42,15 +42,12 @@ public class UsuarioDetailsService implements UserDetailsService {
 		return repo.findUserById(id);
 	}
 	
-	public void actualizarPassword(Long id, String newPass) {
-		Usuario user = repo.findById(id).orElseThrow();
-		String hash = passwordEncoder.encode(newPass);
-		user.setPassword(hash);
-		actualizarUsuario(user);
-	}
-	
 	public void actualizarUsuario(Usuario u) {
 		repo.save(u);
+	}
+	
+	public boolean existePorNombreOEmail(String username, String email) {
+		return repo.existsByUsername(username) || repo.existsByMail(email);
 	}
 	
 	
