@@ -6,6 +6,10 @@
 <body>
     <h1>😕 Algo salió mal</h1>
     <p th:text="${error} ?: 'No se pudo encontrar la página o hubo un problema interno.'"></p>
+    <div th:if="${detalle}">
+    	<h4>🛠️ Detalle técnico:</h4>
+    	<pre th:text="${detalle}"></pre>
+	</div>    
     <a th:href="@{/}">Volver al inicio</a>
 </body>
 </html>
