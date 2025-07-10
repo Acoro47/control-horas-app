@@ -6,42 +6,47 @@
     <title>Panel de Administración</title>
 </head>
 <body>
-<h1 class="text-center">⚙️ Panel de Administración</h1>
+<div class="d-flex justify-content-between">
+	<p>Bienvenido <span th:text="${#authentication.name}"></span>!</p>
+	<h1 class="text-center">⚙️ Panel de Administración</h1>
+	<form th:action="@{/logout}" method="post">
+		<button type="submit" class="btn btn-outline-danger">🔒 Cerrar sesión</button>
+	</form>
+	
+</div>
 <div class="container">
 	<div class="d-flex justify-content-center">
-		<div class="col p-5 m-5">
-			<div class="card col" style="width: 18rem;">
-				<img src="..." class="card-img-top" alt="...">
+		<div class="d-flex flex-wrap gap-4 justify-content-center p-2 m-2">
+			<div class="card row" style="width: 18rem;">
+				<img th:src="@{/img/users.png}" class="card-img-top" alt="Usuarios">
 				<div class="card-body">
 					<h5 class="card-title">Usuarios</h5>
 					<p class="card-text">Ver todos los usuarios</p>
-					<a th:href="@{/admin/usuarios}">ir</a>
+					<a class="btn btn-outline-primary" th:href="@{/admin/usuarios}">ir</a>
 				</div> 
 			</div>
 			
 			<div class="card" style="width: 18rem;">
-				<img src="..." class="card-img-top" alt="...">
+				<img th:src="@{/img/estadisticas.png}" class="card-img-top" alt="Estadísticas">
 				<div class="card-body">
 					<h5 class="card-title">Estadísticas</h5>
 					<p class="card-text">Mostrar las estadísticas</p>
-					<a th:href="@{/admin/usuarios}">ir</a>
+					<a class="btn btn-outline-primary" th:href="@{/admin/usuarios}">ir</a>
 				</div> 
 			</div>
 			
 			<div class="card" style="width: 18rem;">
-				<img src="..." class="card-img-top" alt="...">
+				<img th:src="@{/img/config.png}" class="card-img-top" alt="Configuración">
 				<div class="card-body">
 					<h5 class="card-title">Configuración</h5>
 					<p class="card-text">Mostrar la configuración</p>
-					<a th:href="@{/admin/usuarios}">ir</a>
+					<a class="btn btn-outline-primary" th:href="@{/admin/usuarios}">ir</a>
 				</div> 
 			</div>
 		</div>
 		
 		
-		<form th:action="@{/logout}" method="post">
-			<button type="submit" class="btn btn-outline-danger">🔒 Cerrar sesión</button>
-		</form>
+		
 	</div>
 </div>
 </body>

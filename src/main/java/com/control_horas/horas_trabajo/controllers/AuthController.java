@@ -31,7 +31,7 @@ public class AuthController {
 	
 	@GetMapping("/registro")
 	public String mostrarFormularioRegistro(Model m) {
-		System.err.println("📥 Cargando formulario de registro");
+		
 		m.addAttribute("usuario", new Usuario());
 		
 		return "registro";
@@ -43,10 +43,7 @@ public class AuthController {
 	public String registrarUsuario(@ModelAttribute Usuario u,
 									@RequestParam String confirmarPassword,
 									Model model) {
-		System.err.println("➡️ Username: " + u.getUsername());
-		System.err.println("➡️ Mail: " + u.getMail());
-		System.err.println("➡️ Password: " + u.getPassword());
-		
+				
 		if (repo.existsByMail(u.getMail()) || repo.existsByUsername(u.getUsername())) {
 			model.addAttribute("usuario", u);
 			model.addAttribute("error", "El usuario ya existe!!!");

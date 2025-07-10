@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+	<meta charset="UTF-8">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Administración de Usuarios</title>
 </head>
 <body>
@@ -10,16 +12,15 @@
     <p style="color: green;" th:text="${mensaje}"></p>
 </div>
 
-<table border="1">
+<table class="table table-bordered table-stripped">
     <thead>
         <tr>
             <th>Nombre</th>
             <th>Rol</th>
             <th>Activo</th>
-            <th>Activar</th>
-            <th>Bloqueo</th>
-            <th>Desbloquear</th>
-            <th>Restablecer contraseña</th>
+            <th>Bloqueada</th>
+            <th>Acciones</th>
+            
         </tr>
     </thead>
     <tbody>
@@ -27,22 +28,16 @@
             <td th:text="${usuario.username}">Nombre</td>
             <td th:text="${usuario.rol}">Rol</td>
             <td th:text="${usuario.enabled ? '✅' : '❌'}"></td>
+            <td th:text="${usuario.accountNonLocked ? '❌' : '✅'}"></td>
             <td>
-            	<form th:action="@{'/admin/toggle-enabled/' + ${usuario.id}}" method="post">
-            		<button type="submit">
-            			<span th:text="${usuario.enabled ? 'Desactivar' : 'Activar'}"></span>
-            		</button>
-            	</form>
-           	</td>
-           	<td th:text="${usuario.accountNonLocked ? '🔓' : '🔒'}"></td>
-            <td>
-            	<form th:action="@{'/admin/toggle-lock/' + ${usuario.id}}" method="post">
-            		<button type="submit">
-            			<span th:text="${usuario.accountNonLocked ? 'Bloqueado' : 'Desbloquear'}"></span>
-            		</button>
-            	</form>
-            </td>
-            <td><a th:href="@{/admin/cambiar-password/{id}(id=${usuario.id})}">Establecer nueva contraseña</a></td>
+			  <form th:action="@{'/admin/toggle-enabled/' + ${usuario.id}}" method="post">
+			    <button type="submit" class="btn btn-sm btn-outline-success" th:text="${usuario.enabled ? 'Desactivar' : 'Activar'}"></button>
+			  </form>
+			  <form th:action="@{'/admin/toggle-lock/' + ${usuario.id}}" method="post" class="mt-1">
+			    <button type="submit" class="btn btn-sm btn-outline-danger" th:text="${usuario.accountNonLocked ? 'Bloquear' : 'Desbloquear'}"></button>
+			  </form>
+			  <a th:href="@{/admin/cambiar-password/{id}(id=${usuario.id})}" class="btn btn-sm btn-outline-secondary mt-1">Restablecer clave</a>
+			</td>
             
             <!--   -->
             
@@ -50,7 +45,12 @@
     </tbody>
 </table>
 <div>
-    <li><a th:href="@{/logout}">🚪 Cerrar sesión</a></li>
+    <form th:action="@{/logout}" method="post">
+		<button type="submit" class="btn btn-outline-danger">🔒 Cerrar sesión</button>
+	</form>
+	<form th:action="@{/admin}" method="get">
+		<button type="submit" class="btn btn-outline-danger">🔒 Panel</button>
+	</form>
 </div>
 </body>
 </html>

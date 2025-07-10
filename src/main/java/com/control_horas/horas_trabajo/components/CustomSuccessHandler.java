@@ -13,23 +13,32 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class RedireccionPorRolHandler implements AuthenticationSuccessHandler{
+public class CustomSuccessHandler implements AuthenticationSuccessHandler{
 
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
+	public void onAuthenticationSuccess(HttpServletRequest request, 
+										HttpServletResponse response,
+										Authentication authentication) throws IOException, ServletException {
 		
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		
-		String destino = "/panel";
+		String redirectionURL = "/login";
 		for (GrantedAuthority authority : authorities) {
-			if (authority.getAuthority().equals("ROLE_ADMIN")) {
-				destino = "/admin";
+			String role = authority.getAuthority();
+			
+			if(role.equals("ROLE_ADMIN")) {
+				System.err.println("Administrador");
+				redirectionURL = "/admin/panel";
+				break;
+			} 
+			else if(role.equals("ROLE_USER")){
+				System.err.println("Usuario");
+				redirectionURL = "/panel";
 				break;
 			}
 		}
 		
-		response.sendRedirect(destino);
+		response.sendRedirect(redirectionURL);
 		
 	}
 
