@@ -25,7 +25,7 @@
             <td th:text="${usuario.email}">Email</td>
             <td th:text="${usuario.rol}">Rol</td>
             <td>
-                <form th:action="@{/admin/reset-password}" method="post">
+                <form th:action="@{/admin/reset-password/{id}(id=${usuario.id})" method="post">
                     <input type="hidden" name="id" th:value="${usuario.id}" />
                     <button type="submit">🔄 Resetear contraseña</button>
                 </form>

@@ -24,6 +24,11 @@ public class AdminController {
 	public UsuarioDetailsService userService;
 	
 	@GetMapping("/admin")
+	public String adminPanel() {
+		return "admin";
+	}
+	
+	@GetMapping("/admin/usuarios")
 	public String verTodos(Model model){
 		List<Usuario> usuarios = userService.obtenerTodosUsuarios();
 		model.addAttribute("usuarios",usuarios);
