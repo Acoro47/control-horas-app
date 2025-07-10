@@ -67,4 +67,12 @@ public class AdminController {
 		redirect.addFlashAttribute("mensaje", "Estado del usuario actualizado con éxito");
 		return "redirect:/admin/usuarios";
 	}
+	
+	@PostMapping("/toggle-lock/{id}")
+	public String alternarBloqueoUsuario(@PathVariable Long id, RedirectAttributes redirect) {
+		Usuario u = userService.obtenerUsuario(id);
+		u.setAccountNonLocked(!u.isAccountNonLocked());
+		userService.actualizarUsuario(u);
+		return "redirect:/admin/usuarios";
+	}
 }
