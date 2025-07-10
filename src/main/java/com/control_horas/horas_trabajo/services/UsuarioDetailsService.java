@@ -29,12 +29,7 @@ public class UsuarioDetailsService implements UserDetailsService {
 		this.repo = uRepo;
 	}
 	
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Usuario user = repo.findByUsername(username)
