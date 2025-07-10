@@ -58,4 +58,13 @@ public class AdminController {
 		return "redirect:/admin/usuarios";
 		
 	}
+	
+	@PostMapping("/toggle-enabled/{id}")
+	public String alternarUsuarioActivo(@PathVariable Long id, RedirectAttributes redirect) {
+		Usuario u = userService.obtenerUsuario(id);
+		u.setEnabled(!u.isEnabled());
+		userService.actualizarUsuario(u);
+		redirect.addFlashAttribute("mensaje", "Estado del usuario actualizado con éxito");
+		return "redirect:/admin/usuarios";
+	}
 }

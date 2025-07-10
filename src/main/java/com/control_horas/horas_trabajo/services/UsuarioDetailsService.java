@@ -46,7 +46,11 @@ public class UsuarioDetailsService implements UserDetailsService {
 		Usuario user = repo.findById(id).orElseThrow();
 		String hash = passwordEncoder.encode(newPass);
 		user.setPassword(hash);
-		repo.save(user);
+		actualizarUsuario(user);
+	}
+	
+	public void actualizarUsuario(Usuario u) {
+		repo.save(u);
 	}
 	
 	

@@ -22,6 +22,14 @@
         <tr th:each="usuario : ${usuarios}">
             <td th:text="${usuario.username}">Nombre</td>
             <td th:text="${usuario.rol}">Rol</td>
+            <td th:text="${usuario.enabled ? '✅' : '❌'"></td>
+            <td>
+            	<form th:action="@{'/admin/toogle-enabled/' + ${usuario.id}" method="post">
+            		<button type="submit">
+            			<span th:text="${usuario.enabled ? 'Desactivar' : 'Activar'"></span>
+            		</button>
+            	</form>
+            </td>
             <td>
                <a th:href="@{/admin/cambiar-password/{id}(id=${usuario.id})}">Establecer nueva contraseña</a>
             </td>

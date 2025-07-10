@@ -12,5 +12,9 @@
     <li><a href="#">🔧 Configuración</a></li>
     <li><a th:href="@{/logout}">🚪 Cerrar sesión</a></li>
 </ul>
+
+<form th:action="@{/logout}" method="post">
+			  		<button type="submit" class="btn btn-outline-danger">🔒 Cerrar sesión</button>
+				</form>
 </body>
 </html>
