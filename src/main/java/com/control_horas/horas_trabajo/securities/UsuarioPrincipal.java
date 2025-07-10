@@ -37,22 +37,22 @@ public class UsuarioPrincipal implements UserDetails{
 	
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		return usuario.isAccountNonExpired();
 	}
 	
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return true;
+		return usuario.isCredentialsNonExpired();
 	}
 	
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return usuario.isEnabled();
 	}
 	
 	@Override
 	public boolean isAccountNonLocked() {
-	    return true;
+	    return usuario.isAccountNonLocked();
 	}
 
 }

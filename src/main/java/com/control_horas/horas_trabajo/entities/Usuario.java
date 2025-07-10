@@ -24,6 +24,17 @@ public class Usuario {
 	@Enumerated(EnumType.STRING)
 	private Role rol = Role.USER;
 	
+	@Column(nullable = false)
+	private boolean accountNonExpired = true;
+	
+	@Column(nullable = false)
+	private boolean accountNonLocked = true;
+
+	@Column(nullable = false)
+	private boolean credentialsNonExpired = true;
+
+	@Column(nullable = false)
+	private boolean enabled = true;
 	
 	public Long getId() {
 		return id;
@@ -56,12 +67,38 @@ public class Usuario {
 	public void setRol(Role rol) {
 		this.rol = rol;
 	}
-	
-	
-	
-	
-	
-	
-	
 
+	public boolean isAccountNonExpired() {
+		return accountNonExpired;
+	}
+
+	public void setAccountNonExpired(boolean accountNonExpired) {
+		this.accountNonExpired = accountNonExpired;
+	}
+
+	public boolean isAccountNonLocked() {
+		return accountNonLocked;
+	}
+
+	public void setAccountNonLocked(boolean accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
+	}
+
+	public boolean isCredentialsNonExpired() {
+		return credentialsNonExpired;
+	}
+
+	public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+		this.credentialsNonExpired = credentialsNonExpired;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
+	
 }
