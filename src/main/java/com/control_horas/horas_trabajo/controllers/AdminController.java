@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.control_horas.horas_trabajo.entities.Usuario;
@@ -42,10 +43,19 @@ public class AdminController {
 		return "admin/usuarios";
 	}
 
-	@PostMapping("/reset-password/{id}")
-	public String resetearPassword(@PathVariable Long id, RedirectAttributes redirect){
-		userService.resetearPassword(id);
-		redirect.addFlashAttribute("mensaje", "Contraseña reiniciada");
+	@GetMapping("/cambiar-password/{id}")
+	public String resetearPassword(@PathVariable Long id, Model model){
+		Usuario user = userService.obtenerUsuario(id);
+		model.addAttribute("usuario",user);
+		
+		return "admin/cambiar-password";
+	}
+	
+	@PostMapping("/cambiar-password/{id}")
+	public String procesarCambioPassword(@PathVariable Long id, @RequestParam String nuevaPassword, RedirectAttributes redirect) {
+		userService.actualizarPassword(id, nuevaPassword);
+		redirect.addFlashAttribute("mensaje", "La contraseña fue actualizada con éxito");
 		return "redirect:/admin/usuarios";
+		
 	}
 }

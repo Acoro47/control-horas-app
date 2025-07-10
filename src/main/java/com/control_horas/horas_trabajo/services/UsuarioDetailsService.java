@@ -2,6 +2,7 @@ package com.control_horas.horas_trabajo.services;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,11 +39,14 @@ public class UsuarioDetailsService implements UserDetailsService {
 		return repo.findAll();
 	}
 	
-	public void resetearPassword(Long id) {
+	public Usuario obtenerUsuario(Long id) {
+		return repo.findUserById(id);
+	}
+	
+	public void actualizarPassword(Long id, String newPass) {
 		Usuario user = repo.findById(id).orElseThrow();
-		String claveTemporal = generarClaveTemporal();
-		String claveHash = new BCryptPasswordEncoder().encode(claveTemporal);
-		user.setPassword(claveHash);
+		String hash = new BCryptPasswordEncoder().encode(newPass);
+		user.setPassword(hash);
 		repo.save(user);
 	}
 	
