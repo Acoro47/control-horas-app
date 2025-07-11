@@ -9,7 +9,10 @@
     <div th:if="${detalle}">
     	<h4>🛠️ Detalle técnico:</h4>
     	<pre th:text="${detalle}"></pre>
-	</div>    
-    <a th:href="@{/admin}">Volver al inicio</a>
+	</div>
+	<form th:action="@{/admin}" method="get">
+		<button type="submit" class="btn btn-primary" th:href="@{/admin}">Volver al inicio</button>
+	</form>   
+    
 </body>
 </html>

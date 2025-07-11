@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.control_horas.horas_trabajo.entities.Usuario;
@@ -49,6 +48,7 @@ public class UsuarioDetailsService implements UserDetailsService {
 	public boolean existePorNombreOEmail(String username, String email) {
 		return repo.existsByUsername(username) || repo.existsByMail(email);
 	}
+	
 	
 	
 

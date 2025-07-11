@@ -1,6 +1,7 @@
 package com.control_horas.horas_trabajo.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
-import com.control_horas.horas_trabajo.services.UsuarioDetailsService;
 
 @Controller
 @RequestMapping("/admin")
@@ -47,17 +47,59 @@ public class AdminController {
 		
 		return "admin/usuarios";
 	}
+	
+	@GetMapping("/estadisticas")
+	public String verEstadisticas(Model model) {
+		List<Usuario> usuarios = userRepo.findAll();
+		long activos = usuarios.stream()
+				.filter(Usuario ::isEnabled).count();
+		long bloqueados = usuarios.stream()
+				.filter(u -> !u.isAccountNonLocked()).count();
+		long desactivados = usuarios.stream()
+				.filter(u -> !u.isEnabled()).count();
+		long admins = usuarios.stream()
+				.filter(u -> u.getRol().toString().equals("ADMIN")).count();
+		long users = usuarios.stream()
+				.filter(u -> u.getRol().toString().equals("USER")).count();
+		
+		Map<String, Long> stats = Map.of(
+				"activos", activos,
+				"desactivados",desactivados,
+				"bloqueados", bloqueados,
+				"admins", admins,
+				"users", users
+				);
+		
+		model.addAttribute("stats",stats);
+		return "admin/estadisticas";
+				
+	}
+	
+	@GetMapping("cambiar-password/{id}")
+	public String mostrarFormularioPassword(@PathVariable Long id, Model model) {
+		Usuario u = userRepo.findById(id).orElseThrow();
+		model.addAttribute("usuario",u);
+		return "admin/cambiar-password";
+	}
 
 	
-	@PostMapping("/cambiar-password/{id}")
-	public String procesarCambioPassword(@PathVariable Long id, @RequestParam String nuevaPassword) {
-		Usuario u = userRepo.findUserById(id);
+	@PostMapping("cambiar-password/{id}")
+	public String procesarCambioPassword(@PathVariable Long id,
+										@RequestParam String nuevaPassword,
+										@RequestParam String confirmarPassword,
+										RedirectAttributes redirect) {
+		
+		if(!nuevaPassword.equals(confirmarPassword)) {
+			redirect.addFlashAttribute("mensaje", "❌ Las contraseñas no coinciden");
+			return "redirect:/admin/cambiar-password/" + id;
+		}
+		
+		Usuario u = userRepo.findById(id).orElseThrow();
 		u.setPassword(encoder.encode(nuevaPassword));
 		System.err.println("➡️ Intentando guardar usuario...");
-		Usuario saved = userRepo.save(u);
-		System.err.println("✅ Usuario guardado con ID: " + saved.getId());
-		
-		return "redirect:/admin";
+		userRepo.save(u);		
+		redirect.addFlashAttribute("mensaje", "✅ Contraseña cambiada correctamente.");
+	    return "redirect:/admin/usuarios";
 	}
 	
 	
@@ -83,4 +125,6 @@ public class AdminController {
 		
 		return "redirect:/admin/usuarios";
 	}
+	
+	
 }

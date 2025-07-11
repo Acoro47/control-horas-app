@@ -6,8 +6,8 @@
     <title>Panel de Administración</title>
 </head>
 <body>
-<div class="d-flex justify-content-between">
-	<p>Bienvenido <span th:text="${#authentication.name}"></span>!</p>
+<div class="d-flex justify-content-between m-3">
+	<p class="text-primary fs-2">Bienvenido <span th:text="${#authentication.name}"></span>!</p>
 	<h1 class="text-center">⚙️ Panel de Administración</h1>
 	<form th:action="@{/logout}" method="post">
 		<button type="submit" class="btn btn-outline-danger">🔒 Cerrar sesión</button>
@@ -17,30 +17,40 @@
 <div class="container">
 	<div class="d-flex justify-content-center">
 		<div class="d-flex flex-wrap gap-4 justify-content-center p-2 m-2">
-			<div class="card row" style="width: 18rem;">
+			<div class="card row text-center border-primary" style="width: 18rem;">
 				<img th:src="@{/img/users.png}" class="card-img-top" alt="Usuarios">
 				<div class="card-body">
-					<h5 class="card-title">Usuarios</h5>
-					<p class="card-text">Ver todos los usuarios</p>
-					<a class="btn btn-outline-primary" th:href="@{/admin/usuarios}">ir</a>
+					<h5 class="card-title text-primary">Usuarios</h5>
+					<p class="card-text">En esta sección podemos ver todos los usuarios y gestionar sus cuentas</p>
+					<div class="d-grid gap-2 col-6 mx-auto">
+						<a class="btn btn-primary" 
+							th:href="@{/admin/usuarios}">Ver usuarios</a>
+					</div>
+					
 				</div> 
 			</div>
 			
-			<div class="card" style="width: 18rem;">
+			<div class="card text-center border-primary" style="width: 18rem;">
 				<img th:src="@{/img/estadisticas.png}" class="card-img-top" alt="Estadísticas">
 				<div class="card-body">
-					<h5 class="card-title">Estadísticas</h5>
-					<p class="card-text">Mostrar las estadísticas</p>
-					<a class="btn btn-outline-primary" th:href="@{/admin/usuarios}">ir</a>
+					<h5 class="card-title text-primary">Estadísticas</h5>
+					<p class="card-text">En esta sección vamos a tratar de mostrar las estadísticas de los usuarios/as para llevar un control de situación de las cuentas</p>
+					<div class="d-grid gap-2 col-6 mx-auto">
+						<a class="btn btn-primary" 
+							th:href="@{/admin/estadisticas}">Ver estadísticas</a>
+						</div>
 				</div> 
 			</div>
 			
-			<div class="card" style="width: 18rem;">
+			<div class="card text-center border-primary" style="width: 18rem;">
 				<img th:src="@{/img/config.png}" class="card-img-top" alt="Configuración">
 				<div class="card-body">
-					<h5 class="card-title">Configuración</h5>
-					<p class="card-text">Mostrar la configuración</p>
-					<a class="btn btn-outline-primary" th:href="@{/admin/usuarios}">ir</a>
+					<h5 class="card-title text-primary">Configuración</h5>
+					<p class="card-text">En esta sección podemos configurar los tipos de cuentas que existen dentro de nuestra plataforma</p>
+					<div class="d-grid gap-2 col-6 mx-auto">
+						<a class="btn btn-primary" 
+							th:href="@{/admin/usuarios}">Ver configuración</a>
+					</div>
 				</div> 
 			</div>
 		</div>

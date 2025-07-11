@@ -6,51 +6,67 @@
     <title>Administración de Usuarios</title>
 </head>
 <body>
-<h2>👥 Usuarios del sistema</h2>
-
-<div th:if="${mensaje}">
-    <p style="color: green;" th:text="${mensaje}"></p>
+<div class="d-flex justify-content-between">
+	<div class="m-3">
+		<form th:action="@{/admin}" method="get">
+			<button type="submit" class="btn btn-secondary">🔒 Panel de administración</button>
+		</form>
+	</div>
+	<h2 class="text-center p-3 fw-bold text-primary">👥 Usuarios del sistema</h2>
+	<div class="m-3">
+    	<form th:action="@{/logout}" method="post">
+			<button type="submit" class="btn btn-danger">🔒 Cerrar sesión</button>
+		</form>
+	</div>
 </div>
 
-<table class="table table-bordered table-stripped">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Rol</th>
-            <th>Activo</th>
-            <th>Bloqueada</th>
-            <th>Acciones</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="usuario : ${usuarios}">
-            <td th:text="${usuario.username}">Nombre</td>
-            <td th:text="${usuario.rol}">Rol</td>
-            <td th:text="${usuario.enabled ? '✅' : '❌'}"></td>
-            <td th:text="${usuario.accountNonLocked ? '❌' : '✅'}"></td>
-            <td>
-			  <form th:action="@{'/admin/toggle-enabled/' + ${usuario.id}}" method="post">
-			    <button type="submit" class="btn btn-sm btn-outline-success" th:text="${usuario.enabled ? 'Desactivar' : 'Activar'}"></button>
-			  </form>
-			  <form th:action="@{'/admin/toggle-lock/' + ${usuario.id}}" method="post" class="mt-1">
-			    <button type="submit" class="btn btn-sm btn-outline-danger" th:text="${usuario.accountNonLocked ? 'Bloquear' : 'Desbloquear'}"></button>
-			  </form>
-			  <a th:href="@{/admin/cambiar-password/{id}(id=${usuario.id})}" class="btn btn-sm btn-outline-secondary mt-1">Restablecer clave</a>
-			</td>
-            
-            <!--   -->
-            
-        </tr>
-    </tbody>
-</table>
-<div>
-    <form th:action="@{/logout}" method="post">
-		<button type="submit" class="btn btn-outline-danger">🔒 Cerrar sesión</button>
-	</form>
-	<form th:action="@{/admin}" method="get">
-		<button type="submit" class="btn btn-outline-danger">🔒 Panel</button>
-	</form>
+
+<div th:if="${mensaje}" 
+		class="alert alert-info text-center mx-5"
+		th:text="${mensaje}">
 </div>
+
+<div class="table-responsive-sm">
+	<table class="table table-bordered table-striped border-secondary p-3">
+	    <thead class="table-dark text-center">
+	        <tr>
+	            <th>Nombre</th>
+	            <th>Rol</th>
+	            <th>Cuenta activada</th>
+	            <th>Cuenta bloqueada</th>
+	            <th>Acciones</th>
+	            
+	        </tr>
+	    </thead>
+	    <tbody class=" text-center">
+	        <tr th:each="usuario : ${usuarios}">
+	            <td th:text="${usuario.username}">Nombre</td>
+	            <td th:text="${usuario.rol}">Rol</td>
+	            <td th:text="${usuario.enabled ? 'Activa' : 'Desactivada'}"></td>
+	            <td th:text="${usuario.accountNonLocked ? 'Desbloqueada' : 'Bloqueada'}"></td>
+	            <td>
+	            	<div>
+	            		<form th:action="@{'/admin/toggle-enabled/' + ${usuario.id}}" method="post">
+				    		<button type="submit" 
+				    				th:class="${usuario.enabled} ? 'btn btn-sm btn-warning' : 'btn btn-sm btn-success'"
+			    				 	th:text="${usuario.enabled ? 'Desactivar' : 'Activar'}"></button>
+				  		</form>
+				  		<form th:action="@{'/admin/toggle-lock/' + ${usuario.id}}" method="post" class="mt-1">
+				    		<button type="submit"
+				    		th:class="${usuario.accountNonLocked} ? 'btn btn-sm btn-danger' : 'btn btn-sm btn-info'"
+				    		th:text="${usuario.accountNonLocked ? 'Bloquear' : 'Desbloquear'}"></button>
+				  		</form>
+				  		
+		  				<a th:href="@{/admin/cambiar-password/{id}(id=${usuario.id})}" class="btn btn-sm btn-secondary mt-1">Restablecer clave</a>
+		  				
+	            	</div>
+				</td>
+	        </tr>
+	    </tbody>
+	</table>
+</div>
+
+
+
 </body>
 </html>

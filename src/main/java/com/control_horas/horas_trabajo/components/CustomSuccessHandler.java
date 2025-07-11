@@ -28,12 +28,14 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler{
 			
 			if(role.equals("ROLE_ADMIN")) {
 				System.err.println("Administrador");
-				redirectionURL = "/admin/panel";
+				redirectionURL = "/admin";
+				System.err.println("Redireccionando a " + redirectionURL);
 				break;
 			} 
 			else if(role.equals("ROLE_USER")){
 				System.err.println("Usuario");
 				redirectionURL = "/panel";
+				System.err.println("Redireccionando a " + redirectionURL);
 				break;
 			}
 		}
