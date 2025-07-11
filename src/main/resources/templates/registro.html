@@ -9,29 +9,25 @@
 <body class="bg-light d-flex align-items-center justify-content-center vh-100">
 
   <div class="card shadow p-4" style="min-width: 400px;">
-    <h3 class="text-center mb-4">📝 Crear cuenta</h3>
+    <h3 class="text-center mb-4">📝 Activación de  cuenta</h3>
 
     <div th:if="${error}" class="alert alert-danger text-center py-2" th:text="${error}">Error</div>
 
-    <form th:action="@{/guardarUsuario}" method="post" th:object="${usuario}">
+    <form th:action="@{/guardarUsuario}" method="post">
       <div class="mb-3">
-        <label class="form-label">Usuario</label>
-        <input type="text" th:field="*{username}" class="form-control" placeholder="Tu nombre de usuario" required />
+        <input type="text" name="username" class="form-control" th:value="${usuarioAutorizado.username}" readonly />
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input type="email" th:field="*{mail}" class="form-control" placeholder="Email" required />
+        <input type="email" name="email" class="form-control" th:value="${usuarioAutorizado.email}" readonly />
       </div>
       
       <div class="mb-3">
-        <label class="form-label">Contraseña</label>
-        <input type="password" th:field="*{password}" class="form-control" placeholder="Contraseña" required />
+        <input type="password" name="pass" class="form-control" placeholder="Contraseña" autocomplete="new-password" required />
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Repite la contraseña</label>
-        <input type="password" name="confirmarPassword" class="form-control" placeholder="Confirmar contraseña" required />
+        <input type="password" name="confirmPass" class="form-control" placeholder="Confirmar contraseña" autocomplete="new-password" required />
       </div>
 
       <div class="d-grid">

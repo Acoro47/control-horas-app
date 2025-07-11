@@ -35,9 +35,7 @@ public class SolicitudAcceso {
 		this.email = email;
 		this.username = username;
 		this.estado = estado;
-		this.token = token;
 		this.fechaSolicitud = fechaSolicitud;
-		this.fechaAprobacion = fechaAprobacion;
 	}
 
 	public Long getId() {

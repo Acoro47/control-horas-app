@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
 
@@ -127,6 +126,7 @@ public class AdminController {
 	}
 	
 	
-		
+	
+	
 	
 }

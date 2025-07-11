@@ -12,6 +12,7 @@ public interface SolicitudAccesoRepository  extends JpaRepository<SolicitudAcces
 	
 	Optional<SolicitudAcceso> findByToken(String token);
 	List<SolicitudAcceso> findByEstado(EstadoSolicitud estado);
+	Optional<SolicitudAcceso> findByEmail(String email);
 	boolean existsByEmail(String email);
 
 }

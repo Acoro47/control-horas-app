@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +17,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.control_horas.horas_trabajo.entities.EstadoSolicitud;
+import com.control_horas.horas_trabajo.entities.Role;
 import com.control_horas.horas_trabajo.entities.SolicitudAcceso;
+import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.repositories.SolicitudAccesoRepository;
+import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
+import com.control_horas.horas_trabajo.services.EmailService;
 
 @Controller
 public class SolicitudController {
 	
 	@Autowired
 	private SolicitudAccesoRepository solRepo;
+	
+	@Autowired
+	private UsuarioRepository userRepo;
+	
+	@Autowired
+	private PasswordEncoder encoder;
+	
+	@Autowired
+	private EmailService mailService;
 	
 	@GetMapping("/solicitar")
 	public String mostrarFormulario(Model model) {
@@ -62,9 +76,12 @@ public class SolicitudController {
 		solicitud.setEstado(EstadoSolicitud.APROBADA);
 		solicitud.setToken(UUID.randomUUID().toString());
 		solicitud.setFechaAprobacion(LocalDateTime.now());
-		
 		solRepo.save(solicitud);
-		redirect.addFlashAttribute("mensaje", "Solicitud aprobada. Token generado");
+		
+		System.err.println("Enviando mail " + solicitud.toString());
+		
+		mailService.enviarAprobacion(solicitud);
+		redirect.addFlashAttribute("mensaje", "Solicitud aprobada.");
 		
 		return "redirect:/admin/solicitudes";		
 	}
@@ -73,8 +90,9 @@ public class SolicitudController {
 	public String rechazar(@PathVariable Long id, RedirectAttributes redirect) {
 		SolicitudAcceso solicitud = solRepo.findById(id).orElseThrow();
 		solicitud.setEstado(EstadoSolicitud.RECHAZADA);
-		
 		solRepo.save(solicitud);
+		
+		mailService.enviarRechazo(solicitud);
 		redirect.addFlashAttribute("mensaje", "Solicitud rechazada");
 		
 		return "redirect:/admin/solicitudes";
@@ -90,9 +108,56 @@ public class SolicitudController {
 		}
 		
 		model.addAttribute("usuarioAutorizado", solicitud.get());
-		return "solicitud/registro";
+		return "/registro";
 	}
 	
+	
+	@PostMapping("/guardarUsuario")
+	public String guardarUsuario(@RequestParam String username,
+								@RequestParam String email,
+								@RequestParam String pass,
+								@RequestParam String confirmPass,
+								Model model,
+								RedirectAttributes redirect) {
+		
+		Optional<SolicitudAcceso> solicitudOpt = solRepo.findByEmail(email);
+		
+		if(solicitudOpt.isEmpty() || solicitudOpt.get().getEstado() != EstadoSolicitud.APROBADA) {
+			redirect.addFlashAttribute("mensaje", "Solicitud inválida. Vuelve a intentarlo");
+			return "redirect:/solicitar";
+		}
+		
+		SolicitudAcceso solicitud = solicitudOpt.get();
+		
+		if (!pass.equals(confirmPass)) {
+			model.addAttribute("usuarioAutorizado", solicitud);
+			model.addAttribute("error", "Las contraseñas no coinciden");
+			System.out.println("✅ Método guardarUsuario ejecutado con: " + email);
+			return "registro";
+		}
+		
+		if (userRepo.existsByMail(email)) {
+			model.addAttribute("usuarioAutorizado", solicitud);
+			model.addAttribute("error", "Este correo ya está registrado");
+			return "redirect:/registro";
+		}
+		
+		Usuario user = new Usuario();
+		user.setUsername(username);
+		user.setMail(email);
+		user.setPassword(encoder.encode(pass));
+		user.setRol(Role.USER);
+		userRepo.save(user);
+		
+		
+		solicitud.setToken(null);
+		solicitud.setEstado(EstadoSolicitud.USADA);
+		solRepo.save(solicitud);
+		
+		redirect.addFlashAttribute("mensaje", "Cuenta creada correctamente.");
+		
+		return "redirect:/login";	
+	}
 	
 	
 

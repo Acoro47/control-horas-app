@@ -78,18 +78,7 @@ public class InformeMensualPdfController {
 					return new ResumenDiaDTO(fecha,entrada1, salida1, entrada2, salida2, totalMin);
 				}).sorted((a,b) -> a.getFecha().compareTo(b.getFecha())).toList();
 		
-		long hmesMin = resumen.stream()
-				.filter(d -> !isFinDeSemanaOFestivo(d.getFecha()))
-				.mapToLong(ResumenDiaDTO::getMinutosTotales)
-				.sum();
 		
-		long hmfsMin = resumen.stream()
-				.filter(d -> isFinDeSemanaOFestivo(d.getFecha()))
-				.mapToLong(ResumenDiaDTO::getMinutosTotales)
-				.sum();
-		
-		
-
 		double horasContrato = 4.0;
 		double tarifa = 9.0;
 		long contratoDiarioMin = (long)(horasContrato * 60);

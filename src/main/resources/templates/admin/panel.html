@@ -14,49 +14,50 @@
 	</form>
 	
 </div>
-<div class="container">
-	<div class="d-flex justify-content-center">
-		<div class="d-flex flex-wrap gap-4 justify-content-center p-2 m-2">
-			<div class="card row text-center border-primary" style="width: 18rem;">
-				<img th:src="@{/img/users.png}" class="card-img-top" alt="Usuarios">
-				<div class="card-body">
-					<h5 class="card-title text-primary">Usuarios</h5>
-					<p class="card-text">En esta sección podemos ver todos los usuarios y gestionar sus cuentas</p>
-					<div class="d-grid gap-2 col-6 mx-auto">
-						<a class="btn btn-primary" 
-							th:href="@{/admin/usuarios}">Ver usuarios</a>
-					</div>
-					
-				</div> 
-			</div>
-			
-			<div class="card text-center border-primary" style="width: 18rem;">
-				<img th:src="@{/img/estadisticas.png}" class="card-img-top" alt="Estadísticas">
-				<div class="card-body">
-					<h5 class="card-title text-primary">Estadísticas</h5>
-					<p class="card-text">En esta sección vamos a tratar de mostrar las estadísticas de los usuarios/as para llevar un control de situación de las cuentas</p>
-					<div class="d-grid gap-2 col-6 mx-auto">
-						<a class="btn btn-primary" 
-							th:href="@{/admin/estadisticas}">Ver estadísticas</a>
-						</div>
-				</div> 
-			</div>
-			
-			<div class="card text-center border-primary" style="width: 18rem;">
-				<img th:src="@{/img/config.png}" class="card-img-top" alt="Configuración">
-				<div class="card-body">
-					<h5 class="card-title text-primary">Configuración</h5>
-					<p class="card-text">En esta sección podemos configurar los tipos de cuentas que existen dentro de nuestra plataforma</p>
-					<div class="d-grid gap-2 col-6 mx-auto">
-						<a class="btn btn-primary" 
-							th:href="@{/admin/usuarios}">Ver configuración</a>
-					</div>
-				</div> 
-			</div>
+<div class="container-flux px-4">
+	<div class="d-flex justify-content-center flex-wrap gap-4 py-4">
+	
+		<!-- Cards -->
+		<div class="card text-center shadow-sm border-primary" style="width: 15rem;">
+			<img th:src="@{/img/users.png}" class="card-img-top mt-2 img-fluid" alt="Usuarios"
+						style="height: 80px; object-fit: contain;">
+			<div class="card-body p-3">
+				<h5 class="card-title text-primary">Usuarios</h5>
+				<p class="card-text small">En esta sección podemos ver todos los usuarios y gestionar sus cuentas</p>
+				<div class="d-grid gap-2 col-6 mx-auto">
+					<a class="btn btn-primary btn-sm" 
+						th:href="@{/admin/usuarios}">Ver usuarios</a>
+				</div>
+				
+			</div> 
 		</div>
 		
-		
-		
+		<div class="card text-center shadow-sm border-primary" style="width: 15rem;">
+        <img th:src="@{/img/estadisticas.png}" alt="Estadísticas" class="card-img-top mt-2 img-fluid" style="height:80px; object-fit:contain;">
+        <div class="card-body p-3">
+          <h5 class="card-title text-primary">Estadísticas</h5>
+          <p class="card-text small">Control general de uso y métricas.</p>
+          <a th:href="@{/admin/estadisticas}" class="btn btn-primary btn-sm">Ver estadísticas</a>
+        </div>
+      </div>
+
+      <div class="card text-center shadow-sm border-primary" style="width: 15rem;">
+        <img th:src="@{/img/config.png}" alt="Configuración" class="card-img-top mt-2 img-fluid" style="height:80px; object-fit:contain;">
+        <div class="card-body p-3">
+          <h5 class="card-title text-primary">Configuración</h5>
+          <p class="card-text small">Edita tipos de cuenta y roles.</p>
+          <a th:href="@{/admin/usuarios}" class="btn btn-primary btn-sm">Ver configuración</a>
+        </div>
+      </div>
+
+      <div class="card text-center shadow-sm border-primary" style="width: 15rem;">
+        <img th:src="@{/img/solicitud.png}" alt="Solicitudes" class="card-img-top mt-2 img-fluid" style="height:80px; object-fit:contain;">
+        <div class="card-body p-3">
+          <h5 class="card-title text-primary">Solicitudes</h5>
+          <p class="card-text small">Aprueba o rechaza accesos nuevos.</p>
+          <a th:href="@{/admin/solicitudes}" class="btn btn-primary btn-sm">Ver solicitudes</a>
+        </div>
+      </div>		
 	</div>
 </div>
 </body>
