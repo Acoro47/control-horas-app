@@ -22,7 +22,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler{
 		
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 		
-		String redirectionURL = "/login";
+		String redirectionURL = "/";
 		for (GrantedAuthority authority : authorities) {
 			String role = authority.getAuthority();
 			

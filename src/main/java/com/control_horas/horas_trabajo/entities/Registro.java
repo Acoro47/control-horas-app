@@ -11,6 +11,19 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Registro {
 	
+	
+	
+	public Registro() {
+		
+	}
+
+	public Registro(Usuario usuario,LocalDateTime horaEntrada, LocalDateTime horaSalida) {
+		this();
+		this.horaEntrada = horaEntrada;
+		this.horaSalida = horaSalida;
+		this.usuario = usuario;
+	}
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;

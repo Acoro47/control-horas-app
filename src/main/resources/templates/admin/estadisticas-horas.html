@@ -24,7 +24,19 @@
 <div class="container mt-4">
   <!-- 🧍 Usuario -->
   <h3 class="text-primary">Estadísticas de <span th:text="${usuario.username.toUpperCase()}">Usuario</span></h3>
-  <p>Periodo: <span th:text="${desde}">desde</span> ➔ <span th:text="${hasta}">hasta</span></p>
+  <form th:action="@{/admin/estadisticas-horas/{id}(id=${usuario.id})}" method="get" class="row g-2 align-items-end mb-4">
+  <div class="col">
+    <label class="form-label">Desde:</label>
+    <input type="date" name="desde" class="form-control" required>
+  </div>
+  <div class="col">
+    <label class="form-label">Hasta:</label>
+    <input type="date" name="hasta" class="form-control" required>
+  </div>
+  <div class="col">
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+  </div>
+</form>
 
   <!-- ⏰ Tiempo por día -->
   <h5 class="mt-4">⏰ Tiempo por día</h5>
@@ -54,7 +66,7 @@
     </thead>
     <tbody>
       <tr th:each="entry : ${horasMes}">
-        <td th:text="${entry.key}">Mes</td>
+        <td th:text="${#strings.capitalize(#temporals.format(entry.key, 'MMMM yyyy'))}">Mes</td>
         <td th:text="${entry.value}">Horas</td>
       </tr>
     </tbody>
@@ -77,7 +89,6 @@
     </tbody>
   </table>
 </div>
-
 
 </body>
 </html>

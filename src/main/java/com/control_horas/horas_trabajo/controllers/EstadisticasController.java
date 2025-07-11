@@ -2,16 +2,17 @@ package com.control_horas.horas_trabajo.controllers;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
@@ -31,10 +32,15 @@ public class EstadisticasController {
 	}
 	
 	@GetMapping("/estadisticas-horas/{id}")
-	public String verEstadisticas(@PathVariable Long id, Model model) {
+	public String verEstadisticas(@PathVariable Long id,
+									@RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+									@RequestParam(required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate hasta,
+									Model model) {
+		
 		Usuario u = userRepo.findById(id).orElseThrow();
-		LocalDate desde = LocalDate.now().minusMonths(6);
-		LocalDate hasta = LocalDate.now();
+		
+		if (desde == null) desde = LocalDate.now();
+		if (hasta == null) hasta = LocalDate.now();
 		
 		Map<LocalDate, Long> dia = regService.calcularTiempoDia(id, desde, hasta);
 		Map<LocalDate, String> horasDia = dia.entrySet().stream()
@@ -43,14 +49,17 @@ public class EstadisticasController {
 						e -> regService.formatoHoras(e.getValue())
 						));
 		
-		Map<YearMonth, Long> mes = regService.calcularTiempoMes(id, desde, hasta);
+		LocalDate inicioAnio = LocalDate.of(LocalDate.now().getYear(), 1, 1);
+		LocalDate hoy = LocalDate.now();
+		
+		Map<YearMonth, Long> mes = regService.calcularTiempoMes(id, inicioAnio, hoy);
 		Map<YearMonth, String> horasMes = mes.entrySet().stream()
 				.collect(Collectors.toMap(
 						Map.Entry::getKey,
 						e -> regService.formatoHoras(e.getValue())
 						));
 		
-		Map<Integer, Long> year = regService.calcularTiempoAnio(id, desde, hasta);
+		Map<Integer, Long> year = regService.calcularTiempoAnio(id, inicioAnio, hoy);
 		Map<Integer, String> horasYear = year.entrySet().stream()
 				.collect(Collectors.toMap(
 						Map.Entry::getKey,

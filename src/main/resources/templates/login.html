@@ -26,12 +26,12 @@
 		      
 			</form>
 			<div class="text-center">
-		    	<a th:href="@{/registro}">¿No tienes cuenta? Regístrate</a>
+		    	<p>¿No tienes cuenta? <a th:href="@{/solicitar}">Solicita acceso</a></p>
 		    </div>
 		    <div th:if="${loginError}" class="alert alert-danger">
 		    	Usuario o contraseña incorrectos. Por favor, intenta de nuevo.
 			</div>
-		    
+		    <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
 		</div>
 	</div>
 	
