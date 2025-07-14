@@ -41,7 +41,7 @@ public class SolicitudController {
 	
 	@GetMapping("/solicitar")
 	public String mostrarFormulario(Model model) {
-		
+		System.out.println("Cargando formulario de solicitud");
 		model.addAttribute("solicitud", new SolicitudAcceso());	
 		
 		return "/solicitudes/formulario";
