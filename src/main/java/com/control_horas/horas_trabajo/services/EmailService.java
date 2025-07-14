@@ -14,6 +14,9 @@ public class EmailService {
 	private JavaMailSender sender;
 	
 	public void enviarAprobacion(SolicitudAcceso solicitud) {
+		
+		System.err.println("Función para enviar mail " + solicitud.toString());
+		
 		SimpleMailMessage mensaje = new SimpleMailMessage();
 		mensaje.setTo(solicitud.getEmail());
 		mensaje.setSubject("Solicitud aprobada - Activación de cuenta");
