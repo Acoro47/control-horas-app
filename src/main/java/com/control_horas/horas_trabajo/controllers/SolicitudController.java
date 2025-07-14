@@ -44,7 +44,7 @@ public class SolicitudController {
 		System.out.println("Cargando formulario de solicitud");
 		model.addAttribute("solicitud", new SolicitudAcceso());	
 		
-		return "/solicitudes/formulario";
+		return "solicitudes/formulario";
 		
 	}
 	
