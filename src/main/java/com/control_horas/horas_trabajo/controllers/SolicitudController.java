@@ -83,7 +83,7 @@ public class SolicitudController {
 		mailService.enviarAprobacion(solicitud);
 		redirect.addFlashAttribute("mensaje", "Solicitud aprobada.");
 		
-		return "redirect:/admin/solicitudes";		
+		return "redirect:/admin/solicitudes";
 	}
 	
 	@GetMapping("/admin/rechazar/{id}")
@@ -108,7 +108,7 @@ public class SolicitudController {
 		}
 		
 		model.addAttribute("usuarioAutorizado", solicitud.get());
-		return "/registro";
+		return "registro";
 	}
 	
 	
