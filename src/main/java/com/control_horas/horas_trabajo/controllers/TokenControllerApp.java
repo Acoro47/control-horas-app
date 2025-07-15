@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TokenControllerApp {
 	
 	@GetMapping("/enviarToken")
-	public ResponseEntity<Void> enviarToken(
+	public ResponseEntity<String> enviarToken(
 			@RequestParam String username,
 			@RequestParam String email
 			){
 		
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok("✅ Token enviado correctamente");
 		
 	}
 
