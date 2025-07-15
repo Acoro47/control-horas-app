@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.control_horas.horas_trabajo.entities.Usuario;
@@ -18,8 +19,11 @@ public class UsuarioDetailsService implements UserDetailsService {
 	
 	private final UsuarioRepository repo;
 	
-	public UsuarioDetailsService(UsuarioRepository uRepo) {
+	private final PasswordEncoder encoder;
+	
+	public UsuarioDetailsService(UsuarioRepository uRepo, PasswordEncoder enco) {
 		this.repo = uRepo;
+		this.encoder = enco;
 	}
 	
 	
@@ -47,6 +51,19 @@ public class UsuarioDetailsService implements UserDetailsService {
 	
 	public boolean existePorNombreOEmail(String username, String email) {
 		return repo.existsByUsername(username) || repo.existsByMail(email);
+	}
+	
+	// Comprobar usuario en el login de la app
+	
+	public boolean validarCredenciales(String username, String password) {
+		try {
+			UserDetails userDetails = loadUserByUsername(username);
+			return encoder.matches(password, userDetails.getPassword());
+			
+		}
+		catch (UsernameNotFoundException e) {
+			return false;
+		}
 	}
 	
 	

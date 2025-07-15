@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import com.control_horas.horas_trabajo.dtos.ResumenDiaDTO;
+import com.control_horas.horas_trabajo.dtos.web.ResumenDiaDTO;
 import com.control_horas.horas_trabajo.entities.Registro;
 import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.repositories.RegistroRepository;

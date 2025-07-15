@@ -1,4 +1,4 @@
-package com.control_horas.horas_trabajo.dtos;
+package com.control_horas.horas_trabajo.dtos.web;
 
 import java.time.LocalDateTime;
 

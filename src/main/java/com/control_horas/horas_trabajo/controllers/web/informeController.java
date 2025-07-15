@@ -16,7 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.control_horas.horas_trabajo.dtos.ResumenDiaDTO;
+import com.control_horas.horas_trabajo.dtos.web.ResumenDiaDTO;
 import com.control_horas.horas_trabajo.entities.Registro;
 import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.repositories.RegistroRepository;
