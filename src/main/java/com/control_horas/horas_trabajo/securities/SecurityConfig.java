@@ -24,10 +24,12 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
+		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(auth -> auth
 			.requestMatchers("/login","/registro","/panel","/guardarUsuario", "/css/**", "/js/**").permitAll()
-			.requestMatchers("/solicitar","/solicitar/**","/api/enviarToken").permitAll()
+			.requestMatchers("/solicitar","/solicitar/**").permitAll()
 			.requestMatchers("/activar","/activar/**").permitAll()
+			.requestMatchers("/api/enviarToken/").permitAll()
 			.requestMatchers("/admin/**").hasRole("ADMIN")
 			.anyRequest().authenticated())
 		.formLogin(form -> form
