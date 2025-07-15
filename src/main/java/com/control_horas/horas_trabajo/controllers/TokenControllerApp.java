@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class TokenControllerApp {
 	
-	@GetMapping("/enviarToken")
+	@GetMapping(value = "/enviarToken", produces = "text/plain;charset=UTF-8")
 	public ResponseEntity<String> enviarToken(
 			@RequestParam String username,
 			@RequestParam String email
