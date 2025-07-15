@@ -29,7 +29,7 @@ public class SecurityConfig {
 			.requestMatchers("/login","/registro","/panel","/guardarUsuario", "/css/**", "/js/**").permitAll()
 			.requestMatchers("/solicitar","/solicitar/**").permitAll()
 			.requestMatchers("/activar","/activar/**").permitAll()
-			.requestMatchers("/api/enviarToken/").permitAll()
+			.requestMatchers("/api/enviarToken").permitAll()
 			.requestMatchers("/admin/**").hasRole("ADMIN")
 			.anyRequest().authenticated())
 		.formLogin(form -> form
