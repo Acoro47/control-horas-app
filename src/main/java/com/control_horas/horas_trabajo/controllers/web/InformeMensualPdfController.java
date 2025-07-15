@@ -1,4 +1,4 @@
-package com.control_horas.horas_trabajo.controllers;
+package com.control_horas.horas_trabajo.controllers.web;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

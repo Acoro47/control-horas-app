@@ -1,4 +1,4 @@
-package com.control_horas.horas_trabajo.controllers;
+package com.control_horas.horas_trabajo.controllers.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

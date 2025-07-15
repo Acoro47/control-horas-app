@@ -1,4 +1,4 @@
-package com.control_horas.horas_trabajo.controllers;
+package com.control_horas.horas_trabajo.controllers.app;
 
 
 import org.springframework.http.ResponseEntity;
