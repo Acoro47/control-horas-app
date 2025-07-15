@@ -19,7 +19,7 @@ public class TokenControllerApp {
 			@RequestParam String email
 			){
 		
-		ApiResponseDTO response = new ApiResponseDTO("success", "✅ Token enviado correctamente a \" + email)");
+		ApiResponseDTO response = new ApiResponseDTO("success", "✅ Token enviado correctamente a " + email);
 		return ResponseEntity.ok(response);
 		
 	}
