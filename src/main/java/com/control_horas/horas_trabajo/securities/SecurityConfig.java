@@ -13,8 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.control_horas.horas_trabajo.components.CustomSuccessHandler;
 
-import jakarta.servlet.http.HttpServletResponse;
-
 
 @Configuration
 public class SecurityConfig {
@@ -34,9 +32,11 @@ public class SecurityConfig {
 			.requestMatchers("/api/enviarToken","/api/login","/api/registros").permitAll()
 			.requestMatchers("/admin/**").hasRole("ADMIN")
 			.anyRequest().authenticated())
-		.exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
-			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Acceso no autorizado");
-		}))
+		.formLogin(form -> form
+			.loginPage("/login")
+			.successHandler(successHandler)
+			.permitAll()
+		)
 		.logout(logout -> logout.permitAll());
 		
 		return http.build();
