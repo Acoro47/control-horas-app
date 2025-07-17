@@ -13,6 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.control_horas.horas_trabajo.components.CustomSuccessHandler;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 
 @Configuration
 public class SecurityConfig {
@@ -37,6 +39,15 @@ public class SecurityConfig {
 			.successHandler(successHandler)
 			.permitAll()
 		)
+		.exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
+			String uri = request.getRequestURI();
+			if (uri.startsWith("/api/")) {
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Acceso no autorizado");
+			}
+			else {
+				response.sendRedirect("/login");
+			}
+		}))
 		.logout(logout -> logout.permitAll());
 		
 		return http.build();
