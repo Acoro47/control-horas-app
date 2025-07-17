@@ -66,6 +66,12 @@ public class UsuarioDetailsService implements UserDetailsService {
 		}
 	}
 	
+	public Usuario obtenerUsuarioPorNombre(String user) {
+		Usuario usuario = repo.findByUsername(user).orElseThrow(() -> new NullPointerException("El usuario no existe"));
+		return usuario;
+		
+	}
+	
 	
 	
 

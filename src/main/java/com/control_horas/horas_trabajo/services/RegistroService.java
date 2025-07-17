@@ -2,6 +2,7 @@ package com.control_horas.horas_trabajo.services;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.control_horas.horas_trabajo.dtos.web.RegistroDTO;
 import com.control_horas.horas_trabajo.entities.Registro;
 import com.control_horas.horas_trabajo.repositories.RegistroRepository;
 import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
@@ -78,46 +80,34 @@ public class RegistroService {
 	}
 	
 	
-	/*
-	public void inyectarRegistrosJunioAvanzado(Long usuarioId) {
-	    Usuario usuario = userRepo.findById(usuarioId).orElseThrow();
-	    List<Registro> registros = new ArrayList<>();
-
-	    LocalDate fechaInicio = LocalDate.of(2025, 5, 1);
-	    LocalDate fechaFin = LocalDate.of(2025, 5, 30);
-
-	    for (LocalDate fecha = fechaInicio; !fecha.isAfter(fechaFin); fecha = fecha.plusDays(1)) {
-	        DayOfWeek diaSemana = fecha.getDayOfWeek();
-
-	        if (diaSemana == DayOfWeek.WEDNESDAY) {
-	            // Miércoles → no se registran entradas
-	            continue;
-	        }
-
-	        if (diaSemana == DayOfWeek.SATURDAY || diaSemana == DayOfWeek.SUNDAY) {
-	            // Fin de semana → una sola jornada
-	            registros.add(new Registro(
-	                usuario,
-	                fecha.atTime(7, 30),
-	                fecha.atTime(15, 0)
-	            ));
-	        } else {
-	            // Días normales → dos turnos
-	            registros.add(new Registro(
-	                usuario,
-	                fecha.atTime(7, 30),
-	                fecha.atTime(12, 30)
-	            ));
-	            registros.add(new Registro(
-	                usuario,
-	                fecha.atTime(17, 0),
-	                fecha.atTime(21, 30)
-	            ));
-	        }
-	    }
-
-	    regRepo.saveAll(registros);
-	    System.out.println("✅ Registros avanzados de junio 2025 insertados: " + registros.size());
+	public List<RegistroDTO> mapearRegistros(Long id, LocalDate desde, LocalDate hasta){
+		List<Registro> registros = regRepo.findByUsuarioId(id).stream()
+				.filter(r -> r.getHoraEntrada() != null)
+				.filter(r -> {
+					LocalDate fecha = r.getHoraEntrada().toLocalDate();
+					return !fecha.isBefore(desde) && !fecha.isAfter(hasta);
+				})
+				.toList();
+		return registros.stream()
+				.map(r -> {
+					LocalDateTime entrada = r.getHoraEntrada();
+					LocalDateTime salida = r.getHoraSalida();
+					
+					String duracionBase = "";
+					String duracionExtra = "";
+					String duracionTotal = "";
+					
+					if (entrada != null && salida != null) {
+						long min = Duration.between(entrada, salida).toMinutes();
+						long base = Math.min(min, 240);
+						long extra = Math.max(0, min - 240);
+						
+						duracionBase = (base / 60) + "h " + (base % 60) + "m";
+						duracionExtra = (extra / 60) + "h " + (extra % 60) + "m";
+						duracionTotal = (min / 60) + "h " + (min % 60) + "m";
+					}
+					return new RegistroDTO(entrada, salida, duracionBase, duracionExtra, duracionTotal);
+				})
+				.toList();
 	}
-*/
 }

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.control_horas.horas_trabajo.dtos.app.ApiResponseDTO;
+import com.control_horas.horas_trabajo.dtos.app.UsuarioDTO;
+import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.services.UsuarioDetailsService;
 
 @RestController
@@ -21,17 +23,22 @@ public class LoginAppController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<ApiResponseDTO> login(
+	public ResponseEntity<UsuarioDTO> login(
 			@RequestParam String username,
 			@RequestParam String password
 			) {
 		boolean valido = userService.validarCredenciales(username, password);
 		if (valido) {
-			return ResponseEntity.ok(new ApiResponseDTO("success", "✅ Inicio de sesión correcto"));
+			Usuario user = userService.obtenerUsuarioPorNombre(username);
+			UsuarioDTO userDto = new UsuarioDTO(
+					user.getId(), user.getUsername(), "✅ Inicio de sesión correcto"
+					);
+			
+			return ResponseEntity.ok(userDto);
 		}
 		else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-					.body(new ApiResponseDTO("error", "❌ Usuario o contraseña incorrectos"));
+					.body(null);
 		}
 	}
 
