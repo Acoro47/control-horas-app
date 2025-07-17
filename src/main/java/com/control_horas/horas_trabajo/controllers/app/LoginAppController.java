@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control_horas.horas_trabajo.dtos.app.ApiResponseDTO;
 import com.control_horas.horas_trabajo.dtos.app.UsuarioDTO;
 import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.services.UsuarioDetailsService;
