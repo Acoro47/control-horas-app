@@ -24,7 +24,7 @@ public class JwtService {
 	private final Key key;
 	
 	public JwtService() {
-		String secret = System.getenv("jwt.secret");
+		String secret = System.getenv("JWT_SECRET");
 		byte [] keyBytes = Base64.getDecoder().decode(secret);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
