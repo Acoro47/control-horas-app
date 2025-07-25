@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.control_horas.horas_trabajo.components.CustomSuccessHandler;
 
@@ -23,6 +24,12 @@ public class SecurityConfig {
 	@Autowired
 	private CustomSuccessHandler successHandler;
 	
+	private final JwtAuthenticationFilter jwtAuthFilter;
+	
+	public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
+		this.jwtAuthFilter = jwtAuthFilter;
+	}
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
@@ -34,7 +41,8 @@ public class SecurityConfig {
 			.requestMatchers("/api/enviarToken","/api/login","/api/registros","/api/entrada","/api/salida").permitAll()
 			.requestMatchers("/api/informe-mensual/pdf").permitAll()
 			.requestMatchers("/admin/**").hasRole("ADMIN")
-			.anyRequest().authenticated())
+			.anyRequest().authenticated()
+			)
 		.formLogin(form -> form
 			.loginPage("/login")
 			.successHandler(successHandler)
@@ -49,7 +57,8 @@ public class SecurityConfig {
 				response.sendRedirect("/login");
 			}
 		}))
-		.logout(logout -> logout.permitAll());
+		.logout(logout -> logout.permitAll())
+		.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 		
 		return http.build();
 	}
@@ -65,7 +74,4 @@ public class SecurityConfig {
 			return config.getAuthenticationManager();
 	}
 	
-	
-	
-
 }
