@@ -1,20 +1,7 @@
 package com.control_horas.horas_trabajo;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
-import com.control_horas.horas_trabajo.entities.Registro;
-import com.control_horas.horas_trabajo.entities.Usuario;
-import com.control_horas.horas_trabajo.repositories.RegistroRepository;
-import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
 
 
 
