@@ -32,7 +32,7 @@ public class SecurityConfig {
 			.requestMatchers("/solicitar","/solicitar/**").permitAll()
 			.requestMatchers("/activar","/activar/**").permitAll()
 			.requestMatchers("/api/enviarToken","/api/login","/api/registros","/api/entrada","/api/salida").permitAll()
-			.requestMatchers("/informe-mensual/pdf").permitAll()
+			.requestMatchers("/api/informe-mensual/pdf").permitAll()
 			.requestMatchers("/admin/**").hasRole("ADMIN")
 			.anyRequest().authenticated())
 		.formLogin(form -> form
