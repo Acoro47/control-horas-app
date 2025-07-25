@@ -26,6 +26,7 @@ public class JwtService {
 	public JwtService() {
 		String secret = System.getenv("JWT_SECRET");
 		byte [] keyBytes = Base64.getDecoder().decode(secret);
+		System.out.println("Clave decodificada con éxito: Bytes: " + keyBytes.length);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
 	
