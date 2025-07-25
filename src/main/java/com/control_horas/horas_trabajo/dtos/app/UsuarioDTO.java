@@ -1,10 +1,19 @@
 package com.control_horas.horas_trabajo.dtos.app;
 
-public class UsuarioDTO {
+public final class UsuarioDTO {
 	
 	private Long id;
 	private String username;
 	private String mensaje;
+	private String token;
+	
+		
+	public UsuarioDTO(Long id, String name, String message, String tok) {
+		this.id = id;
+		this.username = name;
+		this.mensaje = message;
+		this.token = tok;	
+	}
 	
 	public UsuarioDTO(Long id, String name, String message) {
 		this.id = id;
@@ -34,6 +43,14 @@ public class UsuarioDTO {
 
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	

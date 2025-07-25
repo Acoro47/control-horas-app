@@ -28,6 +28,7 @@ public class LoginAppController {
 			) {
 		boolean valido = userService.validarCredenciales(username, password);
 		if (valido) {
+			
 			Usuario user = userService.obtenerUsuarioPorNombre(username);
 			UsuarioDTO userDto = new UsuarioDTO(
 					user.getId(), user.getUsername(), "✅ Inicio de sesión correcto"
