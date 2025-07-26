@@ -43,10 +43,9 @@ public class SecurityConfig {
 			.requestMatchers("/admin/**").hasRole("ADMIN")
 			.anyRequest().authenticated()
 			)
-		.formLogin(form -> form
-			.loginPage("/login")
-			.successHandler(successHandler)
-			.permitAll()
+		.httpBasic(h -> h.disable()
+		)
+		.formLogin(f -> f.disable()
 		)
 		.exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
 			String uri = request.getRequestURI();
