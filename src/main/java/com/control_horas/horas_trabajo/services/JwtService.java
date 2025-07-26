@@ -32,7 +32,11 @@ public class JwtService {
 	public JwtService() {
 		
 		String secret = System.getenv("JWT_SECRET");
-		logger.debug("JWT_SECRET en entorno " + System.getenv("JWT_SECRET"));
+		if (secret == null || secret.trim().isEmpty()) {
+			logger.debug("JWT_SECRET en entorno " + System.getenv("JWT_SECRET"));
+	        throw new IllegalStateException("❌ JWT_SECRET no está definido en el entorno.");
+	    }
+		
 		byte [] keyBytes = Base64.getDecoder().decode(secret);
 		logger.debug("Clave decodificada con éxito: Bytes: " + keyBytes.length);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
