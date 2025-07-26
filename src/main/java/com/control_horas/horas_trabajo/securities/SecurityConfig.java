@@ -3,20 +3,17 @@ package com.control_horas.horas_trabajo.securities;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 import jakarta.servlet.http.HttpServletResponse;
 
 
 @Configuration
 public class SecurityConfig {
-	
-	
 	
 	private final JwtAuthenticationFilter jwtAuthFilter;
 	
@@ -25,40 +22,42 @@ public class SecurityConfig {
 	}
 	
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	@Order(1)
+	public SecurityFilterChain apifilterChain(HttpSecurity http) throws Exception {
+		http
+			.securityMatcher("/api/**")
+			.csrf(csrf -> csrf.disable())
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.authorizeHttpRequests(auth -> auth
+					.requestMatchers("/api/login", "/api/enviarToken").permitAll()
+					.anyRequest().authenticated()
+			)
+			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+		
+		return http.build();
+	}
+	
+	@Bean
+	@Order(2)
+	public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
 		http
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(auth -> auth
-			.requestMatchers("/login","/registro","/panel","/guardarUsuario", "/css/**", "/js/**").permitAll()
-			.requestMatchers("/solicitar","/solicitar/**").permitAll()
-			.requestMatchers("/activar","/activar/**").permitAll()
-			.requestMatchers("/api/enviarToken","/api/login","/api/registros","/api/entrada","/api/salida").permitAll()
-			.requestMatchers("/api/informe-mensual/pdf").permitAll()
-			.requestMatchers("/admin/**").hasRole("ADMIN")
-			.anyRequest().authenticated()
-			)
-		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-		.httpBasic(h -> h.disable())
+				.requestMatchers("/login", "/registro", "/css/**", "/js/**", "/guardarUsuario").permitAll()
+				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.anyRequest().authenticated()
+				)
 		.formLogin(form -> form
 				.loginPage("/login")
 				.loginProcessingUrl("/login")
-				.defaultSuccessUrl("/panel", true)
+				.defaultSuccessUrl("/panel",true)
 				.failureUrl("/login?error=true")
 				.permitAll()
-				)
-		.exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
-			String uri = request.getRequestURI();
-			if (uri.startsWith("/api/")) {
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Acceso no autorizado");
-			}
-			else {
-				response.sendRedirect("/login");
-			}
-		}))
-		.logout(logout -> logout.permitAll())
-		.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-		
+		)
+		.logout(logout -> logout.permitAll());
 		return http.build();
+		
+				
 	}
 	
 	

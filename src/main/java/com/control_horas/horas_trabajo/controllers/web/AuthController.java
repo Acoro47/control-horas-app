@@ -13,14 +13,10 @@ public class AuthController {
 	
 	@GetMapping("/registro")
 	public String mostrarFormularioRegistro(Model m) {
-		
 		m.addAttribute("usuario", new Usuario());
-		
 		return "registro";
 	}
-	
-	
-	
+		
 	@GetMapping("/login")
 	public String login(@RequestParam(value = "error", required=false) String error, Model model) {
 		if (error != null) {
