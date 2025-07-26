@@ -1,7 +1,6 @@
 package com.control_horas.horas_trabajo.securities;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,14 +21,6 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
-	private static final List<String> EXCLUDED_URLS = List.of(
-			"/login",
-			"/registro",
-			"/guardarUsuario",
-			"/panel",
-			"/css",
-			"/js"
-			);
 	
 	@Autowired
 	private JwtService jwtService;
@@ -41,23 +32,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
-		String path = request.getRequestURI();
-		
-		if (EXCLUDED_URLS.stream().anyMatch(path::startsWith)) {
-			filterChain.doFilter(request, response);
-			return;
-		}
 			
 		final String authHeader = request.getHeader("Authorization");
 		final String jwt;
 		final String username;
-		
-		if(authHeader == null || !authHeader.startsWith("Bearer")) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-		
+				
 		jwt = authHeader.substring(7);
 		username = jwtService.extractUsername(jwt);
 		
@@ -73,6 +52,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 		
 		filterChain.doFilter(request, response);
+	}
+	
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) {
+		String path = request.getServletPath();
+		return path.equals("/login") || path.equals("/guardarUsuario");
 	}
 	
 	
