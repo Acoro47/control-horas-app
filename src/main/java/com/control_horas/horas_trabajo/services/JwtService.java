@@ -5,7 +5,11 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +25,22 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 	
+	private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
+	
 	private final Key key;
 	
 	public JwtService() {
 		String secret = System.getenv("JWT_SECRET");
 		byte [] keyBytes = Base64.getDecoder().decode(secret);
-		System.out.println("Clave decodificada con éxito: Bytes: " + keyBytes.length);
+		logger.debug("Clave decodificada con éxito: Bytes: " + keyBytes.length);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
 	
 	public String generateToken(UserDetails userDetails) {
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("roles", userDetails.getAuthorities());
 		return Jwts.builder()
+				.setClaims(claims)
 				.setSubject(userDetails.getUsername())
 				.setIssuedAt(new Date())
 				.setExpiration(Date.from(Instant.now().plus(1, ChronoUnit.DAYS)))
