@@ -23,5 +23,6 @@ public class HoraUtils {
 		
 		return original.withMinute(cercano).withSecond(0).withNano(0);
 	}
+	
 
 }
