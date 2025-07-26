@@ -1,6 +1,7 @@
 package com.control_horas.horas_trabajo.securities;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +20,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter{
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+	
+	private static final List<String> EXCLUDED_URLS = List.of(
+			"/login",
+			"/registro",
+			"/guardarUsuario",
+			"/panel",
+			"/css",
+			"/js"
+			);
 	
 	@Autowired
 	private JwtService jwtService;
@@ -31,6 +41,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+		
+		String path = request.getRequestURI();
+		
+		if (EXCLUDED_URLS.stream().anyMatch(path::startsWith)) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 			
 		final String authHeader = request.getHeader("Authorization");
 		final String jwt;
