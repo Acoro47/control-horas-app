@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="bg-light d-flex align-items-center justify-content-center vh-100">
+
+  <div class="card shadow p-4" style="min-width: 400px;">
+    <h3 class="text-center mb-4">📝 Activación de  cuenta</h3>
+
+    <div th:if="${error}" class="alert alert-danger text-center py-2" th:text="${error}">Error</div>
+
+    <form th:action="@{/guardarUsuario}" method="post">
+      <div class="mb-3">
+        <input type="text" name="username" class="form-control" th:value="${usuarioAutorizado.username}" readonly />
+      </div>
+
+      <div class="mb-3">
+        <input type="email" name="email" class="form-control" th:value="${usuarioAutorizado.email}" readonly />
+      </div>
+      
+      <div class="mb-3">
+        <input type="password" name="pass" class="form-control" placeholder="Contraseña" autocomplete="new-password" required />
+      </div>
+
+      <div class="mb-3">
+        <input type="password" name="confirmPass" class="form-control" placeholder="Confirmar contraseña" autocomplete="new-password" required />
+      </div>
+
+      <div class="d-grid">
+        <button type="submit" class="btn btn-success">Registrarse</button>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>

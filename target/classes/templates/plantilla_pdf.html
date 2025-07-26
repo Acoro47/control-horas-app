@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <style th:utext="${estilosCSS}"></style>
+</head>
+<body>
+  <h2 th:text="'Informe mensual – ' + ${mesSeleccionado}"></h2>
+  <p class="subtitle" th:text="'Empleado: ' + ${usuario.username.toUpperCase()}"></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Día Mes</th>
+        <th>Día Semana</th>
+        <th>Entrada Mañana</th>
+        <th>Salida Mañana</th>
+        <th>Entrada Tarde</th>
+        <th>Salida Tarde</th>
+        <th>Extra</th>
+        <!-- <th>Importe</th> -->
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="d : ${resumen}"
+      		th:style="${d.diaSemana == 'sábado' or d.diaSemana == 'domingo'} ? 'background-color:#ff33ec;' : ''">
+      	<td th:text="${#temporals.format(d.fecha, 'dd')}"></td>
+      	<td th:text="${d.diaSemana.toUpperCase()}"></td>
+        <td th:text="${d.getEntrada1Formateada()}"></td>
+        <td th:text="${d.getSalida1Formateada()}"></td>
+        <td th:text="${d.getEntrada2Formateada()}"></td>
+        <td th:text="${d.getSalida2Formateada()}"></td>
+        <td th:style="${d.diaSemana != 'sábado' and d.diaSemana != 'domingo'} ? 'background-color:#6fc456' : ''" 
+        	th:text="${formato.horasExtra(d.minutosTotales, horasContrato)}"></td>
+        <!-- <td th:text="${formato.importe(d.minutosTotales, horasContrato, tarifa)}"></td> -->
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="resumen">
+    <p><strong>Horas laborales:</strong> [[${hmesFormat}]]</p>
+    <p><strong>Horas fin de semana:</strong> [[${hmfsFormat}]]</p>
+    <p><strong>Tarifa por hora extra laborables:</strong> [[${tarifa}]] €/h</p>
+    <p><strong>Tarifa por hora extra fin de semana:</strong> [[${tarifa}]] €/h</p>
+    <p><strong>Importe días laborales:</strong> [[${importeMes}]] €</p>
+    <p><strong>Importe días festivos:</strong> [[${importeFs}]] €</p>
+    <p><strong>Total a pagar:</strong> <span style="font-weight:bold; color:#444">[[${importeTotal}]] €</span></p>
+  </div>
+
+  <footer>
+    Generado por [[${usuario.username.toUpperCase()}]] · Sabadell · [[${#dates.format(#dates.createNow(), 'dd MMMM yyyy · HH:mm')}]]
+  </footer>
+</body>
+</html>
