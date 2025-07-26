@@ -39,7 +39,12 @@ public class SecurityConfig {
 			)
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.httpBasic(h -> h.disable())
-		.formLogin(f -> f.disable())
+		.formLogin(form -> form
+				.loginPage("/login")
+				.loginProcessingUrl("/login")
+				.defaultSuccessUrl("/panel", true)
+				.failureUrl("/login?error=true")
+				)
 		.exceptionHandling(ex -> ex.authenticationEntryPoint((request, response, authException) -> {
 			String uri = request.getRequestURI();
 			if (uri.startsWith("/api/")) {
