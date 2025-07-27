@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.control_horas.horas_trabajo.logger.LoggingAuthenticationFilter;
 
@@ -42,10 +43,7 @@ public class SecurityConfig {
 	@Bean
 	@Order(1)
 	public SecurityFilterChain webFilterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
-		
-		LoggingAuthenticationFilter loginFilter = new LoggingAuthenticationFilter(authManager);
-		loginFilter.setFilterProcessesUrl("/login");
-		
+			
 		http
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(auth -> auth
@@ -53,16 +51,18 @@ public class SecurityConfig {
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 				)
-		.addFilter(loginFilter)
+		.formLogin(form -> form
+				.loginPage("/login")
+				.loginProcessingUrl("/login")
+				.defaultSuccessUrl("/login")
+				.failureUrl("/login?error=true")
+				.permitAll()
+				)
 		.logout(logout -> logout
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/login?logout")
 				.permitAll()
 				);
-		return http.build();
-		
-				
+		return http.build();				
 	}
-	
-	
 }

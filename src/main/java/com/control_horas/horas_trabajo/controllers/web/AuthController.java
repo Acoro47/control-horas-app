@@ -3,12 +3,10 @@ package com.control_horas.horas_trabajo.controllers.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.control_horas.horas_trabajo.entities.Usuario;
 
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class AuthController {
