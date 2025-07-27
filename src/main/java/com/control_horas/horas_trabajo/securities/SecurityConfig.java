@@ -41,11 +41,12 @@ public class SecurityConfig {
 	@Bean
 	@Order(1)
 	public SecurityFilterChain webFilterChain(HttpSecurity http,
+			AuthenticationManager authManager,
 			DaoAuthenticationProvider authProvider) throws Exception {
 			
 		http
+		.securityMatcher(request -> !request.getRequestURI().startsWith("/api"))
 		.authenticationProvider(authProvider)
-		.securityMatcher("/**")
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/login", "/registro", "/css/**", "/js/**", "/guardarUsuario","/panel").permitAll()
