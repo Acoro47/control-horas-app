@@ -35,21 +35,20 @@ public class SecurityConfig {
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/login", "/registro", "/css/**", "/js/**", "/guardarUsuario","/panel").permitAll()
-				.requestMatchers("/admin/**").hasRole("ADMIN")
-				.anyRequest().authenticated()
+			    .anyRequest().authenticated()
 				)
 		.formLogin(form -> form
 				.loginPage("/login")
-				.loginProcessingUrl("/login")
+				.loginProcessingUrl("/perform_login")
 				.defaultSuccessUrl("/panel",true)
 				.failureUrl("/login?error=true")
 				.permitAll()
 				)
 		.logout(logout -> logout
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login?logout")
-				.permitAll()
-				);
+			    .logoutUrl("/logout")
+			    .logoutSuccessUrl("/login?logout")
+			    .permitAll()
+			);
 		
 		return http.build();				
 	}
