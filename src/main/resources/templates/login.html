@@ -31,7 +31,10 @@
 		    <div th:if="${loginError}" class="alert alert-danger">
 		    	Usuario o contraseña incorrectos. Por favor, intenta de nuevo.
 			</div>
-		    <div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+			<!-- ✅ Mensaje de logout exitoso -->
+      		<div th:if="${mensaje}" class="alert alert-success mt-3">
+        		<span th:text="${mensaje}"></span>
+      		</div>		    
 		</div>
 	</div>
 	
