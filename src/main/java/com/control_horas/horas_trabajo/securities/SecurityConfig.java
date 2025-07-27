@@ -16,36 +16,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 	
-	private final JwtAuthenticationFilter jwtAuthFilter;
+	/*private final JwtAuthenticationFilter jwtAuthFilter;
 	
 	public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
 		this.jwtAuthFilter = jwtAuthFilter;
 	}
+	*/
+	
+	
 	
 	@Bean
-	@Order(2)
-	public SecurityFilterChain apifilterChain(HttpSecurity http) throws Exception {
-		http
-			.securityMatcher(request -> request.getRequestURI().startsWith("/api"))
-			.csrf(csrf -> csrf.disable())
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(auth -> auth
-					.requestMatchers("/api/login", "/api/enviarToken").permitAll()
-					.anyRequest().authenticated()
-			)
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-		
-		return http.build();
-	}
-	
-	@Bean
-	@Order(1)
 	public SecurityFilterChain webFilterChain(HttpSecurity http,
 			AuthenticationManager authManager,
 			DaoAuthenticationProvider authProvider) throws Exception {
 			
 		http
-		.securityMatcher(request -> !request.getRequestURI().startsWith("/api"))
 		.authenticationProvider(authProvider)
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(auth -> auth
@@ -55,7 +40,7 @@ public class SecurityConfig {
 				)
 		.formLogin(form -> form
 				.loginPage("/login")
-				.loginProcessingUrl("/perform_login")
+				.loginProcessingUrl("/login")
 				.defaultSuccessUrl("/panel",true)
 				.failureUrl("/login?error=true")
 				.permitAll()
