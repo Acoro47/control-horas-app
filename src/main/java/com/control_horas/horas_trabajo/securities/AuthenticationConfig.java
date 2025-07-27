@@ -20,7 +20,6 @@ public class AuthenticationConfig {
 	public DaoAuthenticationProvider authenticationProvider(UsuarioDetailsService userService,
 															BCryptPasswordEncoder passwordEncoder) {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userService);
-		
 		authProvider.setPasswordEncoder(passwordEncoder);
 		return authProvider;
 	}

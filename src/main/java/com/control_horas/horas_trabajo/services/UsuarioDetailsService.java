@@ -29,11 +29,9 @@ public class UsuarioDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<Usuario> userOpt = repo.findByUsername(username);
+		Usuario usuario = repo.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 		
-		if (userOpt.isEmpty()) throw new UsernameNotFoundException("Usuario no encontrado " + username);
-		
-		return new UsuarioPrincipal(userOpt.get());
+		return new UsuarioPrincipal(usuario);
 		
 	}
 	
@@ -41,8 +39,8 @@ public class UsuarioDetailsService implements UserDetailsService {
 		return repo.findAll();
 	}
 	
-	public Usuario obtenerUsuario(Long id) {
-		return repo.findUserById(id);
+	public Optional<Usuario> obtenerUsuario(Long id) {
+		return repo.findById(id);
 	}
 	
 	public void actualizarUsuario(Usuario u) {
@@ -56,19 +54,15 @@ public class UsuarioDetailsService implements UserDetailsService {
 	// Comprobar usuario en el login de la app
 	
 	public boolean validarCredenciales(String username, String password) {
-		try {
-			UserDetails userDetails = loadUserByUsername(username);
-			return encoder.matches(password, userDetails.getPassword());
-			
-		}
-		catch (UsernameNotFoundException e) {
-			return false;
-		}
+		return repo.findByUsername(username)
+				.map(user -> encoder.matches(password, user.getPassword()))
+				.orElse(false);
 	}
 	
-	public Usuario obtenerUsuarioPorNombre(String user) {
-		Usuario usuario = repo.findByUsername(user).orElseThrow(() -> new NullPointerException("El usuario no existe"));
-		return usuario;
+	public Usuario obtenerUsuarioPorNombre(String username) {
+		
+		return repo.findByUsername(username)
+				.orElseThrow(()-> new UsernameNotFoundException("Usuario no encontrado"));
 		
 	}
 	

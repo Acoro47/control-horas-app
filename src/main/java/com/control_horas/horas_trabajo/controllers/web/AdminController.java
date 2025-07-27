@@ -17,17 +17,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
+import com.control_horas.horas_trabajo.services.UsuarioDetailsService;
 
 @Controller
 @RequestMapping("/admin")
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 	
-	@Autowired
-	private UsuarioRepository userRepo;
-		
-	@Autowired
-	private BCryptPasswordEncoder encoder; 
+	
+	private UsuarioDetailsService service;
+	private BCryptPasswordEncoder encoder;
+	
+	public AdminController(UsuarioDetailsService uService,BCryptPasswordEncoder encoder) {
+		this.service = uService;
+		this.encoder = encoder;
+	}
 	
 	@GetMapping("")
 	public String adminPanel() {
@@ -37,20 +41,21 @@ public class AdminController {
 	@GetMapping("/usuarios")
 	public String verTodos(Model model){
 		try {
-			List<Usuario> usuarios = userRepo.findAll();
+			List<Usuario> usuarios = service.obtenerTodosUsuarios();
 			model.addAttribute("usuarios",usuarios);
+			return "admin/usuarios";
 		}
 		catch (Exception e) {
 			
 			return "redirect:/error";
 		}
 		
-		return "admin/usuarios";
 	}
 	
 	@GetMapping("/estadisticas")
 	public String verEstadisticas(Model model) {
-		List<Usuario> usuarios = userRepo.findAll();
+		List<Usuario> usuarios = service.obtenerTodosUsuarios();
+		
 		long activos = usuarios.stream()
 				.filter(Usuario ::isEnabled).count();
 		long bloqueados = usuarios.stream()
@@ -72,12 +77,12 @@ public class AdminController {
 		
 		model.addAttribute("stats",stats);
 		return "admin/estadisticas";
-				
 	}
 	
 	@GetMapping("cambiar-password/{id}")
 	public String mostrarFormularioPassword(@PathVariable Long id, Model model) {
-		Usuario u = userRepo.findById(id).orElseThrow();
+		Usuario u = service.obtenerUsuario(id)
+				.orElseThrow(()-> new IllegalArgumentException("Usuario no encontrado"));
 		model.addAttribute("usuario",u);
 		return "admin/cambiar-password";
 	}
@@ -93,10 +98,12 @@ public class AdminController {
 			return "redirect:/admin/cambiar-password/" + id;
 		}
 		
-		Usuario u = userRepo.findById(id).orElseThrow();
+		Usuario u = service.obtenerUsuario(id)
+				.orElseThrow(()-> new IllegalArgumentException("Usuario no encontrado"));
+		
 		u.setPassword(encoder.encode(nuevaPassword));
-		System.err.println("➡️ Intentando guardar usuario...");
-		userRepo.save(u);		
+		service.actualizarUsuario(u);
+		
 		redirect.addFlashAttribute("mensaje", "✅ Contraseña cambiada correctamente.");
 	    return "redirect:/admin/usuarios";
 	}
@@ -104,11 +111,11 @@ public class AdminController {
 	
 	@PostMapping("/toggle-enabled/{id}")
 	public String alternarUsuarioActivo(@PathVariable Long id, RedirectAttributes redirect) {
-		Usuario u = userRepo.findUserById(id);
+		Usuario u = service.obtenerUsuario(id)
+				.orElseThrow(()-> new IllegalArgumentException("Usuario no encontrado"));
+		
 		u.setEnabled(!u.isEnabled());
-		System.err.println("➡️ Intentando guardar usuario...");
-		Usuario saved = userRepo.save(u);
-		System.err.println("✅ Usuario guardado con ID: " + saved.getId());
+		service.actualizarUsuario(u);
 		
 		return "redirect:/admin/usuarios";
 	}
@@ -116,11 +123,11 @@ public class AdminController {
 	
 	@PostMapping("/toggle-lock/{id}")
 	public String alternarBloqueoUsuario(@PathVariable Long id, RedirectAttributes redirect) {
-		Usuario u = userRepo.findUserById(id);
+		Usuario u = service.obtenerUsuario(id)
+				.orElseThrow(()-> new IllegalArgumentException("Usuario no encontrado"));
+		
 		u.setAccountNonLocked(!u.isAccountNonLocked());
-		System.err.println("➡️ Intentando guardar usuario...");
-		Usuario saved = userRepo.save(u);
-		System.err.println("✅ Usuario guardado con ID: " + saved.getId());
+		service.actualizarUsuario(u);
 		
 		return "redirect:/admin/usuarios";
 	}
