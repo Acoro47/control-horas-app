@@ -10,7 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.control_horas.horas_trabajo.logger.LogginAuthenticationFilter;
+import com.control_horas.horas_trabajo.logger.LoggingAuthenticationFilter;
 
 
 
@@ -43,7 +43,7 @@ public class SecurityConfig {
 	@Order(1)
 	public SecurityFilterChain webFilterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
 		
-		LogginAuthenticationFilter loginFilter = new LogginAuthenticationFilter(authManager);
+		LoggingAuthenticationFilter loginFilter = new LoggingAuthenticationFilter(authManager);
 		loginFilter.setFilterProcessesUrl("/login");
 		
 		http

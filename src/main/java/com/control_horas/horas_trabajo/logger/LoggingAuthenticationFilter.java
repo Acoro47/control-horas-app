@@ -8,11 +8,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class LogginAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class LoggingAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
-	private static final Logger logger = LoggerFactory.getLogger(LogginAuthenticationFilter.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoggingAuthenticationFilter.class);
 
-	public LogginAuthenticationFilter(AuthenticationManager authenticationManager) {
+	public LoggingAuthenticationFilter(AuthenticationManager authenticationManager) {
 		super.setAuthenticationManager(authenticationManager);
 	}
 	
