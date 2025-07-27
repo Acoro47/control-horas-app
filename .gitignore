@@ -35,3 +35,4 @@ build/
 # Configuración sensible 
 src/main/resources/application.properties
 /target/
+.env

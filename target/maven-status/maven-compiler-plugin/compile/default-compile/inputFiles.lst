@@ -22,10 +22,10 @@ D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\ent
 D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\entities\SolicitudAcceso.java
 D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\entities\Usuario.java
 D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\HorasTrabajoApplication.java
+D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\logger\LoggingAuthenticationFilter.java
 D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\repositories\RegistroRepository.java
 D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\repositories\SolicitudAccesoRepository.java
 D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\repositories\UsuarioRepository.java
-D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\securities\AppConfig.java
 D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\securities\AuthenticationConfig.java
 D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\securities\JwtAuthenticationFilter.java
 D:\horas_trabajo\horas_trabajo\src\main\java\com\control_horas\horas_trabajo\securities\SecurityConfig.java
