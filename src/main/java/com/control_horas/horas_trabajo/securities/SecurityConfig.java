@@ -22,7 +22,7 @@ public class SecurityConfig {
 	}
 	
 	@Bean
-	@Order(1)
+	@Order(2)
 	public SecurityFilterChain apifilterChain(HttpSecurity http) throws Exception {
 		http
 			.securityMatcher("/api/**")
@@ -38,7 +38,7 @@ public class SecurityConfig {
 	}
 	
 	@Bean
-	@Order(2)
+	@Order(1)
 	public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
 		http
 		.csrf(csrf -> csrf.disable())

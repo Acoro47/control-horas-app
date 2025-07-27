@@ -38,10 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 			return;
 		}
-		
-		
-		
-				
+			
 		final String jwt = authHeader.substring(7);
 		final String username = jwtService.extractUsername(jwt);
 		
@@ -62,6 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) {
 		String path = request.getServletPath();
+		System.out.println("No se filtra: " + path);
 		
 		return path.equals("/login") ||
 				path.equals("/guardarUsuario") ||
