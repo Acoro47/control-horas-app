@@ -10,6 +10,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.control_horas.horas_trabajo.logger.LogginAuthenticationFilter;
+
 
 
 @Configuration
@@ -40,6 +42,10 @@ public class SecurityConfig {
 	@Bean
 	@Order(1)
 	public SecurityFilterChain webFilterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
+		
+		LogginAuthenticationFilter loginFilter = new LogginAuthenticationFilter(authManager);
+		loginFilter.setFilterProcessesUrl("/login");
+		
 		http
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(auth -> auth
@@ -47,14 +53,7 @@ public class SecurityConfig {
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 				)
-		.formLogin(form -> form
-				.loginPage("/login")
-				.loginProcessingUrl("/login")
-				.defaultSuccessUrl("/panel",true)
-				.failureUrl("/login?error=true")
-				.permitAll()
-		)
-		.authenticationManager(authManager)
+		.addFilter(loginFilter)
 		.logout(logout -> logout
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/login?logout")
