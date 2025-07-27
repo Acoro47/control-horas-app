@@ -26,7 +26,7 @@ public class SecurityConfig {
 	@Order(2)
 	public SecurityFilterChain apifilterChain(HttpSecurity http) throws Exception {
 		http
-			.securityMatcher("/api/**")
+			.securityMatcher(request -> request.getRequestURI().startsWith("/api"))
 			.csrf(csrf -> csrf.disable())
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(auth -> auth
@@ -55,7 +55,7 @@ public class SecurityConfig {
 				)
 		.formLogin(form -> form
 				.loginPage("/login")
-				.loginProcessingUrl("/panel")
+				.loginProcessingUrl("/login")
 				.defaultSuccessUrl("/panel",true)
 				.failureUrl("/login?error=true")
 				.permitAll()
