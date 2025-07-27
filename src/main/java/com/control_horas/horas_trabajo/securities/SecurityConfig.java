@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.control_horas.horas_trabajo.components.CustomSuccessHandler;
 import com.control_horas.horas_trabajo.logger.LoggingAuthenticationFilter;
 
 
@@ -18,10 +19,27 @@ import com.control_horas.horas_trabajo.logger.LoggingAuthenticationFilter;
 public class SecurityConfig {
 	
 	private final JwtAuthenticationFilter jwtAuthFilter;
-	
-	public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
+	private final CustomSuccessHandler handler;
+	public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, CustomSuccessHandler handler) {
 		this.jwtAuthFilter = jwtAuthFilter;
+		this.handler = handler;
 	}
+	
+	@Bean 
+	@Order(1) 
+	public SecurityFilterChain webFilterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
+		LoggingAuthenticationFilter loginFilter = new LoggingAuthenticationFilter(authManager); 
+		loginFilter.setFilterProcessesUrl("/login");
+		loginFilter.setAuthenticationSuccessHandler(handler);
+		http 
+		.csrf(csrf -> csrf.disable()) 
+		.authorizeHttpRequests(auth -> auth .requestMatchers("/login", "/registro", "/css/**", "/js/**", "/guardarUsuario").permitAll()
+				.requestMatchers("/admin/**").hasRole("ADMIN") .anyRequest().authenticated() ) 
+		.addFilter(loginFilter) .logout(logout -> logout .logoutUrl("/logout") 
+				.logoutSuccessUrl("/login?logout") 
+				.permitAll() 
+				); 
+		return http.build(); }
 		
 	@Bean
 	@Order(2) 
@@ -35,18 +53,5 @@ public class SecurityConfig {
 		return http.build(); 
 		} 
 	
-	@Bean 
-	@Order(1) 
-	public SecurityFilterChain webFilterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
-		LoggingAuthenticationFilter loginFilter = new LoggingAuthenticationFilter(authManager); 
-		loginFilter.setFilterProcessesUrl("/login"); 
-		http 
-		.csrf(csrf -> csrf.disable()) 
-		.authorizeHttpRequests(auth -> auth .requestMatchers("/login", "/registro", "/css/**", "/js/**", "/guardarUsuario").permitAll()
-				.requestMatchers("/admin/**").hasRole("ADMIN") .anyRequest().authenticated() ) 
-		.addFilter(loginFilter) .logout(logout -> logout .logoutUrl("/logout") 
-				.logoutSuccessUrl("/login?logout") 
-				.permitAll() 
-				); 
-		return http.build(); }
+	
 }
