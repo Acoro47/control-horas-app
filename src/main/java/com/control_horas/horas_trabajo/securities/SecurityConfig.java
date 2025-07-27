@@ -4,12 +4,12 @@ package com.control_horas.horas_trabajo.securities;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import jakarta.servlet.http.HttpServletResponse;
 
 
 @Configuration
@@ -39,7 +39,7 @@ public class SecurityConfig {
 	
 	@Bean
 	@Order(1)
-	public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain webFilterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
 		http
 		.csrf(csrf -> csrf.disable())
 		.authorizeHttpRequests(auth -> auth
@@ -54,6 +54,7 @@ public class SecurityConfig {
 				.failureUrl("/login?error=true")
 				.permitAll()
 		)
+		.authenticationManager(authManager)
 		.logout(logout -> logout
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/login?logout")
