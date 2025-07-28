@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +30,10 @@ public class JwtService {
 	
 	private final Key key;
 	
-	public JwtService() {
 		
-		String secret = System.getenv("JWT_SECRET");
+	public JwtService(@Value("${JWT_SECRET}") String secret) {
+		
+		//String secret = System.getenv("JWT_SECRET");
 		if (secret == null || secret.trim().isEmpty()) {
 			logger.debug("JWT_SECRET en entorno " + System.getenv("JWT_SECRET"));
 	        throw new IllegalStateException("❌ JWT_SECRET no está definido en el entorno.");

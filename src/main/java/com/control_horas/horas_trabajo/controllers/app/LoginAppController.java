@@ -39,7 +39,11 @@ public class LoginAppController {
 			UserDetails userDetails = userService.loadUserByUsername(username);
 			String token = jwtService.generateToken(userDetails);
 			
-			return ResponseEntity.ok(new TokenResponse(token));
+			return ResponseEntity.ok(new TokenResponse(
+					userService.obtenerUsuarioPorNombre(username).getId(),
+					username,
+					"ok",
+					token));
 		}
 		else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

@@ -18,7 +18,7 @@ public class AuthController {
 		return "registro";
 	}
 		
-	/*
+	
 	@GetMapping("/login")
 	public String login(@RequestParam(value = "error", required=false) String error,
 			Model model) {
@@ -28,5 +28,4 @@ public class AuthController {
 		
 		return "login";
 	}
-	*/
 }

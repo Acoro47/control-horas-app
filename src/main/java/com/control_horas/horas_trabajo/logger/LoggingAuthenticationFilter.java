@@ -26,8 +26,4 @@ public class LoggingAuthenticationFilter extends UsernamePasswordAuthenticationF
 		return super.attemptAuthentication(request, response);
 		
 	}
-	
-	
-	
-
 }

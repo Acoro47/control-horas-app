@@ -22,47 +22,62 @@ public class SecurityConfig {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 	
+	
+	private CustomSuccessHandler handler;	
 	private final JwtAuthenticationFilter jwtAuthFilter;
-	private final CustomSuccessHandler handler;
-	public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, CustomSuccessHandler handler) {
-		this.jwtAuthFilter = jwtAuthFilter;
+	
+	public SecurityConfig(JwtAuthenticationFilter filter, CustomSuccessHandler handler) {
 		this.handler = handler;
+		this.jwtAuthFilter = filter;
 	}
 	
-	@Bean 
-	@Order(1) 
-	public SecurityFilterChain webFilterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
-		LoggingAuthenticationFilter loginFilter = new LoggingAuthenticationFilter(authManager); 
-		loginFilter.setFilterProcessesUrl("/login");
-		loginFilter.setAuthenticationSuccessHandler(handler);
-		loginFilter.setAuthenticationFailureHandler((request, response, exception) -> {
-		    logger.warn("[LOGIN] Fallo en autenticación para usuario: {}", request.getParameter("username"));
-		    response.sendRedirect("/login?error");
-		});
-
-		http 
-		.csrf(csrf -> csrf.disable()) 
-		.authorizeHttpRequests(auth -> auth .requestMatchers("/login", "/registro", "/css/**", "/js/**", "/guardarUsuario").permitAll()
-				.requestMatchers("/admin/**").hasRole("ADMIN") .anyRequest().authenticated() 
-				)
-		.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class)
-		.logout(logout -> logout .logoutUrl("/logout") 
-				.logoutSuccessUrl("/login?logout") 
-				.permitAll() 
-				); 
-		return http.build(); }
+	
 		
 	@Bean
-	@Order(2) 
+	@Order(1) 
 	public SecurityFilterChain apifilterChain(HttpSecurity http) throws Exception {
 		http 
 		.securityMatcher("/api/**")
 		.csrf(csrf -> csrf.disable()) 
-		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
-		.authorizeHttpRequests(auth -> auth .requestMatchers("/api/login", "/api/enviarToken").permitAll() 
-				.anyRequest().authenticated() ) .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+		.sessionManagement(session -> session
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
+		.authorizeHttpRequests(auth -> auth 
+				.requestMatchers("/api/login", "/api/enviarToken").permitAll() 
+				.anyRequest().authenticated() 
+				)
+		
+		.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+		
 		return http.build(); 
-		} 
+		}
 	
-	
+	@Bean 
+	@Order(2) 
+	public SecurityFilterChain webFilterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
+		
+		http
+		.securityMatcher(request -> {
+				String path = request.getRequestURI();
+				return !path.startsWith("/api/");
+		})
+		
+		.authorizeHttpRequests(auth -> auth 
+				.requestMatchers("/login", "/registro", "/css/**", "/js/**", "/guardarUsuario").permitAll()
+				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.anyRequest().authenticated()
+				)
+		.formLogin(form -> form
+				.loginPage("/login")
+				.permitAll()
+				.successHandler(handler)
+				.failureUrl("/login?error")
+				)
+		.logout(logout -> logout .logoutUrl("/logout") 
+				.logoutSuccessUrl("/login?logout") 
+				.permitAll() 
+				);
+		
+		return http.build(); 
+		
+	}	
 }
