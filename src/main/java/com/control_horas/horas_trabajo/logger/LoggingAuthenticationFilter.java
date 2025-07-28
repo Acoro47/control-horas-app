@@ -27,5 +27,7 @@ public class LoggingAuthenticationFilter extends UsernamePasswordAuthenticationF
 		
 	}
 	
+	
+	
 
 }
