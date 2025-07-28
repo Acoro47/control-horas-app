@@ -27,7 +27,7 @@ public class HorasTrabajoApplication {
 	}
 	
 	
-	/*
+	
 	@Bean
     CommandLineRunner cargarRegistrosSimulados(RegistroRepository registroRepo, UsuarioRepository usuarioRepo) {
         return args -> {
@@ -43,7 +43,7 @@ public class HorasTrabajoApplication {
             List<Registro> registros = new ArrayList<>();
 
             for (int dia = 1; dia <= 30; dia++) {
-                LocalDate fecha = LocalDate.of(2025, 6, dia);
+                LocalDate fecha = LocalDate.of(2025, 7, dia);
                 DayOfWeek diaSemana = fecha.getDayOfWeek();
 
                 if (diaSemana == DayOfWeek.WEDNESDAY) continue;
@@ -71,7 +71,6 @@ public class HorasTrabajoApplication {
             registroRepo.saveAll(registros);
             System.out.println("✅ Registros simulados cargados para junio.");
         };
-    }
-*/    
+    }  
 
 }
