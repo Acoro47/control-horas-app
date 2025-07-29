@@ -1,10 +1,13 @@
 package com.control_horas.horas_trabajo.securities;
 
+
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -28,6 +31,14 @@ public class SecurityConfig {
 	}
 	
 	
+	@Bean
+	public WebSecurityCustomizer webSecurityCustomizer() {
+	    return (web) -> web.ignoring()
+	        // Ignora todos los recursos estáticos en /static, /public, /resources, /META-INF/resources…
+	        .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+	        // Si tienes adicionalmente imágenes, fuentes, etc.
+	        .requestMatchers("/css/**", "/js/**", "/img/**", "/webjars/**");
+	}
 		
 	@Bean
 	@Order(1) 
@@ -56,9 +67,12 @@ public class SecurityConfig {
 				String path = request.getRequestURI();
 				return !path.startsWith("/api/");
 		})
-		
 		.authorizeHttpRequests(auth -> auth 
-				.requestMatchers("/login","/solicitar","/registro", "/css/**", "/js/**", "/guardarUsuario").permitAll()
+				.requestMatchers("/login",
+						"/solicitar",
+						"/registro",
+						"/guardarUsuario"
+						).permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 				)
