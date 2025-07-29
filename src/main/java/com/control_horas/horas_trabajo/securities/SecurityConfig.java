@@ -1,8 +1,5 @@
 package com.control_horas.horas_trabajo.securities;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -19,7 +16,7 @@ import com.control_horas.horas_trabajo.components.CustomSuccessHandler;
 @Configuration
 public class SecurityConfig {
 	
-	private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+	
 	
 	
 	private CustomSuccessHandler handler;	
@@ -61,7 +58,7 @@ public class SecurityConfig {
 		})
 		
 		.authorizeHttpRequests(auth -> auth 
-				.requestMatchers("/login", "/registro", "/css/**", "/js/**", "/guardarUsuario").permitAll()
+				.requestMatchers("/login","/solicitar","/registro", "/css/**", "/js/**", "/guardarUsuario").permitAll()
 				.requestMatchers("/actuator/**").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
