@@ -18,10 +18,7 @@ import com.control_horas.horas_trabajo.components.CustomSuccessHandler;
 
 @Configuration
 public class SecurityConfig {
-	
-	
-	
-	
+		
 	private CustomSuccessHandler handler;	
 	private final JwtAuthenticationFilter jwtAuthFilter;
 	
