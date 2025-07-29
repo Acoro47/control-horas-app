@@ -14,7 +14,7 @@
 
 
     	<form th:action="@{/solicitar}" method="post" th:object="${solicitud}">
-   			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+   			
 	      	<div class="mb-3">
 	        	<label class="form-label">Nombre</label>
 	        	<input type="text" th:field="*{username}" class="form-control" required>
@@ -24,7 +24,7 @@
 	        	<input type="email" th:field="*{email}" class="form-control" required>
       		</div>
       		<button type="submit" class="btn btn-primary">Enviar solicitud</button>
-		</form>
+	</form>
 	</div>
 </body>
 </html>
