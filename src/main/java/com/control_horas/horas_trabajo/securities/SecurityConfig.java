@@ -13,7 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.control_horas.horas_trabajo.components.CustomSuccessHandler;
-import com.control_horas.horas_trabajo.logger.LoggingAuthenticationFilter;
 
 
 
