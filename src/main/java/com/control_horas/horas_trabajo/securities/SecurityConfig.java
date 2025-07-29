@@ -68,6 +68,7 @@ public class SecurityConfig {
 				.requestMatchers(
 						"/login",
 						"/solicitar",
+						"/activar",
 						"/registro",
 						"/guardarUsuario"
 						).permitAll()

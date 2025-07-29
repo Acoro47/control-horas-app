@@ -20,11 +20,11 @@ public class EmailService {
 	
 	public void enviarAprobacion(SolicitudAcceso solicitud) {
 		
-		logger.info("Función para enviar aprobación" + solicitud.toString());
+		logger.info("Función para enviar aprobación " + solicitud.toString());
 		
 		SimpleMailMessage mensaje = new SimpleMailMessage();
 		mensaje.setTo(solicitud.getEmail());
-		mensaje.setSubject("Solicitud aprobada - Activación de cuenta");
+		mensaje.setSubject("Solicitud aprobada - Activación de cuenta de Control-Horas");
 		mensaje.setText("Hola " + solicitud.getUsername() + ",\n\n"
 		        + "Tu solicitud de acceso ha sido aprobada.\n"
 		        + "Para activar tu cuenta, haz clic en el siguiente enlace:\n"
