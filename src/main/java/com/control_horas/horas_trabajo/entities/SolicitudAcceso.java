@@ -3,6 +3,8 @@ package com.control_horas.horas_trabajo.entities;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +20,7 @@ public class SolicitudAcceso {
 	
 	private String username;
 	
+	@Enumerated(EnumType.STRING)
 	private EstadoSolicitud estado;
 	
 	private String token;
