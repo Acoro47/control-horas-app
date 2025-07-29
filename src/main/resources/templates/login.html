@@ -33,7 +33,7 @@
 			</div>
 			<!-- ✅ Mensaje de logout exitoso -->
       		<div th:if="${param.logout}" class="alert alert-success mt-3">
-        		<span th:text="Sesión cerrada correctamente"></span>
+        		<span th:text="${mensaje}"></span>
       		</div>		    
 		</div>
 	</div>
