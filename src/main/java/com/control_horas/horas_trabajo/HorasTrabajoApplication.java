@@ -26,13 +26,13 @@ public class HorasTrabajoApplication {
 		SpringApplication.run(HorasTrabajoApplication.class, args);
 	}
 	
-	/*
+	
 	
 	@Bean
     CommandLineRunner cargarRegistrosSimulados(RegistroRepository registroRepo, UsuarioRepository usuarioRepo) {
         return args -> {
             // Buscamos usuario de prueba
-            Optional<Usuario> usuarioOpt = usuarioRepo.findByUsername("prueba");
+            Optional<Usuario> usuarioOpt = usuarioRepo.findByUsername("raquel");
             if (usuarioOpt.isEmpty()) {
                 System.out.println("⚠️ Usuario 'prueba' no encontrado. No se generan registros.");
                 return;
@@ -41,6 +41,8 @@ public class HorasTrabajoApplication {
             Usuario usuario = usuarioOpt.get();
 
             List<Registro> registros = new ArrayList<>();
+            
+            
 
             for (int dia = 1; dia <= 30; dia++) {
                 LocalDate fecha = LocalDate.of(2025, 7, dia);
@@ -49,29 +51,110 @@ public class HorasTrabajoApplication {
                 if (diaSemana == DayOfWeek.WEDNESDAY) continue;
 
                 if (diaSemana == DayOfWeek.SATURDAY || diaSemana == DayOfWeek.SUNDAY) {
-                    registros.add(new Registro(
-                        usuario,
-                        fecha.atTime(7, 30),
-                        fecha.atTime(15, 30)
-                    ));
+                	if (dia == 12) {
+                		registros.add(new Registro(
+                                usuario,
+                                fecha.atTime(7, 30),
+                                fecha.atTime(14, 00)
+                            ));
+                	}
+                	else if(dia == 20) {
+                		registros.add(new Registro(
+                                usuario,
+                                fecha.atTime(7, 30),
+                                fecha.atTime(14, 30)
+                            ));
+                	}
+                	else if(dia == 27) {
+                		registros.add(new Registro(
+                                usuario,
+                                fecha.atTime(7, 30),
+                                fecha.atTime(15, 15)
+                            ));
+                	}
+                	else {
+                		registros.add(new Registro(
+                                usuario,
+                                fecha.atTime(7, 30),
+                                fecha.atTime(15, 00)
+                            ));
+                	}
+                    
                 } else {
-                    registros.add(new Registro(
-                        usuario,
-                        fecha.atTime(7, 30),
-                        fecha.atTime(12, 30)
-                    ));
-                    registros.add(new Registro(
-                        usuario,
-                        fecha.atTime(17, 0),
-                        fecha.atTime(21, 30)
-                    ));
-                }
+                	
+                	if (dia == 1 || 
+            			dia == 7 ||
+            			dia == 8 ||
+            			dia == 10 ||
+            			dia == 11 ||
+            			dia == 14 ||
+            			dia == 28 ) {
+                		
+                		registros.add(new Registro(
+                                usuario,
+                                fecha.atTime(7, 30),
+                                fecha.atTime(12, 30)
+                            ));
+                            registros.add(new Registro(
+                                usuario,
+                                fecha.atTime(17, 00),
+                                fecha.atTime(21, 30)
+                            ));
+                		
+                	}  else if (dia == 4 || 
+                			dia == 15 ||
+                			dia == 17 ||
+                			dia == 21 ||
+                			dia == 24) {
+                	
+	                    registros.add(new Registro(
+	                        usuario,
+	                        fecha.atTime(7, 30),
+	                        fecha.atTime(12, 30)
+	                    ));
+	                    registros.add(new Registro(
+	                        usuario,
+	                        fecha.atTime(17, 00),
+	                        fecha.atTime(21, 45)
+                		));
+	                    
+                	} else if (dia == 3 || 
+                			dia == 18 ||
+                			dia == 8 ||
+                			dia == 22 ||
+                			dia == 25) {	
+                	
+	                    registros.add(new Registro(
+	                        usuario,
+	                        fecha.atTime(7, 30),
+	                        fecha.atTime(12, 30)
+	                    ));
+	                    registros.add(new Registro(
+	                        usuario,
+	                        fecha.atTime(17, 00),
+	                        fecha.atTime(22, 00)
+	                    ));
+                	} else {
+                		registros.add(new Registro(
+    	                        usuario,
+    	                        fecha.atTime(7, 30),
+    	                        fecha.atTime(12, 30)
+    	                    ));
+    	                    registros.add(new Registro(
+    	                        usuario,
+    	                        fecha.atTime(17, 00),
+    	                        fecha.atTime(21, 45)
+                    		));
+            		}
+                		
+            	}	
+                	
             }
 
             registroRepo.saveAll(registros);
             System.out.println("✅ Registros simulados cargados para junio.");
         };
-    }  */
+    }  
 	
 	
 
