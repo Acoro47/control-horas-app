@@ -20,9 +20,5 @@ WORKDIR /app
 
 COPY --from=builder /workspace/target/horas_trabajo-0.0.1-SNAPSHOT.jar app.jar
 
-# Abrimos el puerto 8080
-ENV SERVER_PORT=8080
-EXPOSE 8080
-
 # Lanzamos la aplicación
 ENTRYPOINT ["java","-jar","/app/app.jar"]
