@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ import com.control_horas.horas_trabajo.services.EmailService;
 @Controller
 public class SolicitudController {
 	
+	private final Logger logger = LoggerFactory.getLogger(SolicitudController.class);
+	
 	@Autowired
 	private SolicitudAccesoRepository solRepo;
 	
@@ -41,7 +45,8 @@ public class SolicitudController {
 	
 	@GetMapping("/solicitar")
 	public String mostrarFormulario(Model model) {
-		System.out.println("Cargando formulario de solicitud");
+		logger.info("Cargando formulario de solicitud");
+		
 		model.addAttribute("solicitud", new SolicitudAcceso());	
 		
 		return "solicitudes/formulario";
@@ -52,13 +57,14 @@ public class SolicitudController {
 	public String procesarSolicitud(@ModelAttribute SolicitudAcceso solicitud, RedirectAttributes redirect) {
 		if (solRepo.existsByEmail(solicitud.getEmail())) {
 			redirect.addFlashAttribute("error", "Ya existe una solicitud con este correo");
+			logger.info("Ya existe una solicitud con este correo");
 			return "redirect:/login";
 		}
 		
 		solicitud.setEstado(EstadoSolicitud.PENDIENTE);
 		solicitud.setFechaSolicitud(LocalDateTime.now());
 		solRepo.save(solicitud);
-		
+		logger.info("Tu solicitud ha sido enviada. Recibirás un correo si es aprobada.");
 		redirect.addFlashAttribute("mensaje", "Tu solicitud ha sido enviada. Recibirás un correo si es aprobada.");
 		return "redirect:/login";
 	}
@@ -78,7 +84,7 @@ public class SolicitudController {
 		solicitud.setFechaAprobacion(LocalDateTime.now());
 		solRepo.save(solicitud);
 		
-		System.err.println("Enviando mail " + solicitud.toString());
+		logger.info("Enviando mail " + solicitud.toString());
 		
 		mailService.enviarAprobacion(solicitud);
 		redirect.addFlashAttribute("mensaje", "Solicitud aprobada.");
@@ -132,7 +138,7 @@ public class SolicitudController {
 		if (!pass.equals(confirmPass)) {
 			model.addAttribute("usuarioAutorizado", solicitud);
 			model.addAttribute("error", "Las contraseñas no coinciden");
-			System.out.println("✅ Método guardarUsuario ejecutado con: " + email);
+			logger.info("✅ Método guardarUsuario ejecutado con: " + email);
 			return "registro";
 		}
 		

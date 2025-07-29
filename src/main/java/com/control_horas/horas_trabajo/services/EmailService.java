@@ -23,7 +23,7 @@ public class EmailService {
 		mensaje.setText("Hola " + solicitud.getUsername() + ",\n\n"
 		        + "Tu solicitud de acceso ha sido aprobada.\n"
 		        + "Para activar tu cuenta, haz clic en el siguiente enlace:\n"
-		        + "https://control-horas-app-production.up.railway.app/activar?token=" + solicitud.getToken() + "\n\n"
+		        + "https://control-horas-app-1.onrender.com/activar?token=" + solicitud.getToken() + "\n\n"
 		        + "Si no esperabas este correo, puedes ignorarlo.\n\n"
 		        + "¡Bienvenido!");
 		    sender.send(mensaje);
