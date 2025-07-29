@@ -27,7 +27,6 @@ public class SolicitudAcceso {
 	@Column(nullable = false)
 	private EstadoSolicitud estado;
 	
-	@Column(nullable=false, unique=true)
 	private String token;
 	
 	private LocalDateTime fechaSolicitud;

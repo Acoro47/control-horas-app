@@ -68,7 +68,8 @@ public class SecurityConfig {
 				return !path.startsWith("/api/");
 		})
 		.authorizeHttpRequests(auth -> auth 
-				.requestMatchers("/login",
+				.requestMatchers(
+						"/login",
 						"/solicitar",
 						"/registro",
 						"/guardarUsuario"
