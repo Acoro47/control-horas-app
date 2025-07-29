@@ -28,15 +28,9 @@
 			<div class="text-center">
 		    	<p>¿No tienes cuenta? <a th:href="@{/solicitar}">Solicita acceso</a></p>
 		    </div>
-		    <div th:if="${param.error}" class="alert alert-danger">
-		    	Usuario o contraseña incorrectos. Por favor, intenta de nuevo.
-			</div>
-			<!-- ✅ Mensaje de logout exitoso -->
-      		<div th:if="${mensaje != null}" class="alert alert-success mt-3">
-        		<span th:text="${mensaje}"></span>
-      		</div>		    
+		   	<div th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+			<div th:if="${error}"   class="alert alert-danger"  th:text="${error}"></div>
 		</div>
 	</div>
-	
 </body>
 </html>

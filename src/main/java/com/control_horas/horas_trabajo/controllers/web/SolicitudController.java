@@ -55,6 +55,9 @@ public class SolicitudController {
 	
 	@PostMapping("/solicitar")
 	public String procesarSolicitud(@ModelAttribute SolicitudAcceso solicitud, RedirectAttributes redirect) {
+		
+		logger.info("procesando solicitud invocado con : {}", solicitud);
+		
 		if (solRepo.existsByEmail(solicitud.getEmail())) {
 			redirect.addFlashAttribute("error", "Ya existe una solicitud con este correo");
 			logger.info("Ya existe una solicitud con este correo");
