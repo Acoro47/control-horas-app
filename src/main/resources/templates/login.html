@@ -32,7 +32,7 @@
 		    	Usuario o contraseña incorrectos. Por favor, intenta de nuevo.
 			</div>
 			<!-- ✅ Mensaje de logout exitoso -->
-      		<div th:if="${param.logout}" class="alert alert-success mt-3">
+      		<div th:if="${mensaje != null}" class="alert alert-success mt-3">
         		<span th:text="${mensaje}"></span>
       		</div>		    
 		</div>
