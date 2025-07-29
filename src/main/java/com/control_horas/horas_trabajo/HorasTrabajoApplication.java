@@ -26,7 +26,7 @@ public class HorasTrabajoApplication {
 		SpringApplication.run(HorasTrabajoApplication.class, args);
 	}
 	
-	
+	/*
 	
 	@Bean
     CommandLineRunner cargarRegistrosSimulados(RegistroRepository registroRepo, UsuarioRepository usuarioRepo) {
@@ -71,6 +71,8 @@ public class HorasTrabajoApplication {
             registroRepo.saveAll(registros);
             System.out.println("✅ Registros simulados cargados para junio.");
         };
-    }  
+    }  */
+	
+	
 
 }

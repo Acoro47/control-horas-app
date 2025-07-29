@@ -1,0 +1,14 @@
+# docker-compose.yml
+
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: horas-trabajo:distroless
+    ports:
+      - "8081:8080"
+    env_file:
+      - .env

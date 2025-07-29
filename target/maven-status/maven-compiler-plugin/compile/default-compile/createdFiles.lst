@@ -5,6 +5,7 @@ com\control_horas\horas_trabajo\controllers\web\RegistroController.class
 com\control_horas\horas_trabajo\dtos\app\ApiResponseDTO.class
 com\control_horas\horas_trabajo\securities\JwtAuthenticationFilter.class
 com\control_horas\horas_trabajo\logger\LoggingAuthenticationFilter.class
+com\control_horas\horas_trabajo\ConnectionTest.class
 com\control_horas\horas_trabajo\controllers\web\informeController.class
 com\control_horas\horas_trabajo\entities\EstadoSolicitud.class
 com\control_horas\horas_trabajo\securities\ZonaHorariaConfig.class
@@ -37,3 +38,4 @@ com\control_horas\horas_trabajo\controllers\web\InformeMensualPdfController.clas
 com\control_horas\horas_trabajo\entities\Registro.class
 com\control_horas\horas_trabajo\entities\LoginRequest.class
 com\control_horas\horas_trabajo\services\EmailService.class
+com\control_horas\horas_trabajo\controllers\app\InformeMensualPdfApiController.class
