@@ -94,7 +94,7 @@ public class RegistroService {
 				.toList();
 		return registros.stream()
 				.map(r -> {
-					logger.info("Registro: %s", r);
+					logger.info("Registro: {}", r);
 					LocalDateTime entrada = r.getHoraEntrada();
 					LocalDateTime salida = r.getHoraSalida();
 					

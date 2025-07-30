@@ -27,7 +27,7 @@ public class HorasTrabajoApplication {
 	}
 	
 	
-	
+	/*
 	@Bean
     CommandLineRunner cargarRegistrosSimulados(RegistroRepository registroRepo, UsuarioRepository usuarioRepo) {
         return args -> {
@@ -156,6 +156,6 @@ public class HorasTrabajoApplication {
         };
     }  
 	
-	
+	*/
 
 }

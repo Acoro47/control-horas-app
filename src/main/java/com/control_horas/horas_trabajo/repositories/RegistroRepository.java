@@ -15,7 +15,7 @@ public interface RegistroRepository extends JpaRepository<Registro, Long>{
 	
 	Optional<Registro> findFirstByUsuarioAndHoraSalidaIsNullOrderByHoraEntrada(Usuario usuario);
 	
-	@Query("SELECT r FROM Registro r WHERE r.usuario_id = :usuarioId ORDER BY r.id ASC" )
-	List<Registro> findByUsuarioId(@Param("usuarioId") Long id);
+	@Query("SELECT r FROM Registro r WHERE r.usuario_id = :id ORDER BY r.id ASC" )
+	List<Registro> findByUsuarioId(@Param("id") Long id);
 
 }
