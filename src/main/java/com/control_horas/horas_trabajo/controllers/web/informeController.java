@@ -1,14 +1,9 @@
 package com.control_horas.horas_trabajo.controllers.web;
 
 import java.security.Principal;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.YearMonth;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -16,10 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.control_horas.horas_trabajo.dtos.web.RegistroDTO;
 import com.control_horas.horas_trabajo.dtos.web.ResumenDiaDTO;
-import com.control_horas.horas_trabajo.entities.Registro;
 import com.control_horas.horas_trabajo.entities.Usuario;
-import com.control_horas.horas_trabajo.repositories.RegistroRepository;
 import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
 import com.control_horas.horas_trabajo.services.RegistroService;
 
@@ -53,8 +47,11 @@ public class informeController {
 		
 		List<ResumenDiaDTO> resumen = registroServ
 				.mapearResumenDiario(u.getId(), inicio, fin);
+		List<RegistroDTO> registros = registroServ
+				.mapearRegistros(u.getId(), inicio, fin);
 		
 		model.addAttribute("resumen", resumen);
+		model.addAttribute("registros", registros);
 		model.addAttribute("mesSeleccionado", inicio.getMonth());
 		
 		return "informe"; 
