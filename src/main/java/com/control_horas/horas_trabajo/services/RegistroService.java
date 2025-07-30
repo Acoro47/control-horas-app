@@ -29,7 +29,7 @@ public class RegistroService {
 	}
 	
 	public Map<LocalDate, Long> calcularTiempoDia(Long usuarioId, LocalDate desde, LocalDate hasta){
-		List<Registro> registros = regRepo.findByUsuarioId(usuarioId).stream()
+		List<Registro> registros = regRepo.findByUsuarioIdOrderByIdAsc(usuarioId).stream()
 				.filter(r -> r.getHoraEntrada() != null && r.getHoraSalida() != null)
 				.filter(r -> {
 					LocalDate fecha = r.getHoraEntrada().toLocalDate();
