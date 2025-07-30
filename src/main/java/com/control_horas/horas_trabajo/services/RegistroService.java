@@ -4,7 +4,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -92,9 +91,6 @@ public class RegistroService {
 					LocalDate fecha = r.getHoraEntrada().toLocalDate();
 					return !fecha.isBefore(desde) && !fecha.isAfter(hasta);
 				})
-				.sorted(Comparator.comparingInt(r ->
-				r.getHoraEntrada().getDayOfMonth()
-				))
 				.toList();
 		return registros.stream()
 				.map(r -> {
