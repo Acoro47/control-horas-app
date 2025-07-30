@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.control_horas.horas_trabajo.dtos.web.RegistroDTO;
@@ -18,6 +20,8 @@ import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
 
 @Service
 public class RegistroService {
+	
+	private final Logger logger = LoggerFactory.getLogger(RegistroService.class);
 	
 	private final RegistroRepository regRepo;
 	
@@ -94,6 +98,7 @@ public class RegistroService {
 				.toList();
 		return registros.stream()
 				.map(r -> {
+					logger.info("Registro: %s", r);
 					LocalDateTime entrada = r.getHoraEntrada();
 					LocalDateTime salida = r.getHoraSalida();
 					
