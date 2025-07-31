@@ -66,14 +66,16 @@ public class InformeMensualPdfApiController {
 	
 	@GetMapping("/pdf")
 	public ResponseEntity<byte[]> exportarPdf(
-			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM") YearMonth mes,
+			@RequestParam(required = false) String mes,
 			Principal principal) throws IOException, DocumentException {
 		
-		YearMonth mesSeleccionado = (mes != null ? mes : YearMonth.now());
+		
+		
+		YearMonth mesSeleccionado = (mes != null ? YearMonth.parse(mes, DateTimeFormatter.ofPattern("yyyy-MM")) : YearMonth.now());
 		String html = generarHTMLDesdeDatos(mesSeleccionado, principal);
 		byte[] pdfBytes = generarPdfDesdeHtml(html);
 		
-		String filename = String.format("Informe_%s.pdf", mesSeleccionado.format(DateTimeFormatter.ofPattern("yyyy-MM")));
+		String filename = String.format("Informe_%s.pdf", mesSeleccionado);
 		
 		
 		return ResponseEntity.ok()
