@@ -47,6 +47,7 @@ public class SecurityConfig {
 		.csrf(csrf -> csrf.disable()) 
 		.sessionManagement(session -> session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		.requestCache(rc -> rc.disable())
 		.exceptionHandling(ex -> ex
 				.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
 				)
