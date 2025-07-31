@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,10 +40,13 @@ import com.control_horas.horas_trabajo.services.RegistroService;
 import com.control_horas.horas_trabajo.utils.FormatoHelper;
 import com.itextpdf.text.DocumentException;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api/informe-mensual")
 public class InformeMensualPdfApiController {
 	
+	private static final Logger logger = LoggerFactory.getLogger(InformeMensualPdfApiController.class);
 	private static final Locale ESP = Locale.forLanguageTag("es");
 		
 	private final RegistroRepository registroRep;
@@ -67,9 +72,10 @@ public class InformeMensualPdfApiController {
 	@GetMapping("/pdf")
 	public ResponseEntity<byte[]> exportarPdf(
 			@RequestParam(required = false) String mes,
+			HttpServletRequest request,
 			Principal principal) throws IOException, DocumentException {
 		
-		
+		logger.debug("Llamada /api/informe-mensual/pdf mes={} desde IP={}",mes, request.getRemoteAddr());
 		
 		YearMonth mesSeleccionado = (mes != null ? YearMonth.parse(mes, DateTimeFormatter.ofPattern("yyyy-MM")) : YearMonth.now());
 		String html = generarHTMLDesdeDatos(mesSeleccionado, principal);
