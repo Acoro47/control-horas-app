@@ -85,8 +85,13 @@ public class RegistroService {
 	}
 	
 	
-	public List<RegistroDTO> mapearRegistros(Long id, LocalDate desde, LocalDate hasta){
-		List<Registro> registros = registrosFiltrados(id, desde, hasta);
+	public List<RegistroDTO> mapearRegistros(
+			Long usuarioId, 
+			LocalDate desde, 
+			LocalDate hasta
+			){
+		
+		List<Registro> registros = registrosFiltrados(usuarioId, desde, hasta);
 				
 		
 		return registros.stream()
@@ -151,7 +156,7 @@ public class RegistroService {
 		
 	}
 	
-	private List<Registro> registrosFiltrados(Long usuarioId, LocalDate desde, LocalDate hasta){
+	public List<Registro> registrosFiltrados(Long usuarioId, LocalDate desde, LocalDate hasta){
 		LocalDateTime inicio = desde.atStartOfDay();
 		LocalDateTime fin = hasta.atTime(LocalTime.MAX);
 		
@@ -164,7 +169,34 @@ public class RegistroService {
 					LocalDate f = r.getHoraEntrada().toLocalDate();
 							return !f.isBefore(desde) && !f.isAfter(hasta);
 				})
-				.toList();
+				.toList();				
+	}
+	
+	public long extraerMinutosExtraMesLaboral(List<ResumenDiaDTO> resumen, long minutosContrato) {
+		return resumen.stream()
+				.filter(d -> !isFinDeSemanaOFestivo(d.getFecha()))
+				.mapToLong(d -> Math.max(0, d.getMinutosTotales() - minutosContrato))
+				.sum();
 				
 	}
+	
+	public long extraerMinutosExtraMesFinde(List<ResumenDiaDTO> resumen, long minutosContrato) {
+		return resumen.stream()
+				.filter(d -> isFinDeSemanaOFestivo(d.getFecha()))
+				.mapToLong(d -> Math.max(0, d.getMinutosTotales() - minutosContrato))
+				.sum();
+				
+	}
+	
+	private boolean isFinDeSemanaOFestivo(LocalDate fecha) {
+		var d = fecha.getDayOfWeek();
+		return d == java.time.DayOfWeek.SATURDAY || d == java.time.DayOfWeek.SUNDAY;
+	}
+	
+	public String formatearMinutos(long minutos) {
+	    long h = minutos / 60;
+	    long m = minutos % 60;
+	    return String.format("%d:%02d h", h, m);
+	  }
+	
 }

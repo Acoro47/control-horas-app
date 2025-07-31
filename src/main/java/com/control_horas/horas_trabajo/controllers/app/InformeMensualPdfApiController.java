@@ -27,11 +27,13 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import com.control_horas.horas_trabajo.dtos.web.RegistroDTO;
 import com.control_horas.horas_trabajo.dtos.web.ResumenDiaDTO;
 import com.control_horas.horas_trabajo.entities.Registro;
 import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.repositories.RegistroRepository;
 import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
+import com.control_horas.horas_trabajo.services.RegistroService;
 import com.control_horas.horas_trabajo.utils.FormatoHelper;
 import com.itextpdf.text.DocumentException;
 
@@ -39,15 +41,22 @@ import com.itextpdf.text.DocumentException;
 @RequestMapping("/api/informe-mensual")
 public class InformeMensualPdfApiController {
 	
-private static final Locale ESP = Locale.forLanguageTag("es");
-	
+	private static final Locale ESP = Locale.forLanguageTag("es");
+		
 	private final RegistroRepository registroRep;
+	private final RegistroService regService;
 	private final UsuarioRepository userRepo;
 	private final org.thymeleaf.spring6.SpringTemplateEngine templateEngine;
 	private final ResourceLoader loader;
 	
-	public InformeMensualPdfApiController(RegistroRepository reg, UsuarioRepository user, SpringTemplateEngine thymeleafEngine, ResourceLoader loader) {
+	public InformeMensualPdfApiController(
+			RegistroRepository reg, 
+			UsuarioRepository user, SpringTemplateEngine thymeleafEngine,
+			ResourceLoader loader,
+			RegistroService regServ) {
+		
 		this.registroRep = reg;
+		this.regService = regServ;
 		this.userRepo = user;
 		this.templateEngine = thymeleafEngine;
 		this.loader = loader;
@@ -55,8 +64,9 @@ private static final Locale ESP = Locale.forLanguageTag("es");
 
 	
 	@GetMapping("/pdf")
-	public ResponseEntity<byte[]> exportarPdf(@RequestParam(required = false) YearMonth mes,
-											Principal principal) throws IOException, DocumentException {
+	public ResponseEntity<byte[]> exportarPdf(
+			@RequestParam(required = false) YearMonth mes,
+			Principal principal) throws IOException, DocumentException {
 		
 		YearMonth mesSeleccionado = (mes != null ? mes : YearMonth.now());
 		String html = generarHTMLDesdeDatos(mesSeleccionado, principal);
@@ -89,7 +99,12 @@ private static final Locale ESP = Locale.forLanguageTag("es");
 		LocalDate inicio = mes.atDay(1);
 		LocalDate fin = mes.atEndOfMonth();
 		
+		
+		
 		Usuario usuario = userRepo.findByUsername(principal.getName()).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+		
+		Long usuarioId = usuario.getId();
+		//List<RegistroDTO> regs = regService.mapearRegistros(usuarioId, inicio, fin);
 		
 		List<Registro> registros = registroRep.findAll().stream()
 				.filter(r -> r.getUsuario().equals(usuario))
@@ -99,6 +114,8 @@ private static final Locale ESP = Locale.forLanguageTag("es");
 					return !f.isBefore(inicio) && !f.isAfter(fin);
 				})
 				.toList();
+		
+		List<ResumenDiaDTO> res = regService.mapearResumenDiario(usuarioId, inicio, fin);
 		
 		List<ResumenDiaDTO> resumen = registros.stream()
 				.collect(Collectors.groupingBy(r -> r.getHoraEntrada().toLocalDate()))
@@ -114,11 +131,18 @@ private static final Locale ESP = Locale.forLanguageTag("es");
 					var totalMin = lista.stream().mapToLong(r -> java.time.Duration.between(r.getHoraEntrada(), r.getHoraSalida()).toMinutes()).sum();
 					
 					return new ResumenDiaDTO(fecha,entrada1, salida1, entrada2, salida2, totalMin);
-				}).sorted((a,b) -> a.getFecha().compareTo(b.getFecha())).toList();
+				}).sorted((a,b) -> a.getFecha().compareTo(b.getFecha())
+						).toList();
 		
 		double horasContrato = 4.0;
 		double tarifa = 9.0;
 		long contratoDiarioMin = (long)(horasContrato * 60);
+		
+		long extraLaboral = regService.extraerMinutosExtraMesLaboral(res, contratoDiarioMin);
+		long extraFinde = regService.extraerMinutosExtraMesFinde(res, contratoDiarioMin);
+		
+		String extraLaboralString = regService.formatearMinutos(extraLaboral);
+		String extraFindeString = regService.formatearMinutos(extraFinde);
 		
 		long extrasMesMin = resumen.stream()
 				.filter(d -> !isFinDeSemanaOFestivo(d.getFecha()))
@@ -134,6 +158,10 @@ private static final Locale ESP = Locale.forLanguageTag("es");
 		double importeFS = (extrasFsMin / 60.0) * tarifa;
 		double importeTotal = importeMES + importeFS;
 		
+		double importeExtraLab = (extraLaboral/60.0) * tarifa;
+		double importeExtraFinde = (extraFinde / 60.0) * tarifa;
+		double importeTotalExtra = importeExtraLab + importeExtraFinde;
+		
 		Resource cssRes = loader.getResource("classpath:static/css/estilos_pdf.css");
 		try {
 			String estilos = new String(cssRes.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
@@ -142,14 +170,14 @@ private static final Locale ESP = Locale.forLanguageTag("es");
 			ctx.setVariable("estilosCSS", estilos);
 			ctx.setVariable("formato", new FormatoHelper());
 			ctx.setVariable("usuario", usuario);
-			ctx.setVariable("resumen", resumen);
-			ctx.setVariable("hmesFormat", format(extrasMesMin));
-			ctx.setVariable("hmfsFormat", format(extrasFsMin));
+			ctx.setVariable("resumen", res);
+			ctx.setVariable("hmesFormat", extraLaboralString);
+			ctx.setVariable("hmfsFormat", extraFindeString);
 			ctx.setVariable("horasContrato", horasContrato);
 			ctx.setVariable("tarifa", tarifa);
-			ctx.setVariable("importeMes", String.format("%.2f", importeMES));
-			ctx.setVariable("importeFs", String.format("%.2f", importeFS));
-			ctx.setVariable("importeTotal", String.format("%.2f", importeTotal));
+			ctx.setVariable("importeMes", String.format("%.2f", importeExtraLab));
+			ctx.setVariable("importeFs", String.format("%.2f", importeExtraFinde));
+			ctx.setVariable("importeTotal", String.format("%.2f", importeTotalExtra));
 			ctx.setVariable("mesSeleccionado", mes.getMonth().getDisplayName(TextStyle.FULL, ESP).toUpperCase() + " " + mes.getYear());
 			
 			return templateEngine.process("plantilla_pdf", ctx);
@@ -162,7 +190,7 @@ private static final Locale ESP = Locale.forLanguageTag("es");
 			
 		}
 	}
-	
+
 	
 	private byte[] generarPdfDesdeHtml(String html) throws IOException, DocumentException {
 		
