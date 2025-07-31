@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -65,7 +66,7 @@ public class InformeMensualPdfApiController {
 	
 	@GetMapping("/pdf")
 	public ResponseEntity<byte[]> exportarPdf(
-			@RequestParam(required = false) YearMonth mes,
+			@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM") YearMonth mes,
 			Principal principal) throws IOException, DocumentException {
 		
 		YearMonth mesSeleccionado = (mes != null ? mes : YearMonth.now());
