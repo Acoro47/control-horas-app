@@ -69,7 +69,7 @@ public class InformeMensualPdfApiController {
 	}
 
 	
-	@GetMapping("/pdf")
+	@GetMapping("/exportarPdf")
 	public ResponseEntity<byte[]> exportarPdf(
 			@RequestParam(required = false) String mes,
 			HttpServletRequest request,
@@ -164,6 +164,7 @@ public class InformeMensualPdfApiController {
 		double importeMES = (extrasMesMin/60.0) * tarifa;
 		double importeFS = (extrasFsMin / 60.0) * tarifa;
 		double importeTotal = importeMES + importeFS;
+		logger.info("Importe total: {}",importeTotal);
 		
 		double importeExtraLab = (extraLaboral/60.0) * tarifa;
 		double importeExtraFinde = (extraFinde / 60.0) * tarifa;
