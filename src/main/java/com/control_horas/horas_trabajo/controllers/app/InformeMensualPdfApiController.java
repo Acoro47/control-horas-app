@@ -79,6 +79,7 @@ public class InformeMensualPdfApiController {
 		
 		YearMonth mesSeleccionado = (mes != null ? YearMonth.parse(mes, DateTimeFormatter.ofPattern("yyyy-MM")) : YearMonth.now());
 		String html = generarHTMLDesdeDatos(mesSeleccionado, principal);
+		logger.info("HTML generado (longitud={}):\n{}", html.length(), html);
 		byte[] pdfBytes = generarPdfDesdeHtml(html);
 		
 		String filename = String.format("Informe_%s.pdf", mesSeleccionado);
@@ -96,9 +97,9 @@ public class InformeMensualPdfApiController {
 		return d == java.time.DayOfWeek.SATURDAY || d == java.time.DayOfWeek.SUNDAY;
 	}
 	
-	private String format(long minutos) {
-	    long h = minutos / 60;
-	    long m = minutos % 60;
+	private String formatMin(long minutos) {
+	    double h = minutos / 60.0;
+	    double m = minutos % 60.0;
 	    return String.format("%d:%02d h", h, m);
 	  }
 	
@@ -107,13 +108,10 @@ public class InformeMensualPdfApiController {
 		
 		LocalDate inicio = mes.atDay(1);
 		LocalDate fin = mes.atEndOfMonth();
-		
-		
-		
+				
 		Usuario usuario = userRepo.findByUsername(principal.getName()).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 		
 		Long usuarioId = usuario.getId();
-		//List<RegistroDTO> regs = regService.mapearRegistros(usuarioId, inicio, fin);
 		
 		List<Registro> registros = registroRep.findAll().stream()
 				.filter(r -> r.getUsuario().equals(usuario))
@@ -205,9 +203,15 @@ public class InformeMensualPdfApiController {
 		
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 			ITextRenderer renderer = new ITextRenderer();
-			renderer.setDocumentFromString(html);
-			renderer.layout();
-			renderer.createPDF(baos);
+			try {
+				renderer.setDocumentFromString(html);
+				renderer.layout();
+				renderer.createPDF(baos);
+			} catch (Exception e) {
+				logger.error("Error generando PDF: {}", e.getMessage(), e);
+				throw new IOException("Error interno al generar PDF");
+			}
+			logger.debug("Generando PDF a partir del HTML...");
 			return baos.toByteArray();
 		}
 	}
