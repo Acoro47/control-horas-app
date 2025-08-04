@@ -6,6 +6,8 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +27,13 @@ import com.control_horas.horas_trabajo.utils.HoraUtils;
 
 
 
+
+
 @RestController
 @RequestMapping("/api")
 public class RegistroAppController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(RegistroAppController.class);
 	
 	private final RegistroService regService;
 	private final UsuarioRepository userRepo;
@@ -46,6 +52,7 @@ public class RegistroAppController {
 			@RequestParam String fechaHasta
 			) {
 		try {
+			logger.info("Parámtros recibidos en la peticion: id: {}, Desde: {}, Hasta: {}", id, fechaDesde, fechaHasta);
 			LocalDate desde = LocalDate.parse(fechaDesde);
 			LocalDate hasta = LocalDate.parse(fechaHasta);
 			List<RegistroDTO> registros = regService.mapearRegistros(id, desde, hasta);
