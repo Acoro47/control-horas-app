@@ -113,6 +113,7 @@ public class RegistroService {
 						duracionExtra = (extra / 60) + "h " + (extra % 60) + "m";
 						duracionTotal = (min / 60) + "h " + (min % 60) + "m";
 					}
+					
 					return new RegistroDTO(entrada, salida, duracionBase, duracionExtra, duracionTotal);
 				})
 				.toList();
