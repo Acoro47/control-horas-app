@@ -23,6 +23,11 @@ public interface RegistroRepository extends JpaRepository<Registro, Long>{
 			LocalDateTime inicio,
 			LocalDateTime fin
 			);
+	List<Registro> findByUsuarioIdAndHoraEntradaBetween(
+			Long usuarioId,
+			LocalDateTime inicio,
+			LocalDateTime fin
+			);
 	
 	boolean existsByUsuarioIdAndHoraSalidaIsNull(long usuarioId);
 

@@ -84,6 +84,41 @@ public class RegistroService {
 		return String.format("%02d:%02d", horas, resto);
 	}
 	
+	public List<RegistroDTO> mapearRegistrosDia(
+			Long usuarioId, 
+			LocalDate hoy){
+		LocalDateTime inicio = hoy.atStartOfDay();
+		LocalDateTime fin = hoy.atTime(LocalTime.MAX);
+		
+		List<Registro> registrosDia = regRepo.findByUsuarioIdAndHoraEntradaBetween(usuarioId, inicio ,fin);
+		
+		return registrosDia.stream()
+				.filter(r -> r.getHoraEntrada() != null)
+				.map(r -> {
+					logger.info("Registros Mensuales: Entrada: {}", r.getHoraEntrada(), r.getHoraSalida());
+					LocalDateTime entrada = r.getHoraEntrada();
+					LocalDateTime salida = r.getHoraSalida();
+					
+					String duracionBase = "";
+					String duracionExtra = "";
+					String duracionTotal = "";
+					
+					if (entrada != null && salida != null) {
+						long min = Duration.between(entrada, salida).toMinutes();
+						long base = Math.min(min, 240);
+						long extra = Math.max(0, min - 240);
+						
+						duracionBase = (base / 60) + "h " + (base % 60) + "m";
+						duracionExtra = (extra / 60) + "h " + (extra % 60) + "m";
+						duracionTotal = (min / 60) + "h " + (min % 60) + "m";
+					}
+					
+					return new RegistroDTO(entrada, salida, duracionBase, duracionExtra, duracionTotal);
+				})
+				.toList();
+		
+	}
+	
 	
 	public List<RegistroDTO> mapearRegistros(
 			Long usuarioId, 
@@ -96,7 +131,7 @@ public class RegistroService {
 		
 		return registros.stream()
 				.map(r -> {
-					logger.info("Registros: Entrada: {}, Salida: {}", r.getHoraEntrada(), r.getHoraSalida());
+					logger.info("Registros Mensuales: Entrada: {}", r.getHoraEntrada(), r.getHoraSalida());
 					LocalDateTime entrada = r.getHoraEntrada();
 					LocalDateTime salida = r.getHoraSalida();
 					
