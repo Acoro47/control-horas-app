@@ -23,5 +23,7 @@ public interface RegistroRepository extends JpaRepository<Registro, Long>{
 			LocalDateTime inicio,
 			LocalDateTime fin
 			);
+	
+	boolean existsByUsuarioIdAndHoraSalidaIsNull(long usuarioId);
 
 }

@@ -95,14 +95,7 @@ public class InformeMensualPdfApiController {
 	private boolean isFinDeSemanaOFestivo(LocalDate fecha) {
 		var d = fecha.getDayOfWeek();
 		return d == java.time.DayOfWeek.SATURDAY || d == java.time.DayOfWeek.SUNDAY;
-	}
-	
-	private String formatMin(long minutos) {
-	    double h = minutos / 60.0;
-	    double m = minutos % 60.0;
-	    return String.format("%d:%02d h", h, m);
-	  }
-	
+	}	
 	
 	private String generarHTMLDesdeDatos(YearMonth mes, Principal principal) {
 		

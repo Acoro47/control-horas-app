@@ -6,12 +6,14 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.control_horas.horas_trabajo.dtos.web.RegistroDTO;
 import com.control_horas.horas_trabajo.entities.Registro;
@@ -57,9 +59,16 @@ public class RegistroAppController {
 	
 	@PostMapping("/entrada")
 	public ResponseEntity<?> registrarEntrada(@RequestParam Long idUsuario){
-		Usuario u = userRepo.findById(idUsuario).orElseThrow();
-		LocalDateTime hora = HoraUtils.redondearMinutos(LocalDateTime.now());
+		Usuario u = userRepo.findById(idUsuario).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 		
+		boolean existe = regRepo.existsByUsuarioIdAndHoraSalidaIsNull(idUsuario);
+		
+		if (existe) {
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body(Map.of("mensaje", "Ya existe una entrada abierta"));
+		}
+		
+		LocalDateTime hora = HoraUtils.redondearMinutos(LocalDateTime.now());
 		Registro r = new Registro();
 		r.setUsuario(u);
 		r.setHoraEntrada(hora);
