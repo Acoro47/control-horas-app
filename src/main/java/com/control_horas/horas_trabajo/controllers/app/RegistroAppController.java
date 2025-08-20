@@ -73,7 +73,9 @@ public class RegistroAppController {
 	}
 	
 	@PostMapping("/entrada")
-	public ResponseEntity<?> registrarEntrada(@RequestParam Long idUsuario){
+	public ResponseEntity<?> registrarEntrada(
+			@RequestParam Long idUsuario
+			){
 		Usuario u = userRepo.findById(idUsuario).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 		
 		boolean existe = regRepo.existsByUsuarioIdAndHoraSalidaIsNull(idUsuario);
@@ -93,7 +95,9 @@ public class RegistroAppController {
 	}
 	
 	@PostMapping("/salida")
-	public ResponseEntity<?> registrarSalida(@RequestParam Long idUsuario){
+	public ResponseEntity<?> registrarSalida(
+			@RequestParam Long idUsuario
+			){
 		Usuario u = userRepo.findById(idUsuario).orElseThrow();
 		LocalDateTime hora = HoraUtils.redondearMinutos(LocalDateTime.now());
 		
