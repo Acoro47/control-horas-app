@@ -1,6 +1,7 @@
 # 🕒 control-horas-app
 
 Aplicación para llevar un control de las horas trabajadas.
+Es una buena opcion para llevar el control de tu tiempo.
 
 ---
 
