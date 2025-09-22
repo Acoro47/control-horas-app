@@ -18,8 +18,12 @@ public class WakeUpController {
 	public ResponseEntity<Map<String, String>> wakeup(){
 		
 		Map<String, String> response = new HashMap<>();
-				
-		response.put("status", "ok");
+		try {
+			response.put("status", "ok");
+		} catch (Exception e) {
+			response.put("status", "stopped");
+		}
+		
 		response.put("timestamp", Instant.now().toString());
 		return ResponseEntity.ok(response);
 		
