@@ -3,7 +3,6 @@ package com.control_horas.horas_trabajo.controllers.web;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.control_horas.horas_trabajo.entities.Usuario;
-import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
 import com.control_horas.horas_trabajo.services.UsuarioDetailsService;
 
 @Controller
@@ -131,9 +129,6 @@ public class AdminController {
 		
 		return "redirect:/admin/usuarios";
 	}
-	
-	
-	
 	
 	
 }

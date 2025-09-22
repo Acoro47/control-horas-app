@@ -30,5 +30,7 @@ public interface RegistroRepository extends JpaRepository<Registro, Long>{
 			);
 	
 	boolean existsByUsuarioIdAndHoraSalidaIsNull(long usuarioId);
+	
+	List<Registro> findAllByHoraSalidaIsNull();
 
 }

@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.control_horas.horas_trabajo.entities.Registro;
 import com.control_horas.horas_trabajo.entities.Usuario;
@@ -20,6 +21,7 @@ import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
 
 
 @SpringBootApplication(exclude = MailSenderAutoConfiguration.class)
+@EnableScheduling
 public class HorasTrabajoApplication {
 
 	public static void main(String[] args) {
