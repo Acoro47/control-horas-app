@@ -52,7 +52,7 @@ public class SecurityConfig {
 				.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
 				)
 		.authorizeHttpRequests(auth -> auth 
-				.requestMatchers("/api/login", "/api/enviarToken","/api/registros/**","/api/entrada","/api/salida").permitAll() 
+				.requestMatchers("/api/login", "/api/enviarToken","/api/registros/**","/api/entrada","/api/salida","/api/wakeup").permitAll() 
 				.anyRequest().authenticated() 
 				)
 		
