@@ -50,7 +50,7 @@ public class LoginAppController {
 		return ResponseEntity.ok(new TokenResponse(
 				userService.obtenerUsuarioPorNombre(username).getId(),
 				username,
-				"ok",
+				userService.obtenerUsuarioPorNombre(username).getRol().toString(),
 				token));
 		
 	}
