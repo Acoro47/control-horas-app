@@ -14,11 +14,11 @@ import com.control_horas.horas_trabajo.services.AuditLogService;
 @RestController
 @RequestMapping("/api/admin")
 @PreAuthorize("hasRole('ADMIN')")
-public class AdminController {
+public class AppAdminController {
 	
 	private AuditLogService logService;
 
-	public AdminController(AuditLogService logService) {
+	public AppAdminController(AuditLogService logService) {
 		
 		this.logService = logService;
 	}
