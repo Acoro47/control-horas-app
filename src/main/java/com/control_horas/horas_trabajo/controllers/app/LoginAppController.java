@@ -31,7 +31,7 @@ public class LoginAppController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> login(
+	public ResponseEntity<TokenResponse> login(
 			@Valid @RequestBody LoginRequest datos) {
 		
 		String username = datos.getUsername();
@@ -41,7 +41,12 @@ public class LoginAppController {
 		
 		if (!valido) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-					.body(new ErrorResponse("Invalid credentials"));	
+					.body(new TokenResponse(
+							null,
+							username,
+							null,
+							null
+							));	
 		}
 		
 		UserDetails userDetails = userService.loadUserByUsername(username);

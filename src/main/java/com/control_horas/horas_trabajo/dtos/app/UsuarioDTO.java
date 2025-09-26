@@ -1,18 +1,24 @@
 package com.control_horas.horas_trabajo.dtos.app;
 
+import java.util.List;
+
+import com.control_horas.horas_trabajo.entities.Registro;
+
 public final class UsuarioDTO {
 	
 	private Long id;
 	private String username;
 	private String mensaje;
 	private String token;
+	private List<Registro> registros;
 	
 		
-	public UsuarioDTO(Long id, String name, String message, String tok) {
+	public UsuarioDTO(Long id, String name, String message, String tok, List<Registro> regs) {
 		this.id = id;
 		this.username = name;
 		this.mensaje = message;
-		this.token = tok;	
+		this.token = tok;
+		this.registros = regs;
 	}
 	
 	public UsuarioDTO(Long id, String name, String message) {
@@ -52,6 +58,16 @@ public final class UsuarioDTO {
 	public void setToken(String token) {
 		this.token = token;
 	}
+
+	public List<Registro> getRegistros() {
+		return registros;
+	}
+
+	public void setRegistros(List<Registro> registros) {
+		this.registros = registros;
+	}
+	
+	
 	
 	
 	

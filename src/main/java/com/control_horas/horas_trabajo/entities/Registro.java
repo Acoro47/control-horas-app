@@ -13,7 +13,15 @@ import jakarta.persistence.Table;
 @Table(name="registro")
 public class Registro {
 	
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	private Long id;
 	
+	private LocalDateTime horaEntrada;
+	private LocalDateTime horaSalida;
+	
+	@ManyToOne
+	private Usuario usuario;
 	
 	public Registro() {
 		
@@ -25,16 +33,6 @@ public class Registro {
 		this.horaSalida = horaSalida;
 		this.usuario = usuario;
 	}
-
-	@Id
-	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	private Long id;
-	
-	private LocalDateTime horaEntrada;
-	private LocalDateTime horaSalida;
-	
-	@ManyToOne
-	private Usuario usuario;
 
 	public Long getId() {
 		return id;
