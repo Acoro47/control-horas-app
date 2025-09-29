@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.control_horas.horas_trabajo.dtos.app.ErrorResponse;
+import com.control_horas.horas_trabajo.dtos.app.LoginErrorResponse;
+import com.control_horas.horas_trabajo.dtos.app.LoginResponse;
 import com.control_horas.horas_trabajo.dtos.app.TokenResponse;
 import com.control_horas.horas_trabajo.entities.LoginRequest;
+import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.services.JwtService;
 import com.control_horas.horas_trabajo.services.UsuarioDetailsService;
 
@@ -31,7 +34,7 @@ public class LoginAppController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<TokenResponse> login(
+	public ResponseEntity<LoginResponse> login(
 			@Valid @RequestBody LoginRequest datos) {
 		
 		String username = datos.getUsername();
@@ -40,22 +43,19 @@ public class LoginAppController {
 		boolean valido = userService.validarCredenciales(username, password);
 		
 		if (!valido) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-					.body(new TokenResponse(
-							null,
-							username,
-							null,
-							null
-							));	
+			return ResponseEntity
+					.status(HttpStatus.UNAUTHORIZED)
+					.body(new LoginErrorResponse("Credenciales incorrectas", HttpStatus.UNAUTHORIZED.value()));
+					
 		}
 		
 		UserDetails userDetails = userService.loadUserByUsername(username);
 		String token = jwtService.generateToken(userDetails);
-		
+		Usuario usuario = userService.obtenerUsuarioPorNombre(username);
 		return ResponseEntity.ok(new TokenResponse(
-				userService.obtenerUsuarioPorNombre(username).getId(),
+				usuario.getId(),
 				username,
-				userService.obtenerUsuarioPorNombre(username).getRol().toString(),
+				usuario.getRol().toString(),
 				token));
 		
 	}
