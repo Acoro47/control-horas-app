@@ -34,18 +34,25 @@ public class LoginAppController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<LoginResponse> login(
-			@Valid @RequestBody LoginRequest datos) {
+	public ResponseEntity<TokenResponse> login(
+			@RequestBody LoginRequest datos) {
+
 		
 		String username = datos.getUsername();
 		String password = datos.getPassword();
 		
+
+		if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.build();
+		}
+
 		boolean valido = userService.validarCredenciales(username, password);
 		
 		if (!valido) {
 			return ResponseEntity
-					.status(HttpStatus.UNAUTHORIZED)
-					.body(new LoginErrorResponse("Credenciales incorrectas", String.valueOf(HttpStatus.UNAUTHORIZED.value())));
+					.status(HttpStatus.BAD_REQUEST)
+					.build();
 					
 		}
 		

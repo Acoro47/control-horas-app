@@ -58,16 +58,24 @@ public class JwtService {
 	}
 	
 	public String extractUsername(String token) {
-		return extractAllClaims(token).getSubject();
+		Claims claims = extractAllClaims(token);
+		
+		return claims != null ? claims.getSubject() : null;
 	}
 	
 	public boolean isTokenValid(String token, UserDetails userDetails) {
-		String username = extractUsername(token);
+		Claims claims = extractAllClaims(token);
+		if (claims == null) return false;
+		
+		String username = claims.getSubject();
 		return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
 	}
 	
 	private boolean isTokenExpired(String token) {
-		Date expiration = extractAllClaims(token).getExpiration();
+		Claims claims = extractAllClaims(token);
+	    if (claims == null) return true;
+	    
+		Date expiration = claims.getExpiration();
 		return expiration.before(new Date());
 	}
 	
@@ -81,24 +89,24 @@ public class JwtService {
 		}
 		catch (ExpiredJwtException e) {
 			System.out.println("Token expirado:" + e.getMessage());
-			throw e;
+			return null;
 		}
 		catch (UnsupportedJwtException  e) {
 			System.out.println("Token no soportado:" + e.getMessage());
-			throw e;
+			return null;
 		}
 		catch (MalformedJwtException e) {
 	        // Token mal formado
 	        System.out.println("⚠️ Token mal formado: " + e.getMessage());
-	        throw e;
+	        return null;
 	    } catch (SecurityException e) {
 	        // Fallo en la firma
 	        System.out.println("⚠️ Firma inválida: " + e.getMessage());
-	        throw e;
+	        return null;
 	    } catch (IllegalArgumentException e) {
 	        // Token vacío o null
 	        System.out.println("⚠️ Token ilegal: " + e.getMessage());
-	        throw e;
+	        return null;
 	    }
 	}
 
