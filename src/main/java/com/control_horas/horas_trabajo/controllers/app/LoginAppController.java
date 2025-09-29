@@ -45,7 +45,7 @@ public class LoginAppController {
 		if (!valido) {
 			return ResponseEntity
 					.status(HttpStatus.UNAUTHORIZED)
-					.body(new LoginErrorResponse("Credenciales incorrectas", HttpStatus.UNAUTHORIZED.value()));
+					.body(new LoginErrorResponse("Credenciales incorrectas", String.valueOf(HttpStatus.UNAUTHORIZED.value())));
 					
 		}
 		
@@ -53,7 +53,7 @@ public class LoginAppController {
 		String token = jwtService.generateToken(userDetails);
 		Usuario usuario = userService.obtenerUsuarioPorNombre(username);
 		return ResponseEntity.ok(new TokenResponse(
-				usuario.getId(),
+				usuario.getId().toString(),
 				username,
 				usuario.getRol().toString(),
 				token));
