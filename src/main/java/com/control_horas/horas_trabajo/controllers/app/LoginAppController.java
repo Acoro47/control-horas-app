@@ -28,8 +28,10 @@ public class LoginAppController {
 	@PostMapping("/login")
 	public ResponseEntity<TokenResponse> login(
 			@RequestBody LoginRequest datos) {
+		
 		String username = datos.getUsername();
 		String password = datos.getPassword();
+		
 		if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.build();
