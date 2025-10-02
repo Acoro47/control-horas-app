@@ -22,7 +22,7 @@ Es una buena opcion para llevar el control de tu tiempo.
 | Spring Boot          | Framework principal                   |
 | Spring Security      | Autenticación y autorización          |
 | BCryptPasswordEncoder| Encriptación de contraseñas           |
-| H2 Database          | Base de datos para desarrollo         |
+| Postgresql Database  | Base de datos para desarrollo         |
 | ITextRenderer        | Generación de PDF desde HTML          |
 | Maven                | Gestión de dependencias y compilación |
 
