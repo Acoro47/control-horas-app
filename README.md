@@ -45,19 +45,6 @@ Es una buena opcion para llevar el control de tu tiempo.
 ---
 
 ## 📂 Estructura del proyecto
-
-```plaintext
-control-horas-app/
-├── src/
-│   ├── main/java/…       → Código fuente (controladores, servicios, entidades)
-│   ├── main/resources/   → Configuración (`application.properties`)
-│   └── test/java/…       → Tests automatizados
-├── pom.xml               → Configuración del proyecto Maven
-├── mvnw / mvnw.cmd       → Scripts para usar Maven sin instalación global
-├── README.md             → Documentación del proyecto
-
-```
-
 ---
 
 ## 🛡️ Licencia
@@ -76,7 +63,7 @@ Las pull requests son bienvenidas, y también puedes abrir un *issue* para repor
 
 ## 📫 Contacto
 
-Desarrollado por **Abel Coro**  
+Desarrollado por **Abel Contreras**  
 🔗 GitHub: [@Acoro47](https://github.com/Acoro47)
 
 ---
