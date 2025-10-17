@@ -14,6 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.control_horas.horas_trabajo.components.CustomSuccessHandler;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 
 
 @Configuration
@@ -49,6 +51,13 @@ public class SecurityConfig {
 				.requestMatchers("/api/login", "/api/enviarToken").permitAll() 
 				.anyRequest().authenticated() 
 				)
+		.exceptionHandling(ex -> ex
+				.authenticationEntryPoint((request, response, authException) -> {
+					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+					response.setContentType("application/json");
+					response.getWriter().write("{\"error\":\"No autorizado\"}");
+				})
+			)
 		
 		.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 		
