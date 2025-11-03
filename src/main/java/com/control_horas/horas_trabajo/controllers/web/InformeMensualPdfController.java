@@ -2,6 +2,7 @@ package com.control_horas.horas_trabajo.controllers.web;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Principal;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -101,7 +103,12 @@ public class InformeMensualPdfController {
 		
 		String mesLegible = mes.getMonth().getDisplayName(java.time.format.TextStyle.FULL, ESP).toUpperCase() + " " + mes.getYear();
 		
-		String estilos = Files.readString(Paths.get("src/main/resources/static/css/estilos_pdf.css"));
+		ClassPathResource resource = new ClassPathResource("static/css/estilos_pdf.css");
+	
+		String estilos;
+		try (var inputStream = resource.getInputStream()) {
+			estilos = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+		}
 		
 		Context ctx = new Context();
 		ctx.setVariable("estilosCSS", estilos);

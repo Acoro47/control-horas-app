@@ -21,7 +21,10 @@
 		      	</div>
 		      	
 		      	<div class="d-grid mb-3">
-		        <button type="submit" class="btn btn-primary">Entrar</button>
+		        	<button type="submit" class="btn btn-primary">
+		        	<span id="loginBtnText">Entrar</span>
+		        	<span id="loginBtnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+		        	</button>
 		      </div>
 		      
 			</form>
@@ -32,5 +35,7 @@
 			<div th:if="${error}"   class="alert alert-danger"  th:text="${error}"></div>
 		</div>
 	</div>
+	
+	<script th:src="@{/js/login.js}"></script>
 </body>
 </html>
