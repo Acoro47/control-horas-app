@@ -93,6 +93,37 @@ public class RegistroController {
 		return "redirect:/panel";
 	}
 	
+	@PostMapping("/pausa/inicio")
+	public String registrarInicioPausa(Authentication auth){
+		LocalDateTime entrada = LocalDateTime.now();
+		LocalDateTime redondeada = HoraUtils.redondearMinutos(entrada);
+		
+		Usuario u = userRepo.findByUsername(auth.getName()).orElseThrow();
+		Registro r = registroRepo.findFirstByUsuarioAndHoraSalidaIsNullOrderByHoraEntrada(u)
+				.orElseThrow();
+		r.setHoraSalida(redondeada);
+		registroRepo.save(r);
+		
+		return "redirect:/panel";
+	}
+	
+	@PostMapping("/pausa/fin")
+	public String registrarFinPausa(Authentication auth) {
+		
+		LocalDateTime entrada = LocalDateTime.now();
+		LocalDateTime redondeada = HoraUtils.redondearMinutos(entrada);
+		
+		Usuario u = userRepo.findByUsername(auth.getName()).orElseThrow();
+		
+		Registro r = new Registro();
+	
+		r.setHoraEntrada(redondeada);
+		r.setUsuario(u);
+		registroRepo.save(r);
+		
+		return "redirect:/panel";
+	}
+	
 	
 	
 	

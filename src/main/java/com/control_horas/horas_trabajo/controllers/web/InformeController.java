@@ -19,12 +19,12 @@ import com.control_horas.horas_trabajo.services.RegistroService;
 
 
 @Controller
-public class informeController {
+public class InformeController {
 	
 	private final RegistroService registroServ;
 	private final UsuarioRepository userRepo;
 	
-	public informeController(RegistroService reg, UsuarioRepository user) {
+	public InformeController(RegistroService reg, UsuarioRepository user) {
 		this.registroServ = reg;
 		this.userRepo = user;
 	}
