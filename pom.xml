@@ -11,7 +11,7 @@
 	<groupId>com.control_horas</groupId>
 	<artifactId>horas_trabajo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>horas_trabajo</name>
+	<name>control-horas-app</name>
 	<description>Aplicacion para llevar un control de entrada y salida</description>
 	<url/>
 	<licenses>
