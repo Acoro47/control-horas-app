@@ -2,48 +2,84 @@
  * 
  */
 
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.querySelector('form[method="post"]');
-  const btn = document.getElementById('loginBtn');
-  const btnText = document.getElementById('loginBtnText');
-  const btnSpinner = document.getElementById('loginBtnSpinner');
-  const inputs = form.querySelectorAll('input, button');
-
-  form.addEventListener('submit', function (e) {
-    // Evitar doble envío si ya estamos en proceso
-    if (btn.disabled) {
-      e.preventDefault();
-      return;
-    }
-
-    // Si la validación nativa falla, no bloquear (dejar que el navegador muestre el error)
-    if (!form.checkValidity()) {
-      // allow browser to show validation messages; do not disable
-      return;
-    }
-
-    // Deshabilitar todos los controles del formulario
-    inputs.forEach(el => el.disabled = true);
-
-    // Cambiar texto y mostrar spinner
-    btnText.textContent = 'Entrando...';
-    btnSpinner.classList.remove('d-none');
-    btn.setAttribute('aria-busy', 'true');
-    btn.disabled = true;
-
-    // Si el envío es interrumpido por JS más abajo, re-habilitará en el catch o manejo de errores
-    // No preventDefault aquí: dejamos que el formulario se envíe al servidor.
-  });
-
-  // Caso en que quieras re-habilitar automáticamente si ocurre un error JS (opcional)
-  // window.addEventListener('error', () => restore());
-  // window.addEventListener('unhandledrejection', () => restore());
-
-  function restore() {
-    inputs.forEach(el => el.disabled = false);
-    btnText.textContent = 'Entrar';
-    btnSpinner.classList.add('d-none');
-    btn.removeAttribute('aria-busy');
-    btn.disabled = false;
-  }
+document.addEventListener('DOMContentLoaded', () => {
+	const form  = document.querySelector('form[method="post]');
+	if (!form) return;
+	
+	const btn = document.getElementById('loginBtn');
+	const btnLoader = document.getElementById('loginBtnDisabled');
+	const overlay = document.getElementById('submitOverlay');
+	const controls = Array.from(form.querySelectorAll('input, select, textarea, button'));
+	
+	if (!btn || !btnLoader) {
+		form.addEventListener('submit', (e) => {
+			const submitBtn = form.querySelector('[type="submit"]');
+			if (submitBtn) {
+				submitBtn.disabled = true;
+			}
+		});
+	}
+	
+	form.addEventListener('submit', (e) => {
+		if (!form.checkValidity()) return;
+		
+		if (btn.disabled) {
+			e.preventDefault();
+			return;
+		}
+		
+		controls.forEach(el => { 
+			try { el.disabled = true; 
+			
+			} catch(_){
+				
+			}
+		 });
+		 
+		 btn.classList.remove('d-none');
+		 btn.setAttribute('aria-hidden', 'false');
+		 
+		 btnLoader.classList.remove('d-none');
+		 btnLoader.setAttribute('aria-hidden', 'false');
+		 btnLoader.setAttribute('aria-busy', 'true');
+		 
+		 if (overlay) {
+			overlay.classList.remove('d-none');
+			overlay.setAttribute('aria-hidden', 'false');
+		 }
+	});
+	
+	window.addEventListener('pageshow', () => {
+		if (!btn.classList.contains('d-none') && btn.disabled) {
+			restore();
+		}
+		
+		if (!btnLoader.classList.contains('d-none') && btnLoader.disabled) {
+					restore();
+		}
+	});
+	
+	function restore() {
+		controls.forEach(el => {
+			try {
+				el.disabled = false;
+			} catch (_) {
+				
+			}
+		});
+		btn.classList.remove('d-none');
+		btn.removeAttribute('aria-hidden');
+		btn.disabled = false;
+		
+		btnLoader.classList.remove('d-none');
+		btnLoader.removeAttribute('aria-hidden');
+		btnLoader.removeAttribute('aria-busy');
+		
+		if (overlay) {
+			overlay.classList.add('d-none');
+			overlay.setAttribute('aria-hidden','true');
+		}
+	}
+	
+	window.loginFormRestore = restore;
 });
