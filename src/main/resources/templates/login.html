@@ -11,7 +11,9 @@
 	<div class="container-fluid d-flex align-items-center justify-content-center vh-100">
 		<div class="card shadow p-4 w-100" style="max-width: 400px;">
 			<h3 class="text-center mb-4">Login</h3>
-			<form class="d-inline" th:action="@{/login}" method="post">
+			
+			<form id="loginForm" class="d-inline" th:action="@{/login}" method="post">
+			<div id="loginError" class="alert alert-danger d-none" role="alert" aria-live="polite"></div>
 				<div class="mb-3">
 					<label for="username" class="form-label">Usuario</label>
 		        	<input type="text" class="form-control" id="username" name="username" required />
