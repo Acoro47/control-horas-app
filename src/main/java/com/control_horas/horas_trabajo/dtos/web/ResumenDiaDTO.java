@@ -25,9 +25,9 @@ public class ResumenDiaDTO {
 	// Formato
 	private static final DateTimeFormatter HORA = DateTimeFormatter.ofPattern("HH:mm");
 	private static final Locale ESP = Locale.forLanguageTag("es");
-	  
-	  
-	
+
+
+
 	public long getMinutosTotales() {
 		return minutosTotales;
 	}
@@ -35,11 +35,11 @@ public class ResumenDiaDTO {
 	public void setMinutosTotales(long minutosTotales) {
 			this.minutosTotales = minutosTotales;
 	}
-	
+
 	public LocalDate getFecha() {
-		return fecha; 
+		return fecha;
 	}
-	
+
 	public String getDiaSemana() {
 		return fecha.getDayOfWeek().getDisplayName(java.time.format.TextStyle.FULL, ESP);
 	}

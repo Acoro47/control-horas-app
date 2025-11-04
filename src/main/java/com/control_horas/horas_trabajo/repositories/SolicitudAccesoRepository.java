@@ -9,7 +9,7 @@ import com.control_horas.horas_trabajo.entities.EstadoSolicitud;
 import com.control_horas.horas_trabajo.entities.SolicitudAcceso;
 
 public interface SolicitudAccesoRepository  extends JpaRepository<SolicitudAcceso, Long>{
-	
+
 	Optional<SolicitudAcceso> findByToken(String token);
 	List<SolicitudAcceso> findByEstado(EstadoSolicitud estado);
 	Optional<SolicitudAcceso> findByEmail(String email);

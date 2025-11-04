@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public record RegistroDTO(
-		
+
 		@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 		LocalDateTime entrada,
-		
+
 		@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 		LocalDateTime salida,
 		String duracionBase,

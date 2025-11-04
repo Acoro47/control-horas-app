@@ -9,7 +9,7 @@ import com.control_horas.horas_trabajo.entities.AuditLog;
 
 @Repository
 public interface AuditLogRepository extends JpaRepository<AuditLog, Long>{
-	
+
 	List<AuditLog> findByEntityNameAndEntityIdOrderByChangedAtDesc(String entityName, Long entityId);
 	List<AuditLog> findByChangedByOrderByChangedAtDesc(String changedBy);
 

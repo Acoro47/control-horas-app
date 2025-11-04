@@ -1,17 +1,10 @@
 package com.control_horas.horas_trabajo;
 
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import com.control_horas.horas_trabajo.entities.Registro;
-import com.control_horas.horas_trabajo.entities.Usuario;
-import com.control_horas.horas_trabajo.repositories.RegistroRepository;
-import com.control_horas.horas_trabajo.repositories.UsuarioRepository;
 
 
 
@@ -22,8 +15,8 @@ public class HorasTrabajoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HorasTrabajoApplication.class, args);
 	}
-	
-	
+
+
 	/*
 	@Bean
     CommandLineRunner cargarRegistrosSimulados(RegistroRepository registroRepo, UsuarioRepository usuarioRepo) {
@@ -38,8 +31,8 @@ public class HorasTrabajoApplication {
             Usuario usuario = usuarioOpt.get();
 
             List<Registro> registros = new ArrayList<>();
-            
-            
+
+
 
             for (int dia = 1; dia <= 30; dia++) {
                 LocalDate fecha = LocalDate.of(2025, 7, dia);
@@ -76,17 +69,17 @@ public class HorasTrabajoApplication {
                                 fecha.atTime(15, 00)
                             ));
                 	}
-                    
+
                 } else {
-                	
-                	if (dia == 1 || 
+
+                	if (dia == 1 ||
             			dia == 7 ||
             			dia == 8 ||
             			dia == 10 ||
             			dia == 11 ||
             			dia == 14 ||
             			dia == 28 ) {
-                		
+
                 		registros.add(new Registro(
                                 usuario,
                                 fecha.atTime(7, 30),
@@ -97,13 +90,13 @@ public class HorasTrabajoApplication {
                                 fecha.atTime(17, 00),
                                 fecha.atTime(21, 30)
                             ));
-                		
-                	}  else if (dia == 4 || 
+
+                	}  else if (dia == 4 ||
                 			dia == 15 ||
                 			dia == 17 ||
                 			dia == 21 ||
                 			dia == 24) {
-                	
+
 	                    registros.add(new Registro(
 	                        usuario,
 	                        fecha.atTime(7, 30),
@@ -114,13 +107,13 @@ public class HorasTrabajoApplication {
 	                        fecha.atTime(17, 00),
 	                        fecha.atTime(21, 45)
                 		));
-	                    
-                	} else if (dia == 3 || 
+
+                	} else if (dia == 3 ||
                 			dia == 18 ||
                 			dia == 8 ||
                 			dia == 22 ||
-                			dia == 25) {	
-                	
+                			dia == 25) {
+
 	                    registros.add(new Registro(
 	                        usuario,
 	                        fecha.atTime(7, 30),
@@ -143,16 +136,16 @@ public class HorasTrabajoApplication {
     	                        fecha.atTime(21, 45)
                     		));
             		}
-                		
-            	}	
-                	
+
+            	}
+
             }
 
             registroRepo.saveAll(registros);
             System.out.println("✅ Registros simulados cargados para junio.");
         };
-    }  
-	
+    }
+
 	*/
 
 }

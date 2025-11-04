@@ -16,26 +16,26 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CustomSuccessHandler implements AuthenticationSuccessHandler{
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(CustomSuccessHandler.class);
 
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, 
+	public void onAuthenticationSuccess(HttpServletRequest request,
 										HttpServletResponse response,
 										Authentication authentication) throws IOException, ServletException {
-		
+
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		
+
 		String redirectionURL = "/";
 		for (GrantedAuthority authority : authorities) {
 			String role = authority.getAuthority();
-			
+
 			if(role.equals("ROLE_ADMIN")) {
 				System.err.println("Administrador");
 				redirectionURL = "/admin";
 				System.err.println("Redireccionando a " + redirectionURL);
 				break;
-			} 
+			}
 			else if(role.equals("ROLE_USER")){
 				System.err.println("Usuario");
 				redirectionURL = "/panel";
@@ -43,11 +43,11 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler{
 				break;
 			}
 		}
-		
+
 		logger.info("Login exitoso para usuario: {}", authentication.getName());
-		
+
 		response.sendRedirect(redirectionURL);
-		
+
 	}
 
 }

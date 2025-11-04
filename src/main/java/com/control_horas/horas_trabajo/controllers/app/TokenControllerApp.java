@@ -12,16 +12,16 @@ import com.control_horas.horas_trabajo.dtos.app.ApiResponseDTO;
 @RestController
 @RequestMapping("/api")
 public class TokenControllerApp {
-	
+
 	@GetMapping("/enviarToken")
 	public ResponseEntity<ApiResponseDTO> enviarToken(
 			@RequestParam String username,
 			@RequestParam String email
 			){
-		
+
 		ApiResponseDTO response = new ApiResponseDTO("success", "✅ Token enviado correctamente a " + email);
 		return ResponseEntity.ok(response);
-		
+
 	}
 
 }

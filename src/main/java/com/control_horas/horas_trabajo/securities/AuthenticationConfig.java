@@ -16,7 +16,7 @@ import com.control_horas.horas_trabajo.services.UsuarioDetailsService;
 
 @Configuration
 public class AuthenticationConfig {
-	
+
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider(UsuarioDetailsService userService,
 															BCryptPasswordEncoder passwordEncoder) {
@@ -24,36 +24,36 @@ public class AuthenticationConfig {
 		authProvider.setPasswordEncoder(passwordEncoder);
 		return authProvider;
 	}
-	
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
 	}
-	
+
 	@Bean
 	public JavaMailSender javaMailSender(@Value("${spring.mail.host}") String host,
 		    @Value("${spring.mail.port}") int port,
 		    @Value("${spring.mail.username}") String username,
 		    @Value("${spring.mail.password}") String password) {
-		
+
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost(host);
 		mailSender.setPort(port);
 		mailSender.setUsername(username);
 		mailSender.setPassword(password);
-		
+
 		Properties props = mailSender.getJavaMailProperties();
 		props.put("mail.transport.protocol","smtp");
 		props.put("mail.smtp.auth","true");
 		props.put("mail.smtp.starttls.enable","true");
-		
+
 		return mailSender;
-		
+
 	}
-			
+
 }

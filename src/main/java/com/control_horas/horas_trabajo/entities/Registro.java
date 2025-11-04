@@ -12,19 +12,19 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="registro")
 public class Registro {
-	
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private LocalDateTime horaEntrada;
 	private LocalDateTime horaSalida;
-	
+
 	@ManyToOne
 	private Usuario usuario;
-	
+
 	public Registro() {
-		
+
 	}
 
 	public Registro(Usuario usuario,LocalDateTime horaEntrada, LocalDateTime horaSalida) {
@@ -65,8 +65,8 @@ public class Registro {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
-	
-	
+
+
+
 
 }

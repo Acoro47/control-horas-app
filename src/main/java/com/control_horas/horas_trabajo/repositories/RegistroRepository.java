@@ -11,13 +11,13 @@ import com.control_horas.horas_trabajo.entities.Usuario;
 
 
 public interface RegistroRepository extends JpaRepository<Registro, Long>{
-	
+
 	Optional<Registro> findFirstByUsuarioAndHoraSalidaIsNullOrderByHoraEntrada(Usuario usuario);
-	
+
 	List<Registro> findByUsuarioId(Long id);
-	
+
 	List<Registro> findByUsuarioIdOrderByIdAsc(Long id);
-	
+
 	List<Registro> findByUsuarioIdAndHoraEntradaBetweenAndHoraSalidaIsNotNull(
 			Long usuarioId,
 			LocalDateTime inicio,
@@ -28,9 +28,9 @@ public interface RegistroRepository extends JpaRepository<Registro, Long>{
 			LocalDateTime inicio,
 			LocalDateTime fin
 			);
-	
+
 	boolean existsByUsuarioIdAndHoraSalidaIsNull(long usuarioId);
-	
+
 	List<Registro> findAllByHoraSalidaIsNull();
 
 }

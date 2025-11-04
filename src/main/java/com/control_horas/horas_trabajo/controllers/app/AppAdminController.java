@@ -12,16 +12,16 @@ import com.control_horas.horas_trabajo.services.UsuarioDetailsService;
 @RequestMapping("/api/admin")
 @PreAuthorize("hasRole('ADMIN')")
 public class AppAdminController {
-	
+
 	private final RegistroService regService;
 	private final UsuarioDetailsService userService;
-	
+
 	public AppAdminController(UsuarioDetailsService uServ,RegistroService serv) {
 		this.regService = serv;
 		this.userService = uServ;
 	}
-	
-	
-	
+
+
+
 
 }

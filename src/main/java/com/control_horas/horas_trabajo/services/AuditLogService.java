@@ -12,17 +12,17 @@ import com.control_horas.horas_trabajo.repositories.AuditLogRepository;
 
 @Service
 public class AuditLogService {
-	
+
 	private AuditLogRepository repository;
-	
+
 	public AuditLogService(AuditLogRepository repo) {
 		this.repository = repo;
 	}
-	
+
 	public void logChange(String entityName, Long entityId, String fieldName, String oldValue,
 			String newValue, String changedBy) {
 		AuditLog log = new AuditLog();
-		
+
 		log.setEntityName(entityName);
 		log.setEntityId(entityId);
 		log.setFieldName(fieldName);
@@ -31,14 +31,14 @@ public class AuditLogService {
 		log.setChangedBy(changedBy);
 		repository.save(log);
 	}
-	
+
 	public List<AuditLogDTO> getLogsByEntity(String entityName, Long entityId) {
 		return repository.findByEntityNameAndEntityIdOrderByChangedAtDesc(entityName, entityId)
 				.stream()
 				.map(this::toDto)
 				.collect(Collectors.toList());
 	}
-	
+
 	public AuditLogDTO toDto(AuditLog log) {
 		AuditLogDTO dto = new AuditLogDTO();
 	    dto.setEntityName(log.getEntityName());

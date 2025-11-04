@@ -12,16 +12,16 @@ import com.control_horas.horas_trabajo.entities.SolicitudAcceso;
 
 @Service
 public class EmailService {
-	
+
 	private final Logger logger = LoggerFactory.getLogger(SolicitudController.class);
-	
+
 	@Autowired
 	private JavaMailSender sender;
-	
+
 	public void enviarAprobacion(SolicitudAcceso solicitud) {
-		
+
 		logger.info("Función para enviar aprobación " + solicitud.toString());
-		
+
 		SimpleMailMessage mensaje = new SimpleMailMessage();
 		mensaje.setTo(solicitud.getEmail());
 		mensaje.setSubject("Solicitud aprobada - Activación de cuenta de Control-Horas");
@@ -33,7 +33,7 @@ public class EmailService {
 		        + "¡Bienvenido!");
 		    sender.send(mensaje);
 	}
-	
+
 	public void enviarRechazo(SolicitudAcceso solicitud) {
 		logger.info("Función para enviar rechazo" + solicitud.toString());
 	    SimpleMailMessage mensaje = new SimpleMailMessage();
@@ -47,6 +47,6 @@ public class EmailService {
 	    		);
 	    sender.send(mensaje);
 	}
-	
+
 
 }
