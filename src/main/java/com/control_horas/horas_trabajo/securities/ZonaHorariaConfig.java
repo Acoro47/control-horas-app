@@ -8,7 +8,7 @@ import jakarta.annotation.PostConstruct;
 
 @Configuration
 public class ZonaHorariaConfig {
-	
+
 	@PostConstruct
 	public void setZonaHorariaPorDefecto() {
 		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Madrid"));

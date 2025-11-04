@@ -9,38 +9,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.control_horas.horas_trabajo.dtos.app.ErrorResponse;
-import com.control_horas.horas_trabajo.dtos.app.LoginErrorResponse;
-import com.control_horas.horas_trabajo.dtos.app.LoginResponse;
 import com.control_horas.horas_trabajo.dtos.app.TokenResponse;
 import com.control_horas.horas_trabajo.entities.LoginRequest;
 import com.control_horas.horas_trabajo.entities.Usuario;
 import com.control_horas.horas_trabajo.services.JwtService;
 import com.control_horas.horas_trabajo.services.UsuarioDetailsService;
 
-import jakarta.validation.Valid;
-
 @RestController
 @RequestMapping("/api")
 @Validated
 public class LoginAppController {
-	
+
 	private final UsuarioDetailsService userService;
 	private final JwtService jwtService;
-	
+
 	public LoginAppController(UsuarioDetailsService uServ, JwtService jServ) {
 		this.userService = uServ;
 		this.jwtService = jServ;
 	}
-	
+
 	@PostMapping("/login")
 	public ResponseEntity<TokenResponse> login(
 			@RequestBody LoginRequest datos) {
 
-		
+
 		String username = datos.getUsername();
 		String password = datos.getPassword();
-		
+
 
 		if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -48,14 +43,14 @@ public class LoginAppController {
 		}
 
 		boolean valido = userService.validarCredenciales(username, password);
-		
+
 		if (!valido) {
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
 					.build();
-					
+
 		}
-		
+
 		UserDetails userDetails = userService.loadUserByUsername(username);
 		String token = jwtService.generateToken(userDetails);
 		Usuario usuario = userService.obtenerUsuarioPorNombre(username);
@@ -64,7 +59,7 @@ public class LoginAppController {
 				username,
 				usuario.getRol().toString(),
 				token));
-		
+
 	}
 
 }

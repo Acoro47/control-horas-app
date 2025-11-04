@@ -12,18 +12,18 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="audit_log")
 public class AuditLog {
-	
-	@Id 
+
+	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	private String entityName;
 	private Long entityId;
 	private String fieldName;
 	private String oldValue;
 	private String newValue;
 	private String changedBy;
-	
+
 	@CreationTimestamp
 	private LocalDateTime changedAt;
 
@@ -107,7 +107,7 @@ public class AuditLog {
 	public void setChangedAt(LocalDateTime changedAt) {
 		this.changedAt = changedAt;
 	}
-	
-	
+
+
 
 }

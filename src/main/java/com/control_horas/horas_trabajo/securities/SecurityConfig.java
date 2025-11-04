@@ -22,16 +22,16 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfig {
-		
-	private CustomSuccessHandler handler;	
+
+	private CustomSuccessHandler handler;
 	private final JwtAuthenticationFilter jwtAuthFilter;
-	
+
 	public SecurityConfig(JwtAuthenticationFilter filter, CustomSuccessHandler handler) {
 		this.handler = handler;
 		this.jwtAuthFilter = filter;
 	}
-	
-	
+
+
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
 	    return (web) -> web.ignoring()
@@ -40,46 +40,38 @@ public class SecurityConfig {
 	        // Si tienes adicionalmente imágenes, fuentes, etc.
 	        .requestMatchers("/css/**", "/js/**", "/img/**", "/webjars/**");
 	}
-		
+
 	@Bean
-	@Order(1) 
+	@Order(1)
 	public SecurityFilterChain apifilterChain(HttpSecurity http) throws Exception {
-		http 
+		http
 		.securityMatcher("/api/**")
-		.csrf(csrf -> csrf.disable()) 
+		.csrf(csrf -> csrf.disable())
 		.sessionManagement(session -> session
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.requestCache(rc -> rc.disable())
 		.exceptionHandling(ex -> ex
 				.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
 				)
-		.authorizeHttpRequests(auth -> auth 
-				.requestMatchers("/api/login", "/api/enviarToken","/api/registros/**","/api/entrada","/api/salida","/api/wakeup").permitAll() 
-				.anyRequest().authenticated() 
+		.authorizeHttpRequests(auth -> auth
+				.requestMatchers("/api/login", "/api/enviarToken","/api/registros/**","/api/entrada","/api/salida","/api/wakeup").permitAll()
+				.anyRequest().authenticated()
 				)
-		.exceptionHandling(ex -> ex
-				.authenticationEntryPoint((request, response, authException) -> {
-					response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-					response.setContentType("application/json");
-					response.getWriter().write("{\"error\":\"No autorizado\"}");
-				})
-			)
-		
 		.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-		
-		return http.build(); 
+
+		return http.build();
 		}
-	
-	@Bean 
-	@Order(2) 
+
+	@Bean
+	@Order(2)
 	public SecurityFilterChain webFilterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
-		
+
 		http
 		.securityMatcher(request -> {
 				String path = request.getRequestURI();
 				return !path.startsWith("/api/");
 		})
-		.authorizeHttpRequests(auth -> auth 
+		.authorizeHttpRequests(auth -> auth
 				.requestMatchers(
 						"/login",
 						"/solicitar",
@@ -96,12 +88,12 @@ public class SecurityConfig {
 				.successHandler(handler)
 				.failureUrl("/login?error")
 				)
-		.logout(logout -> logout .logoutUrl("/logout") 
-				.logoutSuccessUrl("/login?logout") 
-				.permitAll() 
+		.logout(logout -> logout .logoutUrl("/logout")
+				.logoutSuccessUrl("/login?logout")
+				.permitAll()
 				);
-		
-		return http.build(); 
-		
-	}	
+
+		return http.build();
+
+	}
 }

@@ -12,26 +12,26 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="usuario")
 public class Usuario {
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(nullable=false, unique=true)
 	private String username;
-	
+
 	@Column(nullable=false, unique=true)
 	private String mail;
-	
+
 	@Column(nullable=false)
 	private String password;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Role rol = Role.USER;
-	
+
 	@Column(nullable = false)
 	private boolean accountNonExpired = true;
-	
+
 	@Column(nullable = false)
 	private boolean accountNonLocked = true;
 
@@ -40,7 +40,7 @@ public class Usuario {
 
 	@Column(nullable = false)
 	private boolean enabled = true;
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -112,6 +112,6 @@ public class Usuario {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
-	
+
+
 }

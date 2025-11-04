@@ -12,28 +12,28 @@ import jakarta.persistence.Id;
 
 @Entity
 public class SolicitudAcceso {
-	
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(nullable=false, unique=true)
 	private String email;
-	
+
 	@Column(nullable=false, unique=true)
 	private String username;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private EstadoSolicitud estado;
-	
+
 	private String token;
-	
+
 	private LocalDateTime fechaSolicitud;
 	private LocalDateTime fechaAprobacion;
-	
+
 	public SolicitudAcceso() {
-		
+
 	}
 
 	public SolicitudAcceso(String email, String username, EstadoSolicitud estado,
@@ -100,9 +100,9 @@ public class SolicitudAcceso {
 	public void setFechaAprobacion(LocalDateTime fechaAprobacion) {
 		this.fechaAprobacion = fechaAprobacion;
 	}
-	
-	
-	
-	
+
+
+
+
 
 }

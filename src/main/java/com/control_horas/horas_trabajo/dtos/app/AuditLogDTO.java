@@ -8,7 +8,7 @@ public class AuditLogDTO {
 	private String newValue;
 	private String changedBy;
 	private String changedAt;
-	
+
 	public AuditLogDTO(String entityName, Long entityId, String fieldName, String oldValue, String newValue,
 			String changedBy, String changedAt) {
 		super();
@@ -80,7 +80,7 @@ public class AuditLogDTO {
 	public void setChangedAt(String changedAt) {
 		this.changedAt = changedAt;
 	}
-	
-	
+
+
 
 }

@@ -10,7 +10,7 @@ import com.control_horas.horas_trabajo.entities.Usuario;
 
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
-	
+
 	Optional<Usuario> findByUsername(String username);
 	List<Usuario> findAllByOrderByIdAsc();
 	boolean existsByUsername(String username);

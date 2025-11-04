@@ -28,42 +28,42 @@ import com.control_horas.horas_trabajo.services.EmailService;
 
 @Controller
 public class SolicitudController {
-	
+
 	private final Logger logger = LoggerFactory.getLogger(SolicitudController.class);
-	
+
 	@Autowired
 	private SolicitudAccesoRepository solRepo;
-	
+
 	@Autowired
 	private UsuarioRepository userRepo;
-	
+
 	@Autowired
 	private PasswordEncoder encoder;
-	
+
 	@Autowired
 	private EmailService mailService;
-	
+
 	@GetMapping("/solicitar")
 	public String mostrarFormulario(Model model) {
 		logger.info("Cargando formulario de solicitud");
-		
-		model.addAttribute("solicitud", new SolicitudAcceso());	
-		
+
+		model.addAttribute("solicitud", new SolicitudAcceso());
+
 		return "solicitudes/formulario";
-		
+
 	}
-	
+
 	@PostMapping("/solicitar")
 	public String procesarSolicitud(@ModelAttribute SolicitudAcceso solicitud, RedirectAttributes redirect) {
-		
+
 		logger.info("procesando solicitud invocado con : {}", solicitud);
-		
+
 		if (solRepo.existsByEmail(solicitud.getEmail())) {
 			redirect.addFlashAttribute("error", "Ya existe una solicitud con este correo");
 			logger.info("Ya existe una solicitud con este correo");
 			return "redirect:/login";
 		}
-		
+
 		solicitud.setEstado(EstadoSolicitud.PENDIENTE);
 		solicitud.setFechaSolicitud(LocalDateTime.now());
 		solRepo.save(solicitud);
@@ -71,14 +71,14 @@ public class SolicitudController {
 		redirect.addFlashAttribute("mensaje", "Tu solicitud ha sido enviada. Recibirás un correo si es aprobada.");
 		return "redirect:/login";
 	}
-	
+
 	@GetMapping("/admin/solicitudes")
 	public String verSolicitudesPendientes(Model model) {
 		List<SolicitudAcceso> pendientes = solRepo.findByEstado(EstadoSolicitud.PENDIENTE);
 		model.addAttribute("pendientes",pendientes);
 		return "admin/solicitudes";
 	}
-	
+
 	@GetMapping("/admin/aprobar/{id}")
 	public String aprobar(@PathVariable Long id, RedirectAttributes redirect) {
 		SolicitudAcceso solicitud = solRepo.findById(id).orElseThrow();
@@ -86,41 +86,41 @@ public class SolicitudController {
 		solicitud.setToken(UUID.randomUUID().toString());
 		solicitud.setFechaAprobacion(LocalDateTime.now());
 		solRepo.save(solicitud);
-		
+
 		logger.info("Enviando mail " + solicitud.toString());
-		
+
 		mailService.enviarAprobacion(solicitud);
 		redirect.addFlashAttribute("mensaje", "Solicitud aprobada.");
-		
+
 		return "redirect:/admin/solicitudes";
 	}
-	
+
 	@GetMapping("/admin/rechazar/{id}")
 	public String rechazar(@PathVariable Long id, RedirectAttributes redirect) {
 		SolicitudAcceso solicitud = solRepo.findById(id).orElseThrow();
 		solicitud.setEstado(EstadoSolicitud.RECHAZADA);
 		solRepo.save(solicitud);
-		
+
 		mailService.enviarRechazo(solicitud);
 		redirect.addFlashAttribute("mensaje", "Solicitud rechazada");
-		
+
 		return "redirect:/admin/solicitudes";
 	}
-	
+
 	@GetMapping("/activar")
 	public String activar(@RequestParam String token, Model model, RedirectAttributes redirect) {
 		Optional<SolicitudAcceso> solicitud = solRepo.findByToken(token);
 		if(solicitud.isEmpty() || solicitud.get().getEstado() != EstadoSolicitud.APROBADA) {
 			redirect.addFlashAttribute("mensaje", "Token inválido o solicitud no aprobada");
-			
+
 			return "redirect:/solicitar";
 		}
-		
+
 		model.addAttribute("usuarioAutorizado", solicitud.get());
 		return "registro";
 	}
-	
-	
+
+
 	@PostMapping("/guardarUsuario")
 	public String guardarUsuario(@RequestParam String username,
 								@RequestParam String email,
@@ -128,46 +128,46 @@ public class SolicitudController {
 								@RequestParam String confirmPass,
 								Model model,
 								RedirectAttributes redirect) {
-		
+
 		Optional<SolicitudAcceso> solicitudOpt = solRepo.findByEmail(email);
-		
+
 		if(solicitudOpt.isEmpty() || solicitudOpt.get().getEstado() != EstadoSolicitud.APROBADA) {
 			redirect.addFlashAttribute("mensaje", "Solicitud inválida. Vuelve a intentarlo");
 			return "redirect:/solicitar";
 		}
-		
+
 		SolicitudAcceso solicitud = solicitudOpt.get();
-		
+
 		if (!pass.equals(confirmPass)) {
 			model.addAttribute("usuarioAutorizado", solicitud);
 			model.addAttribute("error", "Las contraseñas no coinciden");
 			logger.info("✅ Método guardarUsuario ejecutado con: " + email);
 			return "registro";
 		}
-		
+
 		if (userRepo.existsByMail(email)) {
 			model.addAttribute("usuarioAutorizado", solicitud);
 			model.addAttribute("error", "Este correo ya está registrado");
 			return "redirect:/registro";
 		}
-		
+
 		Usuario user = new Usuario();
 		user.setUsername(username);
 		user.setMail(email);
 		user.setPassword(encoder.encode(pass));
 		user.setRol(Role.USER);
 		userRepo.save(user);
-		
-		
+
+
 		solicitud.setToken(null);
 		solicitud.setEstado(EstadoSolicitud.USADA);
 		solRepo.save(solicitud);
-		
+
 		redirect.addFlashAttribute("mensaje", "Cuenta creada correctamente.");
-		
-		return "redirect:/login";	
+
+		return "redirect:/login";
 	}
-	
-	
+
+
 
 }

@@ -9,7 +9,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class ConnectionTest {
 
 	public static void main(String[] args) {
-		
+
 		// 1. Carga variables de .env
         Dotenv dotenv = Dotenv.load();
 

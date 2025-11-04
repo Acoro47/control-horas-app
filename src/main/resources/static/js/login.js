@@ -3,7 +3,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-	const form  = document.querySelector('form[method="post]');
+	const form  = document.querySelector('form[method="post"]');
 	if (!form) return;
 	
 	const btn = document.getElementById('loginBtn');

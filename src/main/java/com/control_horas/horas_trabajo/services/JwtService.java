@@ -16,36 +16,36 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.SecurityException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SecurityException;
 
 @Service
 public class JwtService {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(JwtService.class);
-	
+
 	private final Key key;
-	
-		
+
+
 	public JwtService(@Value("${JWT_SECRET}") String secret) {
-		
+
 		//String secret = System.getenv("JWT_SECRET");
 		if (secret == null || secret.trim().isEmpty()) {
 			logger.debug("JWT_SECRET en entorno " + System.getenv("JWT_SECRET"));
 	        throw new IllegalStateException("❌ JWT_SECRET no está definido en el entorno.");
 	    }
-		
+
 		byte [] keyBytes = Base64.getDecoder().decode(secret);
 		logger.debug("Clave decodificada con éxito: Bytes: " + keyBytes.length);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
-	
+
 	public String generateToken(UserDetails userDetails) {
-		
+
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("roles", userDetails.getAuthorities());
 		
@@ -57,29 +57,33 @@ public class JwtService {
 				.signWith(key, SignatureAlgorithm.HS256)
 				.compact();
 	}
-	
+
 	public String extractUsername(String token) {
 		Claims claims = extractAllClaims(token);
-		
+
 		return claims != null ? claims.getSubject() : null;
 	}
-	
+
 	public boolean isTokenValid(String token, UserDetails userDetails) {
 		Claims claims = extractAllClaims(token);
-		if (claims == null) return false;
-		
+		if (claims == null) {
+			return false;
+		}
+
 		String username = claims.getSubject();
 		return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
 	}
-	
+
 	private boolean isTokenExpired(String token) {
 		Claims claims = extractAllClaims(token);
-	    if (claims == null) return true;
-	    
+	    if (claims == null) {
+			return true;
+		}
+
 		Date expiration = claims.getExpiration();
 		return expiration.before(new Date());
 	}
-	
+
 	private Claims extractAllClaims(String token) {
 		try {
 			return Jwts.parserBuilder()
