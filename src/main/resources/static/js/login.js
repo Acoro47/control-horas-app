@@ -14,10 +14,16 @@ function desactivar_boton(){
 		
 	
 	form.addEventListener('submit', (e) => {
-		console.log("Has clicado el botón de entrar");
-		
-		console.log("Mensaje: ", message);
-		console.log("Error: ", error);
+
+
+		const messageEl = document.querySelector('#message');
+	    const errorEl = document.querySelector('#error');
+	    const message = messageEl ? messageEl.textContent.trim() : null;
+	    const error = errorEl ? errorEl.innerHTML.trim() : null;
+
+	    console.log("Has clicado el botón de entrar");
+	    console.log("Mensaje:", message);
+	    console.log("Error:", error);
 		
 		if (btnLogin.classList.contains('d-none')) {
 			console.log("Formulario enviado")
