@@ -20,7 +20,7 @@ function desactivar_boton(){
 		console.log("Error: ", error);
 		
 		if (btnLogin.classList.contains('d-none')) {
-			e.preventDefault();
+			console.log("Formulario enviado")
 			return;
 		}
 	});
