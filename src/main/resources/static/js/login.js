@@ -10,12 +10,15 @@ function desactivar_boton(){
 	const message = document.querySelector('#message');
 	const error = document.querySelector('#error')
 	
-	console.log(message);
-	console.log(error);
+	
 		
 	
 	form.addEventListener('submit', (e) => {
 		console.log("Has clicado el botón de entrar");
+		
+		console.log("Mensaje: ", message);
+		console.log("Error: ", error);
+		
 		if (btnLogin.classList.contains('d-none')) {
 			e.preventDefault();
 			return;
