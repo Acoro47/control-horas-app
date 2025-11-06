@@ -1,4 +1,5 @@
 
+console.log("login.js cargado");
 
 function desactivar_boton(){
 	
