@@ -10,11 +10,12 @@ function desactivar_boton(){
 		
 	
 	form.addEventListener('submit', (e) => {
+		e.preventDefault();
 		console.log("Enviando el formulario...");
 		console.log("BtnLogin", btnLogin);
-		btnLogin.ariaDisabled = true;
+		btnLogin.ariaHidden = true;
 		console.log("BtnLogin", btnLogin);
-		e.preventDefault();
+		
 	});
 	
 	
