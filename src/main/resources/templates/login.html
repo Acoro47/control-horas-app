@@ -40,11 +40,8 @@
 			<div class="text-center">
 		    	<p>¿No tienes cuenta? <a th:href="@{/solicitar}">Solicita acceso</a></p>
 		    </div>
-		   	<!-- <div id="message" th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>  -->
-			<!-- <div id="error" th:if="${error}"  class="alert alert-danger"  th:text="${error}"></div> -->
-			<div id="message" class="alert alert-success d-none" th:classappend="${mensaje} ? '' : ' d-none'" th:text="${mensaje}"></div>
-			<div id="error" class="alert alert-danger d-none"   th:classappend="${error} ? '' : ' d-none'"   th:text="${error}"></div>
-
+		   	<div id="message" th:if="${mensaje}" class="alert alert-success" th:text="${mensaje}"></div>
+			<div id="error" th:if="${error}"   class="alert alert-danger"  th:text="${error}"></div>
 		</div>
 	</div>
 	
