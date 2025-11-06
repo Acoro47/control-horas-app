@@ -7,8 +7,6 @@ function desactivar_boton(){
 	const btnLogin = document.querySelector('#loginBtn');
 	const btnLoading = document.querySelector('#loginBtnDisabled');
 	const overlay = document.querySelector('#submitOverlay');
-	const message = document.querySelector('#message').textContent;
-	const error = document.querySelector('#error').innerHTML;
 	
 	
 		
