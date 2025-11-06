@@ -12,6 +12,8 @@ function desactivar_boton(){
 	form.addEventListener('submit', (e) => {
 		console.log("Enviando el formulario...");
 		console.log("BtnLogin", btnLogin);
+		btnLogin.ariaDisabled = true;
+		console.log("BtnLogin", btnLogin);
 		e.preventDefault();
 	});
 	
