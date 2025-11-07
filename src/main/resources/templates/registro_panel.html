@@ -48,19 +48,6 @@
 	</div>
 </div>
 
-<div class="row mb-4">
-	<div class="col-md-6">
-		<form th:action="@{/pausa/inicio}" method="post">
-			<button type="submit" class="btn btn-lg btn-success w-100" th:disabled="${!hayEntradaActiva}"> Inicio descanso</button>
-		</form>
-	</div>
-	
-	<div class="col-md-6">
-		<form th:action="@{/pausa/fin}" method="post">
-			<button type="submit" class="btn btn-lg btn-success w-100" th:disabled="${hayEntradaActiva}"> Fin descanso</button>
-		</form>
-	</div>
-</div>
 	
 <div th:replace="~{fragments/header :: footer(${#authentication.name})}"></div>	
 	
